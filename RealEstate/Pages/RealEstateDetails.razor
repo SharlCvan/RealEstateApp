@@ -1,0 +1,31 @@
+﻿@page "/RealEstate/{id}"
+@inherits BaseRealEstateDetail
+
+<h3>Real Estate Info</h3>
+
+
+@if(string.IsNullOrEmpty(RealEstate.Title))
+{
+    <div class="spinner"></div>
+}
+else
+{
+    <div class="card" style="width: 18rem;">
+        <img src="https://i.imgur.com/HyXS72k.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@RealEstate.Title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Buy price: @RealEstate.SellingPrice</li>
+            <li class="list-group-item">Rent price: @RealEstate.RentingPrice</li>
+            <li class="list-group-item">@RealEstate.Description</li>
+            <li class="list-group-item">@RealEstate.Title</li>
+        </ul>
+        <div class="card-body">
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+        </div>
+    </div>
+
+}

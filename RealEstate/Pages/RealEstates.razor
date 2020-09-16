@@ -1,0 +1,26 @@
+﻿@page "/RealEstates"
+@inherits BaseRealEstate
+
+<h3>Market Place</h3>
+
+@if (realEstates.Count() == 0)
+{
+    <div class="spinner"></div>
+}
+else
+{
+<div class="card-deck">
+    @foreach (var estate in realEstates)
+    {
+        <div class="card" style="width: 18rem;">
+            <img src="https://i.imgur.com/HyXS72k.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Address: @estate.Title</h5>
+                <p class="card-text">Quick info: </p>
+                <a href="@($"RealEstate/{estate.Id}")" class="btn btn-primary">View</a>
+            </div>
+        </div>
+    }
+</div>
+}
+
