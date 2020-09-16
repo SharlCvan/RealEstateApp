@@ -8,6 +8,7 @@ namespace RealEstate.Authentication.DTO
 {
     public class UserForRegistrationDto
     {
+        [EmailAddress]
         [Required(ErrorMessage = "Email is required.")]
         public string Email { get; set; }
 

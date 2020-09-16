@@ -13,5 +13,6 @@ namespace RealEstate.Authentication.DTO
 
         [Required(ErrorMessage = "Password is required.")]
         public string Password { get; set; }
+        public string GrantType { get; set; }
     }
 }

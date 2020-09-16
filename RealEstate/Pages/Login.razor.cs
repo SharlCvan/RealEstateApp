@@ -21,10 +21,11 @@ namespace RealEstate.Pages
         public async Task ExecuteLogin()
         {
             ShowAuthError = false;
+            _userForAuthentication.GrantType = "bearer";
             var result = await AuthenticationService.Login(_userForAuthentication);
             if (!result.IsAuthSuccessful)
             {
-                Error = result.ErrorMessage;
+                //Error = result.ErrorMessage;
                 ShowAuthError = true;
             }
             else
