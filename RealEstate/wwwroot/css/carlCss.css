@@ -1,0 +1,19 @@
+﻿.carousel-item > img {
+    height: 400px;
+    width: auto;
+}
+
+@media (max-width: 800px) {
+    .carousel-item > img {
+        height: 300px;
+        width: auto;
+    }
+}
+
+#carouselExampleIndicators > a:hover {
+    cursor: pointer;
+}
+
+#Broker-image {
+    
+}
