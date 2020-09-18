@@ -40,8 +40,9 @@ namespace RealEstate.Authentication
             }
             await _localStorage.SetItemAsync("authToken", result.AcessToken);
             await _localStorage.SetItemAsync("userName", result.UserName);
+            await _localStorage.SetItemAsync("authorizationExpires", result.Expires);
 
-            ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userForAuthentication.Email);
+            ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userForAuthentication.UserName);
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.AcessToken);
             return new AuthResponseDto { IsAuthSuccessful = true };
         }
@@ -50,6 +51,7 @@ namespace RealEstate.Authentication
         {
             await _localStorage.RemoveItemAsync("authToken");
             await _localStorage.RemoveItemAsync("userName");
+            await _localStorage.RemoveItemAsync("authorizationExpires");
 
             ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
             _client.DefaultRequestHeaders.Authorization = null;

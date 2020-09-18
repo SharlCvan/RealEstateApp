@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using RealEstate.Models;
+using Microsoft.AspNetCore.Components.Authorization;
+using Blazored.LocalStorage;
 
 namespace RealEstate.Pages
 {
@@ -16,8 +18,19 @@ namespace RealEstate.Pages
         public IAuthenticationService AuthenticationService { get; set; }
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        [Inject]
+        public IRealEstateService RealEstateService { get; set; }
         public bool ShowAuthError { get; set; }
         public string Error { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            if (await RealEstateService.UserLoggedInAndValid())
+            {
+                NavigationManager.NavigateTo("/");
+            }
+        }
+
         public async Task ExecuteLogin()
         {
             ShowAuthError = false;
@@ -25,7 +38,7 @@ namespace RealEstate.Pages
             var result = await AuthenticationService.Login(_userForAuthentication);
             if (!result.IsAuthSuccessful)
             {
-                //Error = result.ErrorMessage;
+                Error = result.Error;
                 ShowAuthError = true;
             }
             else

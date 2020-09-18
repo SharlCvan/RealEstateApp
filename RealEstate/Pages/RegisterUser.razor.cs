@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using RealEstate.Authentication;
 using RealEstate.Authentication.DTO;
 using System;
@@ -33,10 +34,15 @@ namespace RealEstate.Pages
             }
         }
 
-        public async Task InValidRegister()
+        public void InValidRegister()
         {
             _userForRegistrationDto.ConfirmPassword = "";
             _userForRegistrationDto.Password = "";
+        }
+
+        public void ClearForm()
+        {
+            _userForRegistrationDto = new UserForRegistrationDto();
         }
     }
 }
