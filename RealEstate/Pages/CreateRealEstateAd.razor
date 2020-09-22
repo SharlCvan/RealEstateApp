@@ -1,40 +1,41 @@
 ﻿@page "/RealEstateAd"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
 @inherits BaseCreateRealEstateAd
-@attribute [Authorize]
+
 
 
 <div class="card-group col-12">
     <EditForm Model="Property" OnValidSubmit="Register" OnInvalidSubmit="InValidRegister" class="card card-body bg-light mt-5 col-md-5 mx-auto">
         <DataAnnotationsValidator />
         <div class="form-group">
-            <label for="email" class=" col-form-label">Email:</label>
+            <label for="title" class=" col-form-label">Title:</label>
             <div class="">
-                <InputText id="email" class="form-control" @bind-Value="Property.Title" aria-describedby="titleHelp" />
-                <small id="titleHelp" class="form-text text-muted">Tip: Use a descriptive title that catches the attetion of the reader</small>
-                <ValidationMessage For="@(() => _userForRegistrationDto.Email)" />
+                <InputText id="title" class="form-control" @bind-Value="Property.Title" aria-describedby="titleHelp" />
+                <small id="titleHelp" class="form-text text-muted">Tip: Use a descriptive title that catches the attetion of the reader.</small>
+                <ValidationMessage For="@(() => Property.Title)" />
             </div>
         </div>
         <div class="form-group">
-            <label for="UserName" class="col-form-label">Username:</label>
+            <label for="Description" class="col-form-label">Description:</label>
             <div class="">
-                <InputText id="UserName" class="form-control" @bind-Value="_userForRegistrationDto.UserName" aria-describedby="userNameHelp" />
-                <small id="userNameHelp" class="form-text text-muted">Username must be between 3-30 characters long.</small>
-                <ValidationMessage For="@(() => _userForRegistrationDto.UserName)" />
+                <InputText id="Description" class="form-control" @bind-Value="Property.Description" aria-describedby="descriptionHelp" />
+                <small id="descriptionHelp" class="form-text text-muted">Description cannot be longer than 1000 characters.</small>
+                <ValidationMessage For="@(() => Property.Description)" />
             </div>
         </div>
         <div class="form-group">
-            <label for="password" class="col-form-label">Password:</label>
+            <label for="contact" class="col-form-label">Contact:</label>
             <div class="">
-                <InputText type="password" id="password" class="form-control" @bind-Value="_userForRegistrationDto.Password" aria-describedby="passwordHelp" />
-                <small id="passwordHelp" class="form-text text-muted">Password must be atleast 6 characters long. Contain an uppercase and lowercase letter as well as a digit.</small>
-                <ValidationMessage For="@(() => _userForRegistrationDto.Password)" />
+                <InputText id="contact" class="form-control" @bind-Value="Property.Contact" aria-describedby="contactHelp" />
+                <small id="contactHelp" class="form-text text-muted">Contact credentials must be supplied.</small>
+                <ValidationMessage For="@(() => Property.Contact)" />
             </div>
         </div>
         <div class="form-group">
-            <label for="confirm" class="col-form-label">Confirm Password:</label>
+            <label for="address" class="col-form-label">Address:</label>
             <div class="">
-                <InputText type="password" id="confirm" class="form-control" @bind-Value="_userForRegistrationDto.ConfirmPassword" />
-                <ValidationMessage For="@(() => _userForRegistrationDto.ConfirmPassword)" />
+                <InputText id="address" class="form-control" @bind-Value="Property.Address" />
+                <ValidationMessage For="@(() => Property.Address)" />
             </div>
         </div>
         <div class="form-group">

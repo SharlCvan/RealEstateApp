@@ -40,5 +40,10 @@ namespace RealEstate.Pages
         {
 
         }
+
+        public void ClearForm()
+        {
+            Property = new Propertys();
+        }
     }
 }
