@@ -8,6 +8,8 @@ namespace RealEstate.Models
 {
     public class Propertys : IValidatableObject
     {
+        public List<Comment> Comments { get; set; }
+
         [Required(ErrorMessage = "A contact reference must be supplied.")]
         public string Contact { get; set; }
         public DateTime CreatedOn { get; set; }
