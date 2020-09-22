@@ -24,6 +24,7 @@ namespace RealEstate
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://aee96c1e-616d-4478-a6fa-cbe73f3628b8.mock.pstmn.io/api/") });
 
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();

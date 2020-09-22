@@ -8,9 +8,17 @@ namespace RealEstate.Authentication.DTO
 {
     public class UserForRegistrationDto
     {
+        [MaxLength(30, ErrorMessage = "Username should contain a maximun of 30 characters.")]
+        [MinLength(3, ErrorMessage = "Username should contain at least 3 characters.")]
+        [Required(ErrorMessage = "Username is required.")]
+        public string UserName { get; set; }
+
+        [EmailAddress]
         [Required(ErrorMessage = "Email is required.")]
         public string Email { get; set; }
 
+        [RegularExpression(@"^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9]).*$", ErrorMessage = "Password should contain at least one digit, one lowercase and a uppercase letter.")]
+        [MinLength(6, ErrorMessage = "Password should contain at least 6 characters.")]
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
