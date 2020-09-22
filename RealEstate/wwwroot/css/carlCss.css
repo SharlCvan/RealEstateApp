@@ -14,6 +14,32 @@
     cursor: pointer;
 }
 
-#Broker-image {
+#broker-card {
     
+}
+
+#Broker-image {
+   text-align: center;
+}
+
+#card-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 57%;
+}
+
+#broker-info {
+    font-size: small;
+}
+
+
+#map {
+    height:400px;
+    width:100%;
+    margin-bottom: 20px;
+}
+
+#floorplan {
+    height: 500px;
+    width: 100%;
 }

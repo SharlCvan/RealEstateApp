@@ -7,6 +7,7 @@ namespace RealEstate.Models
 {
     public class Propertys
     {
+        public List<Comment> Comments { get; set; }
         public DateTime CreatedOn { get; set; }
         public int ConstructionYear { get; set; }
         public string Address  { get; set; }

@@ -9,5 +9,6 @@ namespace RealEstate.Models
     {
         public Task<IEnumerable<Propertys>> GetRealEstates();
         public Task<Propertys> GetRealEstate(int id);
+
     }
 }

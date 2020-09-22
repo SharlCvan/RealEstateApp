@@ -23,6 +23,11 @@ namespace RealEstate.Pages
             RealEstate = await RealEstateService.GetRealEstate(int.Parse(Id));
         }
 
+        //protected List<Comment> LoadComments()
+        //{
+        //    List<Comment> comments = await RealEstateService.GetComments(int.Parse(Id));
+        //}
+
 
     }
 }

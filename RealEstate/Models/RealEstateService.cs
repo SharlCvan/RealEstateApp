@@ -25,5 +25,7 @@ namespace RealEstate.Models
         {
             return await http.GetJsonAsync<Propertys[]>("RealEstates");
         }
+
+
     }
 }
