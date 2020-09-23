@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace RealEstate.Models
 
         public async Task<Propertys> GetRealEstate(int id)
         {
-            return await http.GetJsonAsync<Propertys>($"RealEstates/{id}");
+            return await http.GetFromJsonAsync<Propertys>($"RealEstate/{id}");
         }
 
         public async Task<IEnumerable<Propertys>> GetRealEstates()
