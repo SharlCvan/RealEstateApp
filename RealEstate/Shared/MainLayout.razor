@@ -1,17 +1,64 @@
 ﻿@inherits LayoutComponentBase
 
-@*<div class="sidebar">
-    <NavMenu />
-</div>*@
+    <div class="main">
+        <nav id="layout" class="navbar navbar-expand-lg navbar-light shadow">
+            <a class="navbar-brand page-logo shadow" href="#"><i class="fas fa-laptop-house"></i>HEMGET</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="realestate/1" class="ml-md-auto nav-link">Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="RealEstates" class="ml-md-auto nav-link">Real Estates</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-        <a href="Index" class="ml-md-auto">Home</a>
-        <a href="RealEstates" class="ml-md-auto">Real Estates</a>
+        <div class="content px-4 min-vh-100">
+            @Body
+        </div>
+        <footer id="layout" class="font-small mt-auto">
+            <div class="container">
+                <div class="row pt-4">                    
+                    <div class="col-md-12">
+                        <div class="text-center">
+
+                            <!-- Facebook -->
+                            <a class="fb-ic btn-hover">
+                                <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                            </a>
+                            <!-- Twitter -->
+                            <a class="tw-ic btn-hover">
+                                <i class="fab fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                            </a>
+                            <!-- Google +-->
+                            <a class="gplus-ic btn-hover">
+                                <i class="fab fa-google-plus-g fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                            </a>
+                            <!--Linkedin -->
+                            <a class="li-ic btn-hover">
+                                <i class="fab fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                            </a>
+                            <!--Instagram-->
+                            <a class="ins-ic btn-hover">
+                                <i class="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                            </a>
+                            <!--Pinterest-->
+                            <a class="pin-ic btn-hover">
+                                <i class="fab fa-pinterest fa-lg white-text fa-2x"> </i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Grid column -->
+                </div>
+            </div>
+            <div class="footer-copyright text-center py-3">
+                © 2020 Copyright:
+            </div>
+        </footer>
     </div>
 
-    <div class="content px-4">
-        @Body
-    </div>
-</div>

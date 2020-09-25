@@ -73,7 +73,6 @@ namespace RealEstate.Models
             var postResult = await http.PostAsync("comment", bodyContent);
 
             var authContent = await postResult.Content.ReadAsStringAsync();
-
             var result = JsonSerializer.Deserialize<Comment>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             if (postResult.IsSuccessStatusCode)

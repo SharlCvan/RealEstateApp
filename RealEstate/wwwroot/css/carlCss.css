@@ -74,3 +74,26 @@
         width: auto;
         border-radius: 50%;
     }
+
+#layout {
+    background-color: rgb(101, 157, 189);
+}
+
+.btn-hover:hover i {
+    color: whitesmoke;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.page-logo {
+    font-size: 1.2em;
+    background-color: whitesmoke;
+    padding: 10px;
+    font-family: 'Archivo Black', sans-serif;
+    border-radius: 10px;
+
+}
+
+.page-logo i {
+    font-size: 1.3em;
+}
