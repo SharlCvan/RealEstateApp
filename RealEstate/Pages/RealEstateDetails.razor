@@ -32,7 +32,7 @@ else
                                 <img class="d-block w-100" src="/Img/Bathroom.jpg" alt="Third slide" />
                             </div>
                             <div class="carousel-item">
-                                <img class="d-block w-100" src="/Img/Balcony.jpg" alt="Fourth slide"/>
+                                <img class="d-block w-100" src="/Img/Balcony.jpg" alt="Fourth slide" />
                             </div>
                         </div>
                         <a id="carousel-prev" class="carousel-control-prev" role="button" data-slide="prev">
@@ -47,11 +47,8 @@ else
                     @*Card body address and price*@
                     <div class="card-body">
                         <div class="row border-bottom">
-                            <div>
-                                <h5 class="card-title">@RealEstate.Address</h5>
-                            </div>
-                            <div class="ml-auto pr-5">
-                                <h5>@RealEstate.SellingPrice:-</h5>
+                            <div class="col-12">
+                                <h2 class="card-title">@RealEstate.Address<span class="text-muted font-weight-lighter" style="font-size: 0.6em"> Varberg, Sweden</span></h2>
                             </div>
                         </div>
                     </div>
@@ -97,7 +94,7 @@ else
             @*Broker card*@
             <div class="col-12 pb-3">
                 <div id="broker-card" class="card w-100 shadow">
-                    <div class="row no-gutters">
+                    <div class="row no-gutters py-2">
                         @*Broker image*@
                         <div id="Broker-image" class="col-6 col-sm-6 col-md-4">
                             <img id="card-img" src="../Img/Broker.jpg" />
@@ -133,17 +130,19 @@ else
             </div>
         </div>
     </div>
+
+    @*<AuthorizeView>*@
     <div class="container mt-5">
         @foreach (var comment in RealEstate.Comments)
         {
-            <div class="row py-3 shadow">
-                <div class="col-4 col-sm-3 col-md-2">
+            <div class="row py-2 mb-2 shadow">
+                <div class="col-3 col-sm-2 col-md-1">
                     <div class="thumbnail">
                         <img id="user-img" class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
                     </div><!-- /thumbnail -->
                 </div><!-- /col-sm-1 -->
 
-                <div class="col-8 col-sm-9 col-md-10">
+                <div class="col-9 col-sm-10 col-md-11">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <strong>@comment.UserName</strong> <span class="text-muted">commented on @comment.CreatedOn.Date </span>
@@ -157,23 +156,36 @@ else
             </div>
         }
         <div class="row w-100 pt-3">
-            <div class="col-12 shadow">
-                <form class="was-validated">
-                    <div class="mb-2 w-75">
-                        <label class="alert-info" for="validationTextarea">Comment</label>
-                        <textarea class="form-control is-invalid" cols="50" id="validationTextarea" placeholder="Required example textarea"></textarea>
-                        <div class="invalid-feedback">
-                            Please enter a message in the textarea.
-                        </div>
+            <div class="col-12">
+                <EditForm Model="NewComment" OnValidSubmit="OnPostComment">
+                    <DataAnnotationsValidator />
+                    <div class="form-group mb-2 w-50">
+                        <h4><label class="text-muted" for="Content">Comment</label></h4>
+                        <InputTextArea @bind-Value="NewComment.Content" class="form-control" cols="50" id="Content" placeholder="Type comment" />
+                        <ValidationMessage For="@(() => NewComment.Content)" />
                     </div>
-                    <button type="submit" class="btn btn-primary mb-2">Confirm</button>
-                </form>
+                    <buttom type="submit" class="btn btn-primary mb-2">Send</buttom>
+                </EditForm>
             </div>
         </div>
     </div>
+    @*</AuthorizeView>*@
 
+    @if (Errors != null)
+    {
+        @foreach (var error in Errors)
+        {
+            <p>@error</p>
+        }
+    }
+    if(NewComment.IsSuccesfullCommentPost)
+    {
+        <p>NewComment.Content </p>
+        <p>NewComment.CreatedOn </p>
+        <p>NewComment.UserName </p>  
+    }
 
-        @code {
+    @code {
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
@@ -186,8 +198,8 @@ else
                 firstRender = false;
             }
         }
-        }
+    }
 
 
 
-        }
+}

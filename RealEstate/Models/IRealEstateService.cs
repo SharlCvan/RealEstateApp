@@ -9,6 +9,9 @@ namespace RealEstate.Models
     {
         public Task<IEnumerable<Propertys>> GetRealEstates();
         public Task<Propertys> GetRealEstate(int id);
+
+        public Task<Comment> PostComment(int realEstateId, string message);
+
         public Task<Propertys> PostANewRealEstate(Propertys newRealEstate);
         public Task<bool> UserLoggedInAndValid();
     }
