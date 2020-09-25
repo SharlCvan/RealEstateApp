@@ -157,12 +157,12 @@ else
         }
         <div class="row w-100 pt-3">
             <div class="col-12">
-                <EditForm Model="NewComment" OnValidSubmit="OnPostComment">
+                <EditForm Model="postedComment" OnValidSubmit="ValidPostComment">
                     <DataAnnotationsValidator />
                     <div class="form-group mb-2 w-50">
                         <h4><label class="text-muted" for="Content">Comment</label></h4>
-                        <InputTextArea @bind-Value="NewComment.Content" class="form-control" cols="50" id="Content" placeholder="Type comment" />
-                        <ValidationMessage For="@(() => NewComment.Content)" />
+                        <InputTextArea @bind-Value="postedComment.Content" class="form-control" cols="50" id="Content" placeholder="Say whats on your mind..." />
+                        <ValidationMessage For="@(() => postedComment.Content)" />
                     </div>
                     <buttom type="submit" class="btn btn-primary mb-2">Send</buttom>
                 </EditForm>
@@ -171,19 +171,9 @@ else
     </div>
     @*</AuthorizeView>*@
 
-    @if (Errors != null)
-    {
-        @foreach (var error in Errors)
-        {
-            <p>@error</p>
-        }
-    }
-    if(NewComment.IsSuccesfullCommentPost)
-    {
-        <p>NewComment.Content </p>
-        <p>NewComment.CreatedOn </p>
-        <p>NewComment.UserName </p>  
-    }
+    <p>@NewComment.Content</p>
+    <p>@NewComment.CreatedOn</p>
+    <p>@NewComment.UserName</p>
 
     @code {
 

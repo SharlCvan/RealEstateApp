@@ -65,20 +65,15 @@ namespace RealEstate.Models
             return result;
         }
 
-        public async Task<Comment> PostComment(int realEstateId, string content)
+        public async Task<Comment> PostComment(PostedComment comment)
         {
-            var serializedComment = JsonSerializer.Serialize(new { RealEstateId = realEstateId, Content = content });
+            var serializedComment = JsonSerializer.Serialize(comment);
             var bodyContent = new StringContent(serializedComment, Encoding.UTF8, "application/json");
 
             var postResult = await http.PostAsync("comment", bodyContent);
 
             var authContent = await postResult.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<Comment>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            if (postResult.IsSuccessStatusCode)
-            {
-                result.IsSuccesfullCommentPost = true; 
-            }
             
             return result;
         }

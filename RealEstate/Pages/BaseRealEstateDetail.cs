@@ -12,7 +12,11 @@ namespace RealEstate.Pages
     {
 
         public Propertys RealEstate { get; set; } = new Propertys();
-        public Comment NewComment = new Comment();
+        public Comment NewComment { get; set; } = new Comment();
+
+        public PostedComment postedComment { get; set; } = new PostedComment();
+
+        public string Message { get; set; }
 
         [Inject]
         public IRealEstateService RealEstateService { get; set; }
@@ -28,22 +32,15 @@ namespace RealEstate.Pages
             RealEstate = await RealEstateService.GetRealEstate(int.Parse(Id));
         }
 
-        protected async Task OnPostComment()
+        protected async void ValidPostComment()
         {
             //Remove text from form after submit
-            var result = await RealEstateService.PostComment(int.Parse(Id), NewComment.Content);
+            postedComment.RealEstateId = int.Parse(Id);
+            var result = await RealEstateService.PostComment(postedComment);
 
-            if (!result.IsSuccesfullCommentPost)
-            {
-                Errors = result.Errors;
-            }
-            else
-            {
-                NewComment.Content = result.Content;
-                NewComment.CreatedOn = result.CreatedOn;
-                NewComment.UserName = result.UserName;
-                NewComment.IsSuccesfullCommentPost = result.IsSuccesfullCommentPost;
-            }
+            NewComment.Content = result.Content;
+            NewComment.UserName = result.UserName;
+            NewComment.CreatedOn = result.CreatedOn;
 
         }
 

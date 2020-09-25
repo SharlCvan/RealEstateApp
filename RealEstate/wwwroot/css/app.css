@@ -189,7 +189,7 @@ app {
         height: 80px;
         animation: spin 700ms linear infinite;
         top: 40%;
-        left: 55%;
+        left: 50%;
         position: absolute;
     }
 
