@@ -6,42 +6,41 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Models
 {
-    public class Propertys : IValidatableObject
+    public class PropertysForRegistration
     {
-        public List<Comment> Comments { get; set; }
-
+        [Required(ErrorMessage = "A contact reference must be supplied.")]
         public string Contact { get; set; }
-        public DateTime CreatedOn { get; set; }
 
+        [Range(1600, Int32.MaxValue, ErrorMessage = "The property must be constructed after the year 1600")]
         public int ConstructionYear { get; set; }
 
-        public string Address  { get; set; }
+        [Required(ErrorMessage = "An adress is required.")]
+        public string Address { get; set; }
 
-        public int RealEstateType { get; set; }
+        [Required(ErrorMessage = "A real estate type must be given.")]
+        public RealEstateTypes RealEstateType { get; set; }
 
+        [MaxLength(1000, ErrorMessage = "Description can not contain more than 1000 characters")]
+        [MinLength(10, ErrorMessage = "Description must contain at least 10 characters.")]
+        [Required(ErrorMessage = "A description is required.")]
         public string Description { get; set; }
 
         public int Id { get; set; }
 
+        [MaxLength(50, ErrorMessage = "Title can not contain more than 50 characters")]
+        [MinLength(5, ErrorMessage = "Title must contain at least 3 characters.")]
+        [Required(ErrorMessage = "A title is required.")]
         public string Title { get; set; }
 
-        public int SellingPrice { get; set; }
-
-        public int RentingPrice { get; set; }
+        [Range(1, Int32.MaxValue, ErrorMessage = "A value must be given")]
+        public int RentSalePrice { get; set; }
 
         public bool CanBeSold { get; set; }
 
         public bool CanBeRented { get; set; }
 
-        public List<string> ImageUrl { get; set; }
 
-        //Hantera felmeddelande som API:et skickar tillbaka vid POST request
-
-        public bool IsSuccessfulRegistration { get; set; }
-        
-
-        public IEnumerable<string> Errors { get; set; }
-
+        //Behövs den verkligen???
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var errors = new List<ValidationResult>();
@@ -55,7 +54,7 @@ namespace RealEstate.Models
                     "A property can not be for sale and for rent at the same time.", new[] { nameof(CanBeRented) }
                     ));
             }
-            else if (CanBeSold != true && CanBeRented != true) 
+            else if (CanBeSold != true && CanBeRented != true)
             {
 
                 errors.Add(new ValidationResult(

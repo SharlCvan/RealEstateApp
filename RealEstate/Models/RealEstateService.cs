@@ -48,6 +48,7 @@ namespace RealEstate.Models
 
         public async Task<Propertys> PostANewRealEstate(Propertys newRealEstate)
         {
+
             var serializedRealEstate = JsonSerializer.Serialize(newRealEstate);
             var bodyContent = new StringContent(serializedRealEstate, Encoding.UTF8, "application/json");
 
@@ -56,12 +57,33 @@ namespace RealEstate.Models
             var authContent = await postResult.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<Propertys>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (!postResult.IsSuccessStatusCode)
+            if (postResult.IsSuccessStatusCode)
             {
-                return result;
+                var imagesToPost = new RealEstateURLInputDTO() { Urls = newRealEstate.ImageUrl, RealEstateId = newRealEstate.Id};
+                var picturesResult = await PostPicturesToAPI(imagesToPost);
+
+                result.IsSuccessfulRegistration = true;
+            }
+            return result;
+        }
+
+        public async Task<bool> PostPicturesToAPI(RealEstateURLInputDTO imageUrl)
+        {
+
+            var serializedRealEstate = JsonSerializer.Serialize(imageUrl);
+            var bodyContent = new StringContent(serializedRealEstate, Encoding.UTF8, "application/json");
+
+            var postResult = await http.PostAsync("api/Pictures", bodyContent);
+
+            var authContent = await postResult.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<Propertys>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (postResult.IsSuccessStatusCode)
+            {
+                return true;
             }
 
-            return result;
+            return false;
         }
     }
 }

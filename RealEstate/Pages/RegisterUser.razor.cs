@@ -23,13 +23,14 @@ namespace RealEstate.Pages
         {
             ShowRegistrationErros = false;
             var result = await AuthenticationService.RegisterUser(_userForRegistrationDto);
-            if (!result.IsSuccessfulRegistration)
+            if (!result.succeeded)
             {
                 Errors = result.Errors;
                 ShowRegistrationErros = true;
             }
             else
             {
+                //TO:DO Message about sucessful registration?
                 NavigationManager.NavigateTo("/Login");
             }
         }

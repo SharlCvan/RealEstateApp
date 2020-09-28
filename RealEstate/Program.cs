@@ -21,7 +21,8 @@ namespace RealEstate
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://aee96c1e-616d-4478-a6fa-cbe73f3628b8.mock.pstmn.io/api/") });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://bluefast.azurewebsites.net/") });
+
 
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddOptions();
@@ -30,6 +31,7 @@ namespace RealEstate
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             builder.Services.AddScoped<IRealEstateService, RealEstateService>();
+
 
             await builder.Build().RunAsync();
         }

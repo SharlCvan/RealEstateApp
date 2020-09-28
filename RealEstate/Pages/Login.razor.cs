@@ -34,7 +34,7 @@ namespace RealEstate.Pages
         public async Task ExecuteLogin()
         {
             ShowAuthError = false;
-            _userForAuthentication.GrantType = "bearer";
+            _userForAuthentication.GrantType = "password";
             var result = await AuthenticationService.Login(_userForAuthentication);
             if (!result.IsAuthSuccessful)
             {

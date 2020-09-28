@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Authentication.DTO
 {
-    public class RegisrationResponseDto
+    public class AuthResponseContainer
     {
-        public bool succeeded { get; set; }
-        public IEnumerable<string> Errors { get; set; }
+        public AuthResponseDto Values { get; set; }
     }
 }

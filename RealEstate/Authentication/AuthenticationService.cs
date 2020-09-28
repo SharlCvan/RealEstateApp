@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -29,22 +30,34 @@ namespace RealEstate.Authentication
         public async Task<AuthResponseDto> Login(UserForAuthenticationDto userForAuthentication)
         {
             var content = JsonSerializer.Serialize(userForAuthentication);
-            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            var authResult = await _client.PostAsync("https://d21c466c-8f7a-4028-890d-b8d06acacf35.mock.pstmn.io/Token", bodyContent);
+            var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(content);
+
+            var req = new HttpRequestMessage(HttpMethod.Post, "/Token") { Content = new FormUrlEncodedContent(dictionary) };
+
+            var authResult = await _client.SendAsync(req);
+
             var authContent = await authResult.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<AuthResponseDto>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            var resultContainer = JsonSerializer.Deserialize<AuthResponseContainer>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            var result = resultContainer.Values;
+
             if (!authResult.IsSuccessStatusCode)
             {
                 result.IsAuthSuccessful = false;
                 return result;
             }
+
             await _localStorage.SetItemAsync("authToken", result.AcessToken);
             await _localStorage.SetItemAsync("userName", result.UserName);
             await _localStorage.SetItemAsync("authorizationExpires", result.Expires);
 
             ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userForAuthentication.UserName);
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.AcessToken);
-            return new AuthResponseDto { IsAuthSuccessful = true };
+
+            result.IsAuthSuccessful = true;
+
+            return result;
         }
 
         public async Task Logout()
@@ -60,15 +73,16 @@ namespace RealEstate.Authentication
         public async Task<RegisrationResponseDto> RegisterUser(UserForRegistrationDto userForRegistration)
         {
             var content = JsonSerializer.Serialize(userForRegistration);
-            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            var registrationResult = await _client.PostAsync("https://c1657e2d-e6a8-4000-8943-d2f2dd66ece6.mock.pstmn.io/api/account/register", bodyContent);
+
+            var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(content);
+
+            var req = new HttpRequestMessage(HttpMethod.Post, "/Api/Account/Register") { Content = new FormUrlEncodedContent(dictionary) };
+
+            var registrationResult = await _client.SendAsync(req);
             var registrationContent = await registrationResult.Content.ReadAsStringAsync();
-            if (!registrationResult.IsSuccessStatusCode)
-            {
-                var result = JsonSerializer.Deserialize<RegisrationResponseDto>(registrationContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                return result;
-            }
-            return new RegisrationResponseDto { IsSuccessfulRegistration = true };
+            var result = JsonSerializer.Deserialize<RegisrationResponseDto>(registrationContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return result;
         }
     }
 }
