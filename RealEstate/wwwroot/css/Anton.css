@@ -8,3 +8,36 @@
 #displayURLInput {
     width: 20em;
 }
+
+#returnToMainMenuButton {
+    position: fixed;
+    background: none;
+    border: 1px solid white;
+    border-radius: 3px;
+    color: white;
+    cursor:pointer;
+    font-size: 2em;
+}
+
+#returnToMainMenuButton:hover {
+    background: rgb(255,255,255, 0.3);
+    transition: 0.5s;
+}
+
+@media (max-width: 767px) {
+    #returnToMainMenuButton {
+        top: 25vh;
+    }
+}
+
+@media (min-width: 768px) {
+    #returnToMainMenuButton {
+        top: 45vh;
+    }
+}
+
+@media (min-width: 1150px) {
+    #returnToMainMenuButton {
+        top: 55vh;
+    }
+}

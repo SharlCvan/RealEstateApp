@@ -1,0 +1,21 @@
+﻿<link href="/css/Anton.css" rel="stylesheet" />
+
+<img src="/Img/wasteland2.jpg" class="rounded mx-auto d-block" style="width: 100%; z-index: -1; max-height: 80vh;" />
+
+<div class="d-flex justify-content-center" style="">
+    <button id="returnToMainMenuButton" class="btn btn-lg" @onclick="ReturnToMain">Return to main</button>
+
+</div>
+
+@code {
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public void ReturnToMain()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+
+}
