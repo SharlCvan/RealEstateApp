@@ -8,56 +8,68 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Pages
 {
+    public enum RealEstateType
+    {
+        Nothing = -1,
+        House = 0,
+        Apartment = 1,
+        Warehouse = 2,
+        Office = 3
+    }
     public class BaseRealEstate : ComponentBase
     {
         [Inject]
         public IRealEstateService RealEstateServices { get; set; }
 
-        public List<Propertys> realEstates { get; set; } = new List<Propertys>();
+        public List<Propertys> RealEstates { get; set; } = new List<Propertys>();
         public List<Propertys> SearchResults { get; set; } = new List<Propertys>();
-        public bool ShowSale { get; set; }
-        public bool ShowRent { get; set; }
-        public bool ShowHouse { get; set; }
-        public bool ShowApartment { get; set; }
-        public bool ShowStorageUnit { get; set; }
-        public bool ShowOffice { get; set; }
-        public string SearchTerm { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            realEstates = (await RealEstateServices.GetRealEstates()).ToList();
-            SearchResults = realEstates;
-            ShowSale = true;
-            ShowRent = true;
-            ShowHouse = true;
-            ShowApartment = true;
-            ShowStorageUnit = true;
-            ShowOffice = true;
+            RealEstates = (await RealEstateServices.GetRealEstates()).ToList();
+            SearchResults = RealEstates;
         }
 
-        public string BuyersOptions(Propertys estate)
+        public void SearchEstates(SearchValues searchValues)
         {
-            if (estate.CanBeSold)
+            if (!String.IsNullOrEmpty(searchValues.SearchTerm))
             {
-                return "for sale";
+                SearchResults = RealEstates.Where(x =>
+                                                  x.Address.Contains(searchValues.SearchTerm))
+                                                  .ToList();
+
+                SearchBySellAndRent(searchValues.ShowSale, searchValues.ShowRent);
             }
 
             else
             {
-                return "for rent";
+                SearchBySellAndRent(searchValues.ShowSale, searchValues.ShowRent);
             }
+
+            SearchResults = SearchResults.Where(x =>
+                                                    x.RealEstateType == searchValues.ShowHouse ||
+                                                    x.RealEstateType == searchValues.ShowApartment ||
+                                                    x.RealEstateType == searchValues.ShowStorageUnit ||
+                                                    x.RealEstateType == searchValues.ShowOffice)
+                                                    .ToList();
         }
 
-        public async Task SearchEstates()
+        private void SearchBySellAndRent(bool showSale, bool showRent)
         {
-            if (!String.IsNullOrEmpty(SearchTerm))
+            if (showSale && showRent)
             {
-                SearchResults = realEstates.Where(x => x.Address.Contains(SearchTerm) && x.CanBeSold == ShowSale).ToList();
+                SearchResults = RealEstates.Where(x =>
+                                                  x.CanBeSold == showSale ||
+                                                  x.CanBeRented == showRent)
+                                                  .ToList();
             }
 
             else
             {
-                SearchResults = realEstates.Where(x => x.CanBeSold == ShowSale && x.CanBeRented == ShowRent).ToList();
+                SearchResults = RealEstates.Where(x =>
+                                                  x.CanBeSold == showSale &&
+                                                  x.CanBeRented == showRent)
+                                                  .ToList();
             }
         }
     }

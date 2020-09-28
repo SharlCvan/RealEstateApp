@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace RealEstate.Models
@@ -43,7 +44,10 @@ namespace RealEstate.Models
 
         public async Task<IEnumerable<Propertys>> GetRealEstates()
         {
-            return await http.GetJsonAsync<Propertys[]>("RealEstates");
+            HttpResponseMessage task = await http.GetAsync("RealEstates");
+            string jsonString = await task.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<List<Propertys>>(jsonString);
         }
 
         public async Task<Propertys> PostANewRealEstate(Propertys newRealEstate)

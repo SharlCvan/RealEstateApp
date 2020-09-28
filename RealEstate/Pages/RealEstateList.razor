@@ -1,0 +1,41 @@
+﻿@Counter = 0;
+
+@foreach (var estate in Estates)
+{
+    <a href="@($"RealEstate/{estate.Id}")">
+
+
+        <div class="shadow row mb-5 real-estate-card">
+
+            <div class="col-lg-8 col-md-12 p-0">
+                <img src="https://i.imgur.com/HyXS72k.jpg" class="brightness" style="height: 100%; width:100%;" alt="Picture of house for sale and or rent">
+            </div>
+
+
+            <div class="col-lg-4 col-md-12 p-0">
+                <h5 class="ml-3 mt-3 city">Varberg, @BuyersOptions(estate)</h5>
+                <h4 class="mt-2 ml-3" style="font-family: 'Baloo Tammudu 2', cursive; font-size: 35px">@estate.Address</h4>
+                <p class="ml-3 mb-4 description">@estate.Description.Substring(0, 200)...</p>
+
+                @if (estate.CanBeSold)
+                {
+                    <p class="ml-3 mb-3"><strong>Price:</strong> @string.Format("{0:N} kr", estate.SellingPrice)</p>
+                }
+
+                else
+                {
+                    <p class="ml-3 mb-3"><strong>Rent:</strong> @string.Format("{0:N} kr", estate.RentingPrice)/month</p>
+                }
+                <p class="ml-3 mb-3"><strong>Square footage:</strong> @SquareMeters[Counter] m²</p>
+                <p class="ml-3 mb-3"><strong>Built:</strong> @estate.ConstructionYear</p>
+                <p class="ml-3 mb-3"><strong>Rooms:</strong> @Rooms[Counter]</p>
+
+            </div>
+        </div>
+    </a>
+
+    Counter++;
+
+    if (Counter == 5)
+        Counter = 0;
+}

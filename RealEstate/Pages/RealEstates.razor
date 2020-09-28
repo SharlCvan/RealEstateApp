@@ -4,100 +4,22 @@
 <link href="css/RealEstateList.css?v=1.30" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2:wght@400;500&display=swap" rel="stylesheet">
 
-<div class="search d-flex justify-content-center align-items-center mb-5">
+<Search OnSearch="SearchEstates"></Search>
 
-    <div class="row col-md-7 col-sm-10 inputscontainer p-2" style="background-color: rgba(255, 255, 255, 0.80);">
-        <input class="form-control col-12 mt-3" type="text" placeholder="Search adress" @bind="SearchTerm" />
-
-        <div class="col-12 p-2 mb-5">
-            <input type="checkbox" @bind="ShowSale" id="forSale">
-            <label for="forSale">For sale</label>
-            <input class="ml-3" type="checkbox" @bind="ShowRent" id="forRent">
-            <label for="forRent">For rent</label>
-        </div>
-
-        <div class="col-12 p-0 checkboxes row m-0">
-            <div class="col-md-3 col-sm-6 p">
-                <input type="checkbox" @bind="ShowHouse" id="houses">
-                <label class="label col-12" for="houses">Houses</label>
-            </div>
-
-            <div class="col-md-3 col-sm-6 p">
-                <input type="checkbox" @bind="ShowApartment" id="apartments">
-                <label class="label col-12" for="apartments">Apartments</label>
-            </div>
-
-            <div class="col-md-3 col-sm-6 p">
-                <input type="checkbox" @bind="ShowStorageUnit" id="storageUnits">
-                <label class="label col-12" for="storageUnits">Warehouses</label>
-            </div>
-
-            <div class="col-md-3 col-sm-6 p">
-                <input type="checkbox" @bind="ShowOffice" id="offices">
-                <label class="label col-12" for="offices">Offices</label>
-            </div>
-        </div>
-
-        <div class="col-12 p-0">
-            <button class="col-12 btn btn-primary mb-1" @onclick="SearchEstates">Search real estates</button>
-        </div>
-    </div>
-</div>
-
-@if (realEstates.Count() == 0)
+@if (RealEstates.Count() == 0)
 {
     <div class="spinner"></div>
 }
+
 else
 {
-    var counter = 0;
-
-<div class="container">
-    @foreach (var estate in SearchResults)
+    if(SearchResults.Count() == 0)
     {
-        <a href="@($"RealEstate/{estate.Id}")">
-
-
-            <div class="shadow row mb-5 real-estate-card">
-
-                <div class="col-lg-8 col-md-12 p-0">
-                    <img src="https://i.imgur.com/HyXS72k.jpg" class="brightness" style="height: 100%; width:100%;" alt="Picture of house for sale and or rent">
-                </div>
-
-
-                <div class="col-lg-4 col-md-12 p-0">
-                    <h5 class="ml-3 mt-3 city">Varberg, @BuyersOptions(estate)</h5>
-                    <h4 class="mt-2 ml-3" style="font-family: 'Baloo Tammudu 2', cursive; font-size: 35px">@estate.Address</h4>
-                    <p class="ml-3 mb-4 description">@estate.Description.Substring(0, 200)...</p>
-
-                    @if (estate.CanBeSold)
-                    {
-                        <p class="ml-3 mb-3"><strong>Price:</strong> @string.Format("{0:N} kr", estate.SellingPrice)</p>
-                    }
-
-                    else
-                    {
-                        <p class="ml-3 mb-3"><strong>Rent:</strong> @string.Format("{0:N} kr", estate.RentingPrice)/month</p>
-                    }
-                    <p class="ml-3 mb-3"><strong>Square footage:</strong> @squareMeters[counter] m²</p>
-                    <p class="ml-3 mb-3"><strong>Built:</strong> @estate.ConstructionYear</p>
-                    <p class="ml-3 mb-3"><strong>Rooms:</strong> @rooms[counter]</p>
-
-                </div>
-            </div>
-        </a>
-        counter++;
-        if (counter == 5)
-            counter = 0;
+        <p>No real estates found...</p>
     }
-</div>
+    <div class="container">
 
-    
+        <RealEstateList Estates="SearchResults"></RealEstateList>
+
+    </div>
 }
-
-@code
-{
-    int[] squareMeters = new int[] { 60, 80, 75, 100, 48 };
-    int[] rooms = new int[] { 3, 5, 3, 4, 1 };
-}
-
