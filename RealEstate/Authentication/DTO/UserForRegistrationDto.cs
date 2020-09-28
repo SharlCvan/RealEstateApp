@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Authentication.DTO
 {
+    /// <summary>
+    /// Container used to hold information when a register request is sent to the api
+    /// </summary>
     public class UserForRegistrationDto
     {
         [MaxLength(30, ErrorMessage = "Username should contain a maximun of 30 characters.")]

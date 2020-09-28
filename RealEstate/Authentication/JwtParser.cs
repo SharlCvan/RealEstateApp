@@ -9,6 +9,11 @@ namespace RealEstate.Authentication
 {
     public class JwtParser
     {
+        /// <summary>
+        /// Parses the JWT and returns a list of claims
+        /// </summary>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
             var claims = new List<Claim>();
@@ -20,6 +25,11 @@ namespace RealEstate.Authentication
             claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
             return claims;
         }
+        /// <summary>
+        /// Parses the string and returns a byte array
+        /// </summary>
+        /// <param name="base64"></param>
+        /// <returns></returns>
         private static byte[] ParseBase64WithoutPadding(string base64)
         {
             switch (base64.Length % 4)

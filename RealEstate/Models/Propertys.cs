@@ -36,7 +36,6 @@ namespace RealEstate.Models
         public List<string> ImageUrl { get; set; }
 
         //Hantera felmeddelande som API:et skickar tillbaka vid POST request
-
         public bool IsSuccessfulRegistration { get; set; }
         
 

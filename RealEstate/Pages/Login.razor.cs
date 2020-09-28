@@ -20,19 +20,31 @@ namespace RealEstate.Pages
         public NavigationManager NavigationManager { get; set; }
         [Inject]
         public IRealEstateService RealEstateService { get; set; }
+        /// <summary>
+        /// Indicates if there are any errors from API when logging in.
+        /// </summary>
         public bool ShowAuthError { get; set; }
+        /// <summary>
+        /// Holds information about what errors the API sends back.
+        /// </summary>
         public string Error { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
+            //If the user is already logged in and has a valid user session
             if (await RealEstateService.UserLoggedInAndValid())
             {
                 NavigationManager.NavigateTo("/");
             }
         }
 
+        /// <summary>
+        /// Sends the login request to the repository and displays any login errors.
+        /// </summary>
+        /// <returns></returns>
         public async Task ExecuteLogin()
         {
+            
             ShowAuthError = false;
             _userForAuthentication.GrantType = "password";
             var result = await AuthenticationService.Login(_userForAuthentication);

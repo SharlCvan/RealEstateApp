@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Models
 {
+    /// <summary>
+    /// Stores information about all image url's and the corresponding RealEstateID.
+    /// </summary>
     public class RealEstateURLInputDTO
     {
         public int RealEstateId { get; set; }

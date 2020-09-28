@@ -19,6 +19,11 @@ namespace RealEstate.Pages
 
         public bool ShowRegistrationErros { get; set; }
         public IEnumerable<string> Errors { get; set; }
+
+        /// <summary>
+        /// Send  a request to the repository to register a new user. And displays any errors the api sends back.
+        /// </summary>
+        /// <returns></returns>
         public async Task Register()
         {
             ShowRegistrationErros = false;
@@ -35,12 +40,18 @@ namespace RealEstate.Pages
             }
         }
 
+        /// <summary>
+        /// Removes the entered password if the user has entered a faulty one.
+        /// </summary>
         public void InValidRegister()
         {
             _userForRegistrationDto.ConfirmPassword = "";
             _userForRegistrationDto.Password = "";
         }
 
+        /// <summary>
+        /// Clears the form if user whishes to start over.
+        /// </summary>
         public void ClearForm()
         {
             _userForRegistrationDto = new UserForRegistrationDto();

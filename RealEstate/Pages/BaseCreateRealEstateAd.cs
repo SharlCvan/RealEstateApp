@@ -23,46 +23,56 @@ namespace RealEstate.Pages
 
         [Parameter]
         public string SaleOrRent { get; set; }
-
+        /// <summary>
+        /// Contains the image URL's that a user wants to show together with the ad.
+        /// </summary>
         public List<string> ImageURL { get; set; } = new List<string>();
 
+        /// <summary>
+        /// Holds info about a single URL input. Needed to ease the use of validation input.
+        /// </summary>
         public URLInput URLInput = new URLInput();
 
-
+        /// <summary>
+        /// Indicates if the request to the API is sucessfull or not.
+        /// </summary>
         public bool ShowRegistrationErros { get; set; }
+        /// <summary>
+        /// Contains the errors recíeved from the API.
+        /// </summary>
         public IEnumerable<string> Errors { get; set; }
 
-        protected async override Task OnInitializedAsync()
-        {
-            
-        }
-
+        /// <summary>
+        /// Handles the data 
+        /// </summary>
+        /// <returns></returns>
         public async Task Register()
         {
-
-
             ShowRegistrationErros = false;
-
-
-            //TO:DO konvertera till en propertys modell och skicka iväg. Ta bara emot felkoder.
 
             var Property = ConvertToProperty(PropertyForRegistration);
 
+            //Forwards the data to repository to post to the API
             var result = await RealEstateServices.PostANewRealEstate(Property);
 
             if (!result.IsSuccessfulRegistration)
             {
+                //Handles the event of a non sucessfull post to the api
                 Errors = result.Errors;
                 ShowRegistrationErros = true;
             }
             else
             {
-                //DO:DO Post imagaes to API and link with newly created listing
                 //TO:DO Redirect to real estate details page?
                 NavigationManager.NavigateTo("/Login");
             }
         }
 
+        /// <summary>
+        /// Converts from the PropertysForRegistration to regular Propertys model. 
+        /// </summary>
+        /// <param name="propertyForRegistration"></param>
+        /// <returns></returns>
         private Propertys ConvertToProperty(PropertysForRegistration propertyForRegistration)
         {
             Propertys convertedProperty = new Propertys();
@@ -94,16 +104,18 @@ namespace RealEstate.Pages
             return convertedProperty;
         }
 
-        public void InValidRegister()
-        {
-
-        }
-
+        /// <summary>
+        /// Clears the form if a user wants to start over
+        /// </summary>
         public void ClearForm()
         {
             PropertyForRegistration = new PropertysForRegistration();
         }
 
+        /// <summary>
+        /// Handles the input for radio buttons and refereshes the UI
+        /// </summary>
+        /// <param name="args"></param>
         public void ForSaleOrRent(ChangeEventArgs args)
         {
             var result = args.Value.ToString();
@@ -124,6 +136,9 @@ namespace RealEstate.Pages
             StateHasChanged();
         }
 
+        /// <summary>
+        /// Adds the slected URL into the URL list and resets the textinput box.
+        /// </summary>
         public void AddListItem()
         {
             if (URLInput.Input != "")
@@ -135,6 +150,10 @@ namespace RealEstate.Pages
             StateHasChanged();
         }
 
+        /// <summary>
+        /// Method connected to the listitems "onclick" event and removes the item.
+        /// </summary>
+        /// <param name="url"></param>
         public void RemoveListItem(string url)
         {
             ImageURL.Remove(url);

@@ -27,6 +27,11 @@ namespace RealEstate.Authentication
             _localStorage = localStorage;
         }
 
+        /// <summary>
+        /// Post a login request to the api. Stores the given user credentials in cookies and forwards any errors the api sends back.
+        /// </summary>
+        /// <param name="userForAuthentication">Holds info about which username and password a user tries to log in with.</param>
+        /// <returns></returns>
         public async Task<AuthResponseDto> Login(UserForAuthenticationDto userForAuthentication)
         {
             var content = JsonSerializer.Serialize(userForAuthentication);
@@ -60,6 +65,10 @@ namespace RealEstate.Authentication
             return result;
         }
 
+        /// <summary>
+        /// Removes all the login credentials stored in cookis and sets the default authorization token to be null in the http client.
+        /// </summary>
+        /// <returns></returns>
         public async Task Logout()
         {
             await _localStorage.RemoveItemAsync("authToken");
@@ -70,10 +79,17 @@ namespace RealEstate.Authentication
             _client.DefaultRequestHeaders.Authorization = null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userForRegistration">Holds info about which username, password and email a user tries to create a new account with.</param>
+        /// <returns></returns>
         public async Task<RegisrationResponseDto> RegisterUser(UserForRegistrationDto userForRegistration)
         {
+            //Serializes the user to a json
             var content = JsonSerializer.Serialize(userForRegistration);
 
+            //Desiralizes the user to a dictionary to fit the api needs of a request body in x-www-form-urlencoded format
             var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(content);
 
             var req = new HttpRequestMessage(HttpMethod.Post, "/Api/Account/Register") { Content = new FormUrlEncodedContent(dictionary) };
