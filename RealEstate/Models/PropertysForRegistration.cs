@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace RealEstate.Models
@@ -38,6 +39,15 @@ namespace RealEstate.Models
         public bool CanBeSold { get; set; }
 
         public bool CanBeRented { get; set; }
+
+        [Url(ErrorMessage = "Please enter a valid URL")]
+        public string ListingURL { get; set; }
+        [Required(ErrorMessage = "Enter a ")]
+        public int SquareMeters { get; set; }
+        public int Rooms { get; set; }
+        public string City { get; set; }
+
+        public List<string> Urls { get; set; }
 
 
         //Behövs den verkligen???

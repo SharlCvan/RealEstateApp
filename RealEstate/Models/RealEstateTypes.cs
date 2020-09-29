@@ -7,6 +7,7 @@ namespace RealEstate.Models
 {
     public enum RealEstateTypes
     {
+        Nothing = -1,
         Apartment = 0,
         House = 1,
         Office =  2,

@@ -21,6 +21,7 @@ namespace RealEstate
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
+
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://32db20a6-93a0-4dc6-a6b4-d1b5c4a55470.mock.pstmn.io/api/") });
 
             builder.Services.AddBlazoredLocalStorage();

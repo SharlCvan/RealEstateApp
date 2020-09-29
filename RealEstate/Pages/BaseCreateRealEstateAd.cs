@@ -84,7 +84,7 @@ namespace RealEstate.Pages
             convertedProperty.RealEstateType = (int)propertyForRegistration.RealEstateType;
             convertedProperty.Address = propertyForRegistration.Address;
 
-            convertedProperty.ImageUrl = ImageURL;
+            convertedProperty.Urls = ImageURL;
 
             if (propertyForRegistration.CanBeSold)
             {

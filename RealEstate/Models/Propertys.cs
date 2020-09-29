@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Models
 {
-    public class Propertys : IValidatableObject
+    public class Propertys 
     {
         public List<Comment> Comments { get; set; }
 
@@ -32,8 +32,13 @@ namespace RealEstate.Models
         public bool CanBeSold { get; set; }
 
         public bool CanBeRented { get; set; }
+        
+        public string ListingURL { get; set; }
+        public int SquareMeters { get; set; }
+        public int Rooms { get; set; }
+        public string City { get; set; }
 
-        public List<string> ImageUrl { get; set; }
+        public List<string> Urls { get; set; }
 
         //Hantera felmeddelande som API:et skickar tillbaka vid POST request
         public bool IsSuccessfulRegistration { get; set; }
@@ -41,31 +46,5 @@ namespace RealEstate.Models
 
         public IEnumerable<string> Errors { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            var errors = new List<ValidationResult>();
-
-            if (CanBeRented == true && CanBeSold == true)
-            {
-                errors.Add(new ValidationResult(
-                    "A property can not be for sale and for rent at the same time.", new[] { nameof(CanBeSold) }
-                    ));
-                errors.Add(new ValidationResult(
-                    "A property can not be for sale and for rent at the same time.", new[] { nameof(CanBeRented) }
-                    ));
-            }
-            else if (CanBeSold != true && CanBeRented != true) 
-            {
-
-                errors.Add(new ValidationResult(
-                    "A property must be either for sale or for rent. Please enter a amount to enable for rent.", new[] { nameof(CanBeSold) }
-                    ));
-                errors.Add(new ValidationResult(
-                    "A property must be either for sale or for rent. Please enter a amount to enable for sale.", new[] { nameof(CanBeRented) }
-                    ));
-            }
-
-            return errors;
-        }
     }
 }

@@ -60,7 +60,7 @@ namespace RealEstate.Models
 
             if (postResult.IsSuccessStatusCode)
             {
-                var imagesToPost = new RealEstateURLInputDTO() { Urls = newRealEstate.ImageUrl, RealEstateId = newRealEstate.Id};
+                var imagesToPost = new RealEstateURLInputDTO() { Urls = newRealEstate.Urls, RealEstateId = newRealEstate.Id};
                 var picturesResult = await PostPicturesToAPI(imagesToPost);
 
                 result.IsSuccessfulRegistration = true;
@@ -78,6 +78,7 @@ namespace RealEstate.Models
 
             var authContent = await postResult.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<Propertys>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
 
             if (postResult.IsSuccessStatusCode)
             {
