@@ -10,25 +10,29 @@ else
 {
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 col-xl-8 pb-3">
+            <div class="col-12  pb-3">
                 @*First card*@
-                <div class="card border-dark">
+                <div class="card shadow">
                     @*Carousel images*@
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
                             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                             <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
                         </ol>
                         <div class="carousel-inner w-auto">
                             <div class="carousel-item active">
-                                <img class="d-block w-100" src="https://images.pexels.com/photos/584399/living-room-couch-interior-room-584399.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260" alt="First slide">
+                                <img class="d-block w-100" src="/Img/Livingroom.jpg" alt="First slide" />
                             </div>
                             <div class="carousel-item">
-                                <img class="d-block w-100" src="https://images.pexels.com/photos/349749/kitchen-stove-sink-kitchen-counter-349749.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Second slide">
+                                <img class="d-block w-100" src="/Img/Kitchen.jpg" alt="Second slide" />
                             </div>
                             <div class="carousel-item">
-                                <img class="d-block w-100" src="https://images.pexels.com/photos/2101087/pexels-photo-2101087.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Third slide">
+                                <img class="d-block w-100" src="/Img/Bathroom.jpg" alt="Third slide" />
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" src="/Img/Balcony.jpg" alt="Fourth slide"/>
                             </div>
                         </div>
                         <a id="carousel-prev" class="carousel-control-prev" role="button" data-slide="prev">
@@ -91,20 +95,19 @@ else
             </div>
 
             @*Broker card*@
-            <div class="col-lg-12 col-xl-4 pb-3">
-                <div id="broker-card" class="card w-100">
+            <div class="col-12 pb-3">
+                <div id="broker-card" class="card w-100 shadow">
                     <div class="row no-gutters">
                         @*Broker image*@
-                        <div id="Broker-image" class="col-lg-3 col-xl-6">
+                        <div id="Broker-image" class="col-6 col-sm-6 col-md-4">
                             <img id="card-img" src="../Img/Broker.jpg" />
                         </div>
                         @*Broker contact info*@
-                        <div id="broker-info" class="col-lg-9 col-xl-6">
+                        <div id="broker-info" class="col-6 col-sm-6 col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title">Jhon Jones</h5>
                                 <p class="card-text">Email: jogn@fdo.cu</p>
                                 <p class="card-text">Phone: 032 05405 3</p>
-                                <a href="#" class="btn btn-primary">Contact</a>
                             </div>
                         </div>
                     </div>
@@ -113,12 +116,12 @@ else
         </div>
     </div>
     //RealEstate info
-    <div class="container mt-5 border-top">
+    <div class="container mt-5">
         <div class="row pt-5">
             @*Planlösning*@
             <div class="w-100 text-center pb-3 col-12">
                 <h2 class="mb-1">Planlösning</h2>
-                <img id="floorplan" src="https://images.unsplash.com/photo-1588611911550-22aad4b1485a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1934&q=80" class="img-fluid" />
+                <img id="floorplan" src="https://3dwarehouse.sketchup.com/warehouse/v1.0/publiccontent/d4bf82d2-4dd6-4bc8-8a44-cb0fae03c7a6" class="img-fluid shadow" />
             </div>
         </div>
         <div class="row pt-5">
@@ -130,11 +133,31 @@ else
             </div>
         </div>
     </div>
-    <div class="container mt-5 border-top">
-        <div class="row">
-        </div>
-        <div class="row w-100">
-            <div class="col-12">
+    <div class="container mt-5">
+        @foreach (var comment in RealEstate.Comments)
+        {
+            <div class="row py-3 shadow">
+                <div class="col-4 col-sm-3 col-md-2">
+                    <div class="thumbnail">
+                        <img id="user-img" class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                    </div><!-- /thumbnail -->
+                </div><!-- /col-sm-1 -->
+
+                <div class="col-8 col-sm-9 col-md-10">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong>@comment.UserName</strong> <span class="text-muted">commented on @comment.CreatedOn.Date </span>
+                        </div>
+                        <div class="panel-body">
+                            @comment.Content
+                        </div><!-- /panel-body -->
+                    </div><!-- /panel panel-default -->
+                </div><!-- /col-sm-5 -->
+
+            </div>
+        }
+        <div class="row w-100 pt-3">
+            <div class="col-12 shadow">
                 <form class="was-validated">
                     <div class="mb-2 w-75">
                         <label class="alert-info" for="validationTextarea">Comment</label>

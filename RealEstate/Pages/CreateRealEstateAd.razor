@@ -1,0 +1,131 @@
+﻿@page "/RealEstateAd"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inherits BaseCreateRealEstateAd
+<link href="/css/Anton.css" rel="stylesheet" />
+
+<div class="col-12 card card-body bg-light mt-5 col-md-5 mx-auto">
+    <EditForm Model="PropertyForRegistration" OnValidSubmit="Register"  class="">
+        <DataAnnotationsValidator />
+        <div class="form-row">
+            <div class="form-group">
+                <h2>Register a new real estate ad</h2>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="title" class=" col-form-label">Title<span class="text-danger">*</span></label>
+                <InputText id="title" class="form-control" @bind-Value="PropertyForRegistration.Title" aria-describedby="titleHelp" placeholder="Title" />
+                <ValidationMessage For="@(() => PropertyForRegistration.Title)" />
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="realEstateType" class="col-form-label">Type of realestate</label>
+                <InputSelect id="realEstateType" class="form-control" @bind-Value="PropertyForRegistration.RealEstateType" aria-describedby="realEstateTypeHelp">
+                    @foreach (var TypeOfRealEstate in Enum.GetValues(typeof(RealEstate.Models.RealEstateTypes)))
+                    {
+                        <option value="@TypeOfRealEstate">@TypeOfRealEstate</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => PropertyForRegistration.RealEstateType)" />
+            </div>
+
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="address" class="col-form-label">Address<span class="text-danger">*</span></label>
+                <div class="">
+                    <InputText id="address" class="form-control" @bind-Value="PropertyForRegistration.Address" aria-describedby="addressHelp" />
+                    <small id="addressHelp" class="form-text text-muted">
+                        Ex. Djurgårdsbrunnsvägen 67, 115 25, Stockholm.
+                    </small>
+                    <ValidationMessage For="@(() => PropertyForRegistration.Address)" />
+                </div>
+            </div>
+            <div class="form-group col">
+                <label for="Description" class="col-form-label">Description<span class="text-danger">*</span></label>
+                <div class="">
+                    <InputText id="Description" class="form-control" @bind-Value="PropertyForRegistration.Description" aria-describedby="descriptionHelp" />
+                    <small id="descriptionHelp" class="form-text text-muted">
+                        Ex. A house in an attractive and kids friendly neighborhood.
+                    </small>
+                    <ValidationMessage For="@(() => PropertyForRegistration.Description)" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="constructionYear" class="col-form-label">Year of construction<span class="text-danger">*</span></label>
+                <div class="">
+                    <InputNumber id="constructionYear" class="form-control" @bind-Value="PropertyForRegistration.ConstructionYear" />
+                    <ValidationMessage For="@(() => PropertyForRegistration.ConstructionYear)" />
+                </div>
+            </div>
+
+            <div class="form-group col-md-8">
+                <label for="contact" class="col-form-label">Contact details<span class="text-danger">*</span></label>
+                <div class="">
+                    <InputText id="contact" class="form-control" @bind-Value="PropertyForRegistration.Contact" aria-describedby="contactHelp" />
+                    <ValidationMessage For="@(() => PropertyForRegistration.Contact)" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col">
+                <div>
+                    <input type="radio" name="technology" id="Rent" value="@(SaleOrRent = "Rent")" @onchange="ForSaleOrRent" checked=@(SaleOrRent.Equals(SaleOrRent,StringComparison.OrdinalIgnoreCase)) />
+                    <label for="Rent">For rent</label>
+                    <input type="radio" name="technology" id="Sale" value="@(SaleOrRent = "Sale")" @onchange="ForSaleOrRent" checked=@(SaleOrRent.Equals(SaleOrRent,StringComparison.OrdinalIgnoreCase)) />
+                    <label for="Sale">For sale</label>
+                    <div class="">
+                        <InputNumber id="rentingPrice" class="form-control" @bind-Value="PropertyForRegistration.RentSalePrice" aria-describedby="rentingPriceHelp" placeholder="Enter amount..." />
+                        <small id="rentingPriceHelp" class="form-text text-muted">
+                            Enter the sell or rent amount
+                        </small>
+                        <ValidationMessage For="@(() => PropertyForRegistration.RentSalePrice)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <div class=" mt-3">
+                    <button type="submit" class="btn btn-success">Register</button>
+                    <button @onclick="ClearForm" class="btn btn-danger ml-2">Clear</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <h3>Image URL's:</h3>
+            </div>
+        </div>
+
+    </EditForm>
+
+    <div class="form-row">
+        <EditForm Model="URLInput" OnValidSubmit="AddListItem">
+            <DataAnnotationsValidator />
+            <InputText @bind-Value="URLInput.Input" class="form-control" placeholder="Enter URL..." />
+            <button type="submit" class="btn btn-success mt-2">Add</button>
+            <ValidationMessage For="@(() => URLInput.Input)" />
+        </EditForm>
+
+        <div class="w-100"></div>
+
+        <div class="form-group mt-2">
+            <ul class="list-group">
+
+                @foreach (var url in ImageURL)
+                {
+                    <li class="list-group-item ">
+                        <span class="d-inline-block text-truncate" id="displayURLInput">@url</span>
+                        <img src="/Img/icons8-remove-100.png" @onclick="e => RemoveListItem(url)" class="rounded-circle float-right" id="removeURLIcon" />
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>

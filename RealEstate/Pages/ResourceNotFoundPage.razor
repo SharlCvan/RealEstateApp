@@ -1,0 +1,20 @@
+﻿<link href="/css/Anton.css" rel="stylesheet" />
+
+<div class="shadowInner d-flex justify-content-center text-center" id="backgroundNotFound">
+    <span id="textMobile">Cannot find the resource you are looking for...</span>
+    <button id="returnToMainMenuButton" class="btn btn-lg shadowInnerButton" @onclick="ReturnToMain">Return to main</button>
+
+</div>
+
+@code {
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public void ReturnToMain()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+
+}

@@ -20,14 +20,9 @@ namespace RealEstate.Pages
 
         protected async override Task OnInitializedAsync()
         {
+            RealEstate.Comments = new List<Comment>();
             RealEstate = await RealEstateService.GetRealEstate(int.Parse(Id));
         }
-
-        //protected List<Comment> LoadComments()
-        //{
-        //    List<Comment> comments = await RealEstateService.GetComments(int.Parse(Id));
-        //}
-
 
     }
 }
