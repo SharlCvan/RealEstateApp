@@ -1,0 +1,52 @@
+﻿@inherits BaseCommentSection
+
+
+    <div class="container mt-5">
+        @foreach (var comment in Comments)
+        {
+            <div class="row py-2 mb-2 shadow">
+                <div class="col-3 col-sm-2 col-md-1">
+                    <div class="thumbnail">
+                        <img id="user-img" class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                    </div><!-- /thumbnail -->
+                </div><!-- /col-sm-1 -->
+
+                <div class="col-9 col-sm-10 col-md-11">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong>@comment.UserName</strong> <span class="text-muted">commented on @comment.CreatedOn.Date </span>
+                        </div>
+                        <div class="panel-body">
+                            @comment.Content
+                        </div><!-- /panel-body -->
+                    </div><!-- /panel panel-default -->
+                </div><!-- /col-sm-5 -->
+
+            </div>
+        }
+        <div class="row w-100 pt-3">
+            <div class="col-12">
+                <EditForm Model="@postedComment" OnValidSubmit="@ValidPostComment">
+                    <DataAnnotationsValidator />
+                    <div class="form-group mb-2 w-50">
+                        <h4><label class="text-muted" for="Content">Comment</label></h4>
+                        <InputTextArea @bind-Value="postedComment.Content" class="form-control" cols="50" id="Content" placeholder="Say whats on your mind..." />
+                        <ValidationMessage For="@(() => postedComment.Content)" />
+                    </div>
+                    <input type="submit" class="btn btn-primary mb-2" value="Send">
+                </EditForm>
+            </div>
+        </div>
+
+        @if (NewComment.IsSuccesfullCommentPost)
+        {
+            <div class="alert-light"><p>Comment sent succesfully</p></div>
+        }
+        else
+        {
+            @foreach (var error in NewComment.Errors)
+            {
+                <div class="alert-danger">@error</div>
+            }
+        }
+    </div>

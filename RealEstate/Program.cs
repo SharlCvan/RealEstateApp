@@ -22,7 +22,7 @@ namespace RealEstate
             builder.RootComponents.Add<App>("app");
 
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://aee96c1e-616d-4478-a6fa-cbe73f3628b8.mock.pstmn.io/api/") });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://32db20a6-93a0-4dc6-a6b4-d1b5c4a55470.mock.pstmn.io/api/") });
 
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddOptions();
