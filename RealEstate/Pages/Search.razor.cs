@@ -12,10 +12,10 @@ namespace RealEstate.Pages
         {
             ShowSale = true,
             ShowRent = true,
-            ShowHouse = RealEstateType.House,
-            ShowApartment = RealEstateType.Apartment,
-            ShowStorageUnit = RealEstateType.Warehouse,
-            ShowOffice = RealEstateType.Office
+            ShowHouse = RealEstateTypes.House,
+            ShowApartment = RealEstateTypes.Apartment,
+            ShowStorageUnit = RealEstateTypes.Warehouse,
+            ShowOffice = RealEstateTypes.Office
         };
 
         [Parameter]
@@ -30,12 +30,12 @@ namespace RealEstate.Pages
         {
             if ((bool)e.Value)
             {
-                SearchValues.ShowHouse = RealEstateType.House;
+                SearchValues.ShowHouse = RealEstateTypes.House;
             }
 
             else
             {
-                SearchValues.ShowHouse = RealEstateType.Nothing;
+                SearchValues.ShowHouse = RealEstateTypes.Nothing;
             }
         }
 
@@ -43,12 +43,12 @@ namespace RealEstate.Pages
         {
             if ((bool)e.Value)
             {
-                SearchValues.ShowApartment = RealEstateType.Apartment;
+                SearchValues.ShowApartment = RealEstateTypes.Apartment;
             }
 
             else
             {
-                SearchValues.ShowApartment = RealEstateType.Nothing;
+                SearchValues.ShowApartment = RealEstateTypes.Nothing;
             }
         }
 
@@ -56,12 +56,12 @@ namespace RealEstate.Pages
         {
             if ((bool)e.Value)
             {
-                SearchValues.ShowStorageUnit = RealEstateType.Warehouse;
+                SearchValues.ShowStorageUnit = RealEstateTypes.Warehouse;
             }
 
             else
             {
-                SearchValues.ShowStorageUnit = RealEstateType.Nothing;
+                SearchValues.ShowStorageUnit = RealEstateTypes.Nothing;
             }
         }
 
@@ -69,12 +69,12 @@ namespace RealEstate.Pages
         {
             if ((bool)e.Value)
             {
-                SearchValues.ShowOffice = RealEstateType.Office;
+                SearchValues.ShowOffice = RealEstateTypes.Office;
             }
 
             else
             {
-                SearchValues.ShowOffice = RealEstateType.Nothing;
+                SearchValues.ShowOffice = RealEstateTypes.Nothing;
             }
         }
     }

@@ -10,10 +10,10 @@ namespace RealEstate
     {
         public bool ShowSale { get; set; }
         public bool ShowRent { get; set; }
-        public RealEstateType ShowHouse { get; set; }
-        public RealEstateType ShowApartment { get; set; }
-        public RealEstateType ShowStorageUnit { get; set; }
-        public RealEstateType ShowOffice { get; set; }
+        public RealEstateTypes ShowHouse { get; set; }
+        public RealEstateTypes ShowApartment { get; set; }
+        public RealEstateTypes ShowStorageUnit { get; set; }
+        public RealEstateTypes ShowOffice { get; set; }
         public string SearchTerm { get; set; }
     }
 }

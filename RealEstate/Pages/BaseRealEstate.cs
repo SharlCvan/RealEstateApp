@@ -8,14 +8,6 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Pages
 {
-    public enum RealEstateType
-    {
-        Nothing = -1,
-        House = 0,
-        Apartment = 1,
-        Warehouse = 2,
-        Office = 3
-    }
     public class BaseRealEstate : ComponentBase
     {
         [Inject]
