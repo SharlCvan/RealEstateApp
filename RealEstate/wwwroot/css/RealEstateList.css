@@ -1,3 +1,72 @@
 ﻿.city {
     color: #b8b8b8;
 }
+
+@media(max-width: 768px){
+    .description{
+        display:none;
+    }
+}
+
+.real-estate-card:hover div .brightness {
+    opacity: 0.9;
+}
+
+a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.search {
+    min-height: 60vh;
+    background-image: url("../Img/SearchBackground.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.content, .px-4
+{
+    padding:0;
+}
+
+.main > div
+{
+    padding:0 !important;
+}
+
+.label {
+    text-align: center;
+    padding: 0.5em;
+    border: 2px solid white;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.label:hover{
+    cursor:pointer;
+}
+
+.checkboxes > div input[type=checkbox] {
+    display: none;
+}
+
+    .checkboxes > div input[type=checkbox]:checked + .label {
+        border: 2px solid blue;
+    }
+
+.p
+{
+    padding: 3px;
+}
+
+.inputscontainer
+{
+    border-radius: 10px;
+}
+

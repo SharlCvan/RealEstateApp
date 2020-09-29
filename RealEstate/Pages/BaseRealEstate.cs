@@ -3,6 +3,7 @@ using RealEstate.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace RealEstate.Pages
@@ -12,37 +13,55 @@ namespace RealEstate.Pages
         [Inject]
         public IRealEstateService RealEstateServices { get; set; }
 
-        public List<Propertys> realEstates { get; set; } = new List<Propertys>();
+        public List<Propertys> RealEstates { get; set; } = new List<Propertys>();
+        public List<Propertys> SearchResults { get; set; } = new List<Propertys>();
 
         protected override async Task OnInitializedAsync()
         {
-            realEstates = (await RealEstateServices.GetRealEstates()).ToList();
+            RealEstates = (await RealEstateServices.GetRealEstates()).ToList();
+            SearchResults = RealEstates;
         }
 
-        public string BuyersOptions(Propertys estate)
+        public void SearchEstates(SearchValues searchValues)
         {
-            foreach(var estates in realEstates)
+            if (!String.IsNullOrEmpty(searchValues.SearchTerm))
             {
+                SearchResults = RealEstates.Where(x =>
+                                                  x.Address.Contains(searchValues.SearchTerm))
+                                                  .ToList();
 
-            }
-            if (estate.CanBeSold == true && estate.CanBeRented == true)
-            {
-                return "for sale, for rent";
-            }
-
-            else if (estate.CanBeSold == true && estate.CanBeRented == false)
-            {
-                return "for sale";
-            }
-
-            else if (estate.CanBeSold == false && estate.CanBeRented == true)
-            {
-                return "for rent";
+                SearchBySellAndRent(searchValues.ShowSale, searchValues.ShowRent);
             }
 
             else
             {
-                return "not for sale, not for rent";
+                SearchBySellAndRent(searchValues.ShowSale, searchValues.ShowRent);
+            }
+
+            SearchResults = SearchResults.Where(x =>
+                                                    x.RealEstateType == (int)searchValues.ShowHouse ||
+                                                    x.RealEstateType == (int)searchValues.ShowApartment ||
+                                                    x.RealEstateType == (int)searchValues.ShowStorageUnit ||
+                                                    x.RealEstateType == (int)searchValues.ShowOffice)
+                                                    .ToList();
+        }
+
+        private void SearchBySellAndRent(bool showSale, bool showRent)
+        {
+            if (showSale && showRent)
+            {
+                SearchResults = RealEstates.Where(x =>
+                                                  x.CanBeSold == showSale ||
+                                                  x.CanBeRented == showRent)
+                                                  .ToList();
+            }
+
+            else
+            {
+                SearchResults = RealEstates.Where(x =>
+                                                  x.CanBeSold == showSale &&
+                                                  x.CanBeRented == showRent)
+                                                  .ToList();
             }
         }
     }

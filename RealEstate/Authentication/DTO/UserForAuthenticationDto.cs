@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Authentication.DTO
 {
+    /// <summary>
+    /// Container used to hold information when a login/authentication request is sent to the api
+    /// </summary>
     public class UserForAuthenticationDto
     {
         [Required(ErrorMessage = "UserName is required.")]

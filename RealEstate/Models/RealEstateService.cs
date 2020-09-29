@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace RealEstate.Models
@@ -44,11 +45,15 @@ namespace RealEstate.Models
 
         public async Task<IEnumerable<Propertys>> GetRealEstates()
         {
-            return await http.GetJsonAsync<Propertys[]>("RealEstates");
+            HttpResponseMessage task = await http.GetAsync("RealEstates");
+            string jsonString = await task.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<List<Propertys>>(jsonString);
         }
 
         public async Task<Propertys> PostANewRealEstate(Propertys newRealEstate)
         {
+
             var serializedRealEstate = JsonSerializer.Serialize(newRealEstate);
             var bodyContent = new StringContent(serializedRealEstate, Encoding.UTF8, "application/json");
 
@@ -57,35 +62,34 @@ namespace RealEstate.Models
             var authContent = await postResult.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<Propertys>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (!postResult.IsSuccessStatusCode)
+            if (postResult.IsSuccessStatusCode)
             {
-                return result;
-            }
+                var imagesToPost = new RealEstateURLInputDTO() { Urls = newRealEstate.Urls, RealEstateId = newRealEstate.Id};
+                var picturesResult = await PostPicturesToAPI(imagesToPost);
 
+                result.IsSuccessfulRegistration = true;
+            }
             return result;
         }
 
-        public async Task<Comment> PostComment(PostedComment comment)
+        public async Task<bool> PostPicturesToAPI(RealEstateURLInputDTO imageUrl)
         {
-            var serializedComment = JsonSerializer.Serialize(comment);
-            var bodyContent = new StringContent(serializedComment, Encoding.UTF8, "application/json");
 
-            var postResult = await http.PostAsync("comment", bodyContent);
+            var serializedRealEstate = JsonSerializer.Serialize(imageUrl);
+            var bodyContent = new StringContent(serializedRealEstate, Encoding.UTF8, "application/json");
+
+            var postResult = await http.PostAsync("api/Pictures", bodyContent);
 
             var authContent = await postResult.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<Comment>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var result = JsonSerializer.Deserialize<Propertys>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if(postResult.IsSuccessStatusCode)
+
+            if (postResult.IsSuccessStatusCode)
             {
-                result.IsSuccesfullCommentPost = true;
+                return true;
             }
-            
-            return result;
-        }
 
-        public async Task<User> GetUser(string UserName)
-        {
-            return await http.GetFromJsonAsync<User>($"Users/{UserName}");
+            return false;
         }
     }
 }

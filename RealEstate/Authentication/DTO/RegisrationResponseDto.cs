@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Authentication.DTO
 {
+    /// <summary>
+    /// Container used to hold information when a response is received from the api
+    /// </summary>
     public class RegisrationResponseDto
     {
-        public bool IsSuccessfulRegistration { get; set; }
+        public bool succeeded { get; set; }
         public IEnumerable<string> Errors { get; set; }
     }
 }

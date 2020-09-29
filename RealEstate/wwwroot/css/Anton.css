@@ -1,0 +1,99 @@
+﻿#removeURLIcon {
+    width: 1.5em;
+    height: 1.5em;
+    background-color: lightcyan;
+    cursor: pointer;
+}
+
+#displayURLInput {
+    width: 20em;
+}
+
+#returnToMainMenuButton {
+    position: fixed;
+    background: none;
+    border: 1px solid white;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    font-size: 2em;
+}
+
+    #returnToMainMenuButton:hover {
+        background: rgb(255,255,255, 0.3);
+        transition: 0.5s;
+    }
+
+@media (max-width: 767px) {
+    #returnToMainMenuButton {
+        top: 30vh;
+    }
+
+    #textMobile {
+        position: relative;
+        top: 5vh;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1149px) {
+    #returnToMainMenuButton {
+        top: 45vh;
+    }
+
+    #textMobile {
+        position: relative;
+        top: 25vh;
+    }
+}
+
+@media (min-width: 1150px) {
+    #returnToMainMenuButton {
+        top: 55vh;
+    }
+
+    #textMobile {
+        position: relative;
+        top: 35vh;
+    }
+}
+
+#backgroundNotFound {
+    background-image: url("../Img/wasteland3.jpg");
+    background-size: cover;
+    height: 80vh;
+    background-color: black;
+}
+
+.shadowInner {
+    -moz-box-shadow: inset 0 0 10000px #000000;
+    -webkit-box-shadow: inset 0 0 10000px #000000;
+    box-shadow: inset 0 0 10000px #000000;
+}
+
+.shadowInnerButton {
+    -moz-box-shadow: inset 0 0 10px #000000;
+    -webkit-box-shadow: inset 0 0 10px #000000;
+    box-shadow: inset 0 0 10px #000000;
+}
+
+#textMobile {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    #backgroundNotFound {
+        background-image: url('.../Img/woman-3478437_1920.jpg');
+    }
+
+    #textMobile {
+        display: block;
+        font-size: 2em;
+        border-radius: 3px;
+        position: relative;
+        color: white;
+    }
+}
+
+body {
+    background-color: black;
+}
