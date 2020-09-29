@@ -1,4 +1,5 @@
-﻿using RealEstate.Pages;
+﻿using RealEstate.Models;
+using RealEstate.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;

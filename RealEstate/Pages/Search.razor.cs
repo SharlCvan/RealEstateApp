@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RealEstate.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

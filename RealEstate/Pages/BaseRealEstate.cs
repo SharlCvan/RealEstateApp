@@ -39,10 +39,10 @@ namespace RealEstate.Pages
             }
 
             SearchResults = SearchResults.Where(x =>
-                                                    x.RealEstateType == searchValues.ShowHouse ||
-                                                    x.RealEstateType == searchValues.ShowApartment ||
-                                                    x.RealEstateType == searchValues.ShowStorageUnit ||
-                                                    x.RealEstateType == searchValues.ShowOffice)
+                                                    x.RealEstateType == (int)searchValues.ShowHouse ||
+                                                    x.RealEstateType == (int)searchValues.ShowApartment ||
+                                                    x.RealEstateType == (int)searchValues.ShowStorageUnit ||
+                                                    x.RealEstateType == (int)searchValues.ShowOffice)
                                                     .ToList();
         }
 
