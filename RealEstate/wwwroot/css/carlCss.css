@@ -86,14 +86,73 @@
 }
 
 .page-logo {
-    font-size: 1.2em;
     background-color: whitesmoke;
-    padding: 10px;
-    font-family: 'Archivo Black', sans-serif;
     border-radius: 10px;
+    font-size: 1.2em;
+    padding: 10px;
+    overflow: hidden;
+    transition: 0.5s all;
+    -webkit-box-shadow: 9px 16px 47px -19px rgba(0,0,0,0.75);
+    -moz-box-shadow: 9px 16px 47px -19px rgba(0,0,0,0.75);
+    box-shadow: 9px 16px 47px -19px rgba(0,0,0,0.75);
+}
 
+.page-logo:hover {
+    -webkit-box-shadow: -2px 2px 52px -2px rgba(0,0,0,1);
+    -moz-box-shadow: -2px 2px 52px -2px rgba(0,0,0,1);
+    box-shadow: -2px 2px 52px -2px rgba(0,0,0,1);
 }
 
 .page-logo i {
     font-size: 1.3em;
 }
+
+.nav-links:hover {
+    color: whitesmoke;
+    transition: 0.5s;
+}
+
+
+@media(min-width: 580px) and (max-width: 770px){
+    #card-width {
+        column-count: 2;
+    }
+}
+
+#nav-link-hover:hover > a {
+    color: whitesmoke;
+    transition: 0.5s;
+}
+
+.star-rating {
+    font-size: 1.8em;
+    color: #FCCD04;
+}
+
+.star-rating > h4 {
+    color: black;
+}
+
+.star-rating:hover {
+    cursor: pointer;
+}
+
+/*Todo: Få stjärnorna att lägga sig rätt*/
+
+/*.star-rating > i:hover:before,
+.star-rating i:hover ~ i:before {
+    color: yellow;
+}*/
+
+.star-rating > i:hover:before {
+    color: #FCCD04;
+}
+
+.star-rating i:hover ~ i:before {
+    color: black;
+}
+
+.UserBackBtn:hover {
+    cursor: pointer;
+}
+

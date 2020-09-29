@@ -1,0 +1,49 @@
+﻿@page "/User/{UserName}"
+
+@inherits BaseUserDetail
+
+@if (User.UserName == null)
+{
+    <div class="spinner"></div>
+}
+else
+{
+
+<div class="container d-flex align-content-center justify-content-center pt-5">
+    <div class="card border-0 shadow pt-5 px-5 pb-2 mb-3">
+        <img class="card-img-top" src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png" alt="Card image cap">
+        <div class="card-body text-center">
+            <h1 class="card-title">@UserName</h1>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item border-0"><h4>STATS</h4></li>
+            <li class="list-group-item">@User.RealEstates Real estates</li>
+            <li class="list-group-item">@User.Comments comments</li>
+        </ul>
+        @if (User.Rating > 2)
+        {
+            <div class="card-body alert-success">
+                <div>Rating: @User.Rating</div>
+            </div>
+        }
+        else
+        {
+            <div class="card-body alert-danger">
+                <div>Rating: @User.Rating</div>
+            </div>
+        }
+    <div class="card-body star-rating">
+        <h4>Rate User:</h4>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+    </div>
+        <a onclick="window.history.back()" class="btn btn-primary UserBackBtn">Back to Real Estate</a>
+    </div>
+</div>
+}
+
+@*//Todo: Ladda in kommentarer för user
+    - Skicka user name och rating när du postar ny rating*@

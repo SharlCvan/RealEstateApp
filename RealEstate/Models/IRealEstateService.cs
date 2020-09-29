@@ -9,6 +9,7 @@ namespace RealEstate.Models
     {
         public Task<IEnumerable<Propertys>> GetRealEstates();
         public Task<Propertys> GetRealEstate(int id);
+        public Task<User> GetUser(string UserName);
 
         public Task<Comment> PostComment(PostedComment comment);
 

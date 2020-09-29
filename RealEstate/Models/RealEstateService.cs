@@ -74,8 +74,18 @@ namespace RealEstate.Models
 
             var authContent = await postResult.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<Comment>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if(postResult.IsSuccessStatusCode)
+            {
+                result.IsSuccesfullCommentPost = true;
+            }
             
             return result;
+        }
+
+        public async Task<User> GetUser(string UserName)
+        {
+            return await http.GetFromJsonAsync<User>($"Users/{UserName}");
         }
     }
 }

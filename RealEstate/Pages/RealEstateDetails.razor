@@ -92,7 +92,7 @@ else
             </div>
 
             @*Broker card*@
-            <div class="col-12 pb-3">
+            <div class="col-12 col-lg-6 col-xl-6 pb-3">
                 <div id="broker-card" class="card w-100 shadow">
                     <div class="row no-gutters py-2">
                         @*Broker image*@
@@ -105,6 +105,25 @@ else
                                 <h5 class="card-title">Jhon Jones</h5>
                                 <p class="card-text">Email: jogn@fdo.cu</p>
                                 <p class="card-text">Phone: 032 05405 3</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*User card*@
+            <div class="col-12 col-lg-6 col-xl-6 pb-3">
+                <div id="broker-card" class="card w-100 shadow">
+                    <div class="row no-gutters py-2">
+                        @*Broker image*@
+                        <div id="Broker-image" class="col-6 col-sm-6 col-md-4">
+                            <img id="card-img" src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png" />
+                        </div>
+                        @*Broker contact info*@
+                        <div id="broker-info" class="col-6 col-sm-6 col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">User Name</h5>
+                                <p>Seller for this object</p>
+                                <a href="/User/carl" class="btn btn-primary mb-0">View</a>
                             </div>
                         </div>
                     </div>
@@ -157,23 +176,32 @@ else
         }
         <div class="row w-100 pt-3">
             <div class="col-12">
-                <EditForm Model="postedComment" OnValidSubmit="ValidPostComment">
+                <EditForm Model="@postedComment" OnValidSubmit="@ValidPostComment">
                     <DataAnnotationsValidator />
                     <div class="form-group mb-2 w-50">
                         <h4><label class="text-muted" for="Content">Comment</label></h4>
                         <InputTextArea @bind-Value="postedComment.Content" class="form-control" cols="50" id="Content" placeholder="Say whats on your mind..." />
                         <ValidationMessage For="@(() => postedComment.Content)" />
                     </div>
-                    <buttom type="submit" class="btn btn-primary mb-2">Send</buttom>
+                    <input type="submit" class="btn btn-primary mb-2" value="Send">
                 </EditForm>
             </div>
         </div>
     </div>
     @*</AuthorizeView>*@
 
-    <p>@NewComment.Content</p>
-    <p>@NewComment.CreatedOn</p>
-    <p>@NewComment.UserName</p>
+    @if (NewComment.IsSuccesfullCommentPost)
+    {
+        <div class="alert-light"><p>Comment sent succesfully</p></div>
+    }
+    else
+    {
+      @foreach(var error in NewComment.Errors)
+      {
+          <div class="alert-danger">@error</div>
+      }
+    }
+
 
     @code {
 
@@ -191,5 +219,5 @@ else
     }
 
 
-
+    //Todo: Bryta ut kodsnuttar i egna pages moduler & Lägg in nyra parametrar i mocken för att visa i carouselle card
 }
