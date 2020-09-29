@@ -91,5 +91,27 @@ namespace RealEstate.Models
 
             return false;
         }
+        public async Task<Comment> PostComment(PostedComment comment)
+        {
+            var serializedComment = JsonSerializer.Serialize(comment);
+            var bodyContent = new StringContent(serializedComment, Encoding.UTF8, "application/json");
+
+            var postResult = await http.PostAsync("comment", bodyContent);
+
+            var authContent = await postResult.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<Comment>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (postResult.IsSuccessStatusCode)
+            {
+                result.IsSuccesfullCommentPost = true;
+            }
+
+            return result;
+        }
+
+        public async Task<User> GetUser(string UserName)
+        {
+            return await http.GetFromJsonAsync<User>($"Users/{UserName}");
+        }
     }
 }
