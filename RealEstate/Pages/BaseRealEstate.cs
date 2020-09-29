@@ -19,6 +19,7 @@ namespace RealEstate.Pages
         protected override async Task OnInitializedAsync()
         {
             RealEstates = (await RealEstateServices.GetRealEstates()).ToList();
+            Console.WriteLine(RealEstates[0].ListingURL);
             SearchResults = RealEstates;
         }
 
