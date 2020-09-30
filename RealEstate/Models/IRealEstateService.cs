@@ -13,6 +13,10 @@ namespace RealEstate.Models
 
         public Task<Comment> PostComment(PostedComment comment);
 
+        public Task<PostedRating> RateUser(PostedRating postedRating);
+
+        public Task<List<Comment>> GetUserComments(string UserName);
+
         public Task<Propertys> PostANewRealEstate(Propertys newRealEstate);
         public Task<bool> UserLoggedInAndValid();
     }

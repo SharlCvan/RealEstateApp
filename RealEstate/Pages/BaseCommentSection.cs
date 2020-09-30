@@ -15,6 +15,9 @@ namespace RealEstate.Pages
         [Parameter]
         public string RealEstateId { get; set; }
 
+        [Parameter]
+        public bool EnablePostComment { get; set; }
+
         public Comment NewComment { get; set; } = new Comment();
         public PostedComment postedComment { get; set; } = new PostedComment();
 

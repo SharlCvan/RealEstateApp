@@ -24,29 +24,33 @@
 
             </div>
         }
-        <div class="row w-100 pt-3">
-            <div class="col-12">
-                <EditForm Model="@postedComment" OnValidSubmit="@ValidPostComment">
-                    <DataAnnotationsValidator />
-                    <div class="form-group mb-2 w-50">
-                        <h4><label class="text-muted" for="Content">Comment</label></h4>
-                        <InputTextArea @bind-Value="postedComment.Content" class="form-control" cols="50" id="Content" placeholder="Say whats on your mind..." />
-                        <ValidationMessage For="@(() => postedComment.Content)" />
-                    </div>
-                    <input type="submit" class="btn btn-primary mb-2" value="Send">
-                </EditForm>
+        @if (EnablePostComment)
+        {
+            <div class="row w-100 pt-3">
+                <div class="col-12">
+                    <EditForm Model="@postedComment" OnValidSubmit="@ValidPostComment">
+                        <DataAnnotationsValidator />
+                        <div class="form-group mb-2 w-50">
+                            <h4><label class="text-muted" for="Content">Comment</label></h4>
+                            <InputTextArea @bind-Value="postedComment.Content" class="form-control" cols="50" id="Content" placeholder="Say whats on your mind..." />
+                            <ValidationMessage For="@(() => postedComment.Content)" />
+                        </div>
+                        <input type="submit" class="btn btn-primary mb-2" value="Send">
+                    </EditForm>
+                </div>
             </div>
-        </div>
 
-        @if (NewComment.IsSuccesfullCommentPost)
-        {
-            <div class="alert-light"><p>Comment sent succesfully</p></div>
-        }
-        else
-        {
-            @foreach (var error in NewComment.Errors)
+            @if (NewComment.IsSuccesfullCommentPost)
             {
-                <div class="alert-danger">@error</div>
+                <div class="alert-light"><p>Comment sent succesfully</p></div>
+            }
+            else
+            {
+                @foreach (var error in NewComment.Errors)
+                {
+                    <div class="alert-danger">@error</div>
+                }
             }
         }
+
     </div>

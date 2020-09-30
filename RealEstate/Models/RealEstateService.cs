@@ -113,5 +113,28 @@ namespace RealEstate.Models
         {
             return await http.GetFromJsonAsync<User>($"Users/{UserName}");
         }
+
+        public async Task<PostedRating> RateUser(PostedRating postedRating)
+        {
+            var serializedComment = JsonSerializer.Serialize(postedRating);
+            var bodyContent = new StringContent(serializedComment, Encoding.UTF8, "application/json");
+
+            var putResult = await http.PutAsync("Users/rate", bodyContent);
+
+            var authContent = await putResult.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<PostedRating>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (putResult.IsSuccessStatusCode)
+            {
+                result.PostRatingSuccess = true;
+            }
+
+            return result;
+        }
+
+        public async Task<List<Comment>> GetUserComments(string UserName)
+        {
+            return await http.GetFromJsonAsync<List<Comment>>($"Comments/byuser/{UserName}");
+        }
     }
 }
