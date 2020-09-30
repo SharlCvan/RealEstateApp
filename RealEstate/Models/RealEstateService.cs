@@ -62,35 +62,21 @@ namespace RealEstate.Models
             var authContent = await postResult.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<Propertys>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (postResult.IsSuccessStatusCode)
+            if (!postResult.IsSuccessStatusCode)
             {
-                var imagesToPost = new RealEstateURLInputDTO() { Urls = newRealEstate.Urls, RealEstateId = newRealEstate.Id};
-                var picturesResult = await PostPicturesToAPI(imagesToPost);
-
-                result.IsSuccessfulRegistration = true;
+                //Adds a error message if there is some undefined error has happened
+                result.IsSuccessfulRegistration = false;
+                if (result.Errors.Count < 1)
+                {
+                    result.Errors.Add("There has been some networking error, please check connection and try again.");
+                }
             }
+
+            result.IsSuccessfulRegistration = true;
             return result;
         }
 
-        public async Task<bool> PostPicturesToAPI(RealEstateURLInputDTO imageUrl)
-        {
 
-            var serializedRealEstate = JsonSerializer.Serialize(imageUrl);
-            var bodyContent = new StringContent(serializedRealEstate, Encoding.UTF8, "application/json");
-
-            var postResult = await http.PostAsync("api/Pictures", bodyContent);
-
-            var authContent = await postResult.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<Propertys>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-
-            if (postResult.IsSuccessStatusCode)
-            {
-                return true;
-            }
-
-            return false;
-        }
         public async Task<Comment> PostComment(PostedComment comment)
         {
             var serializedComment = JsonSerializer.Serialize(comment);

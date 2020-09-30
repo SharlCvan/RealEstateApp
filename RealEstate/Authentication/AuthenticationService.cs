@@ -11,6 +11,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 
 namespace RealEstate.Authentication
 {
@@ -32,8 +33,9 @@ namespace RealEstate.Authentication
         /// </summary>
         /// <param name="userForAuthentication">Holds info about which username and password a user tries to log in with.</param>
         /// <returns></returns>
-        public async Task<AuthResponseDto> Login(UserForAuthenticationDto userForAuthentication)
+        public async Task<AuthResponseContainer> Login(UserForAuthenticationDto userForAuthentication)
         {
+            //Serializes the UserForAuthenticationDTO to a dictionary to easily be able to encode it to x-www-form-urlencoded httpmessage body
             var content = JsonSerializer.Serialize(userForAuthentication);
             var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(content);
 
@@ -45,24 +47,30 @@ namespace RealEstate.Authentication
 
             var resultContainer = JsonSerializer.Deserialize<AuthResponseContainer>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            var result = resultContainer.Values;
-
             if (!authResult.IsSuccessStatusCode)
             {
-                result.IsAuthSuccessful = false;
-                return result;
+                //Adds a error message if there is some undefined error has happened
+                if (resultContainer.Values == null)
+                {
+                    resultContainer.Values = new AuthResponseDto();
+                    resultContainer.Errors = new List<string>();
+                }
+                resultContainer.Values.IsAuthSuccessful = false;
+                resultContainer.Errors.Add("There has been some networking error, please check connection and try again.");
+                
+                return resultContainer;
             }
 
-            await _localStorage.SetItemAsync("authToken", result.AcessToken);
-            await _localStorage.SetItemAsync("userName", result.UserName);
-            await _localStorage.SetItemAsync("authorizationExpires", result.Expires);
+            await _localStorage.SetItemAsync("authToken", resultContainer.Values.AcessToken);
+            await _localStorage.SetItemAsync("userName", resultContainer.Values.UserName);
+            await _localStorage.SetItemAsync("authorizationExpires", resultContainer.Values.Expires);
 
             ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userForAuthentication.UserName);
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.AcessToken);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", resultContainer.Values.AcessToken);
 
-            result.IsAuthSuccessful = true;
+            resultContainer.Values.IsAuthSuccessful = true;
 
-            return result;
+            return resultContainer;
         }
 
         /// <summary>
@@ -97,6 +105,17 @@ namespace RealEstate.Authentication
             var registrationResult = await _client.SendAsync(req);
             var registrationContent = await registrationResult.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<RegisrationResponseDto>(registrationContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (!registrationResult.IsSuccessStatusCode)
+            {
+                //Adds a error message if there is some undefined error has happened
+                if (result.Errors == null)
+                {
+                    result.Errors = new List<string>();
+                    result.Errors.Add("There has been some networking error, please check connection and try again.");
+                    result.succeeded = false;
+                }
+            }
 
             return result;
         }

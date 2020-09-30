@@ -1,18 +1,24 @@
 ﻿@page "/Login"
 @using Microsoft.AspNetCore.Components.Authorization
 
-@if (ShowAuthError)
-{
-    <div class="alert alert-danger" role="alert">
-        <p>@Error</p>
-    </div>
-}
-<div class="card-group">
-    <EditForm Model="_userForAuthentication" OnValidSubmit="ExecuteLogin" class="card card-body bg-light mt-5 col-md-4 mx-auto">
+
+<div class="col-12 card card-body bg-light mt-5 col-md-4 mx-auto shadow-lg">
+    <EditForm Model="_userForAuthentication" OnValidSubmit="ExecuteLogin" class="">
         <DataAnnotationsValidator />
         <div class="form-group">
             <h3>Login</h3>
         </div>
+
+        @if (ShowAuthError)
+        {
+            <div class="alert alert-danger" role="alert">
+                @foreach (var error in Errors)
+                {
+                    <p>@error</p>
+                }
+            </div>
+        }
+
         <div class="form-group">
             <label for="UserName" class="col-form-label">Username:</label>
             <div class="">

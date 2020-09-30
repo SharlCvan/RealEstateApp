@@ -11,6 +11,6 @@ namespace RealEstate.Authentication.DTO
     public class RegisrationResponseDto
     {
         public bool succeeded { get; set; }
-        public IEnumerable<string> Errors { get; set; }
+        public List<string> Errors { get; set; }
     }
 }

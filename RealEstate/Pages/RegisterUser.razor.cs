@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using RealEstate.Authentication;
 using RealEstate.Authentication.DTO;
+using RealEstate.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace RealEstate.Pages
         public IAuthenticationService AuthenticationService { get; set; }
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        [Inject]
+        public IRealEstateService RealEstateService { get; set; }
 
         public bool ShowRegistrationErros { get; set; }
         public IEnumerable<string> Errors { get; set; }
@@ -35,9 +38,21 @@ namespace RealEstate.Pages
             }
             else
             {
-                //TO:DO Message about sucessful registration?
-                NavigationManager.NavigateTo("/Login");
-            }
+                var userLoggedIn = await RealEstateService.UserLoggedInAndValid();
+
+                if(userLoggedIn)
+                {
+                    NavigationManager.NavigateTo("/Registration");
+
+                    // TODO: Add a window to which a logged in user has sees that he/she has sucessully registered a new user. Should not redirect to another page, since the user might want to register more users.
+                }
+                else 
+                {
+                    NavigationManager.NavigateTo("/Login");
+                }
+
+                
+            }   
         }
 
         /// <summary>

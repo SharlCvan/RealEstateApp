@@ -9,7 +9,7 @@ namespace RealEstate.Authentication
     public interface IAuthenticationService
     {
         Task<RegisrationResponseDto> RegisterUser(UserForRegistrationDto userForRegistration);
-        Task<AuthResponseDto> Login(UserForAuthenticationDto userForAuthentication);
+        Task<AuthResponseContainer> Login(UserForAuthenticationDto userForAuthentication);
         Task Logout();
     }
 }

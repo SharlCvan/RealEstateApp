@@ -43,8 +43,7 @@ namespace RealEstate.Models
         //Hantera felmeddelande som API:et skickar tillbaka vid POST request
         public bool IsSuccessfulRegistration { get; set; }
         
-
-        public IEnumerable<string> Errors { get; set; }
+        public List<string> Errors { get; set; }
 
     }
 }

@@ -16,6 +16,5 @@ namespace RealEstate.Authentication.DTO
         public string UserName { get; set; }
         public string Issued { get; set; }
         public string Expires { get; set; }
-        public string Error { get; set; }
     }
 }

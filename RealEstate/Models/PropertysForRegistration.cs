@@ -33,49 +33,25 @@ namespace RealEstate.Models
         [Required(ErrorMessage = "A title is required.")]
         public string Title { get; set; }
 
-        [Range(1, Int32.MaxValue, ErrorMessage = "A value must be given")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "A value must be given.")]
         public int RentSalePrice { get; set; }
 
         public bool CanBeSold { get; set; }
 
         public bool CanBeRented { get; set; }
 
-        [Url(ErrorMessage = "Please enter a valid URL")]
+        [Url(ErrorMessage = "Please enter a valid URL.")]
         public string ListingURL { get; set; }
-        [Required(ErrorMessage = "Enter a ")]
+
+        [Range(5, 5000, ErrorMessage = "Enter a valid number between 5 and 5000.")]
         public int SquareMeters { get; set; }
+
+        [Range(1, 50, ErrorMessage = "Enter a valid number between 1 and 50.")]
         public int Rooms { get; set; }
+
+        [Required(ErrorMessage = "Enter a valid city name.")]
         public string City { get; set; }
 
         public List<string> Urls { get; set; }
-
-
-        //Behövs den verkligen???
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            var errors = new List<ValidationResult>();
-
-            if (CanBeRented == true && CanBeSold == true)
-            {
-                errors.Add(new ValidationResult(
-                    "A property can not be for sale and for rent at the same time.", new[] { nameof(CanBeSold) }
-                    ));
-                errors.Add(new ValidationResult(
-                    "A property can not be for sale and for rent at the same time.", new[] { nameof(CanBeRented) }
-                    ));
-            }
-            else if (CanBeSold != true && CanBeRented != true)
-            {
-
-                errors.Add(new ValidationResult(
-                    "A property must be either for sale or for rent. Please enter a amount to enable for rent.", new[] { nameof(CanBeSold) }
-                    ));
-                errors.Add(new ValidationResult(
-                    "A property must be either for sale or for rent. Please enter a amount to enable for sale.", new[] { nameof(CanBeRented) }
-                    ));
-            }
-
-            return errors;
-        }
     }
 }
