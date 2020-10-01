@@ -25,9 +25,9 @@ namespace RealEstate.Models
 
         public string Title { get; set; }
 
-        public int SellingPrice { get; set; }
+        public int? SellingPrice { get; set; }
 
-        public int RentingPrice { get; set; }
+        public int? RentingPrice { get; set; }
 
         public bool CanBeSold { get; set; }
 

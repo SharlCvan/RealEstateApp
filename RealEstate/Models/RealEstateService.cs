@@ -64,12 +64,13 @@ namespace RealEstate.Models
 
             if (!postResult.IsSuccessStatusCode)
             {
-                //Adds a error message if there is some undefined error has happened
-                result.IsSuccessfulRegistration = false;
-                if (result.Errors.Count < 1)
+                //Adds a error message if there is some undefined error that has happened
+                if (result.Errors == null)
                 {
+                    result.Errors = new List<string>();
                     result.Errors.Add("There has been some networking error, please check connection and try again.");
                 }
+                result.IsSuccessfulRegistration = false;
             }
 
             result.IsSuccessfulRegistration = true;

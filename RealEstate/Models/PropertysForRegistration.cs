@@ -33,8 +33,8 @@ namespace RealEstate.Models
         [Required(ErrorMessage = "A title is required.")]
         public string Title { get; set; }
 
-        [Range(1, Int32.MaxValue, ErrorMessage = "A value must be given.")]
-        public int RentSalePrice { get; set; }
+        [Range(1, Int32.MaxValue, ErrorMessage = "A value greater than o must be given.")]
+        public int? RentSalePrice { get; set; }
 
         public bool CanBeSold { get; set; }
 

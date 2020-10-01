@@ -20,8 +20,13 @@ namespace RealEstate.Pages
         [Inject]
         public IRealEstateService RealEstateService { get; set; }
 
+        //Holds any information about a request that has rendered an error
         public bool ShowRegistrationErros { get; set; }
         public IEnumerable<string> Errors { get; set; }
+
+        //Holds a registration message which is displayed to a user after sucessfull login. Ex. a logged in user registers another new user.
+        public bool ShowRegistrationMessage { get; set; }
+        public string registrationMessage { get; set; }
 
         /// <summary>
         /// Send  a request to the repository to register a new user. And displays any errors the api sends back.
@@ -30,6 +35,9 @@ namespace RealEstate.Pages
         public async Task Register()
         {
             ShowRegistrationErros = false;
+            ShowRegistrationMessage = false;
+
+
             var result = await AuthenticationService.RegisterUser(_userForRegistrationDto);
             if (!result.succeeded)
             {
@@ -42,9 +50,10 @@ namespace RealEstate.Pages
 
                 if(userLoggedIn)
                 {
-                    NavigationManager.NavigateTo("/Registration");
+                    ShowRegistrationMessage = true;
+                    registrationMessage = $"User \"{_userForRegistrationDto.UserName}\"has been sucessfully registered.";
 
-                    // TODO: Add a window to which a logged in user has sees that he/she has sucessully registered a new user. Should not redirect to another page, since the user might want to register more users.
+                    NavigationManager.NavigateTo("/Registration");
                 }
                 else 
                 {

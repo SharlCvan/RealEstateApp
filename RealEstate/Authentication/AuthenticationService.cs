@@ -61,6 +61,7 @@ namespace RealEstate.Authentication
                 return resultContainer;
             }
 
+            //Sets information about the user and acesstoken to local storage
             await _localStorage.SetItemAsync("authToken", resultContainer.Values.AcessToken);
             await _localStorage.SetItemAsync("userName", resultContainer.Values.UserName);
             await _localStorage.SetItemAsync("authorizationExpires", resultContainer.Values.Expires);
@@ -103,10 +104,11 @@ namespace RealEstate.Authentication
             var req = new HttpRequestMessage(HttpMethod.Post, "/Api/Account/Register") { Content = new FormUrlEncodedContent(dictionary) };
 
             var registrationResult = await _client.SendAsync(req);
+
             var registrationContent = await registrationResult.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<RegisrationResponseDto>(registrationContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (!registrationResult.IsSuccessStatusCode)
+            if(!registrationResult.IsSuccessStatusCode)
             {
                 //Adds a error message if there is some undefined error has happened
                 if (result.Errors == null)

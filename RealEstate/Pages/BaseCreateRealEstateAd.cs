@@ -95,14 +95,14 @@ namespace RealEstate.Pages
                 convertedProperty.CanBeSold = true;
                 convertedProperty.CanBeRented = false;
                 convertedProperty.SellingPrice = propertyForRegistration.RentSalePrice;
-                convertedProperty.RentingPrice = 0;
+                convertedProperty.RentingPrice = null;
             }
             else
             {
                 convertedProperty.CanBeSold = false;
                 convertedProperty.CanBeRented = true;
                 convertedProperty.RentingPrice = propertyForRegistration.RentSalePrice;
-                convertedProperty.SellingPrice = 0;
+                convertedProperty.SellingPrice = null;
             }
 
             return convertedProperty;

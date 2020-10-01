@@ -30,6 +30,7 @@ namespace RealEstate.Authentication
         {
             //Checks if a token is present in cookies
             var token = await _localStorage.GetItemAsync<string>("authToken");
+
             //If token is null or empty returns a null authenticationstate which results in a failed authentication.
             if (string.IsNullOrWhiteSpace(token))
                 return _anonymous;
