@@ -2,28 +2,30 @@
 
 
     <div class="container mt-5">
-        @foreach (var comment in Comments)
-        {
-            <div class="row py-2 mb-2 shadow">
-                <div class="col-3 col-sm-2 col-md-1">
-                    <div class="thumbnail">
-                        <img id="user-img" class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-                    </div><!-- /thumbnail -->
-                </div><!-- /col-sm-1 -->
+        <div class="comment-section mb-3">
+            @foreach (var comment in Comments)
+            {
+                <div class="row py-2 mb-2 shadow">
+                    <div class="col-3 col-sm-2 col-md-1">
+                        <div class="thumbnail">
+                            <img id="user-img" class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                        </div><!-- /thumbnail -->
+                    </div><!-- /col-sm-1 -->
 
-                <div class="col-9 col-sm-10 col-md-11">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <strong>@comment.UserName</strong> <span class="text-muted">commented on @comment.CreatedOn.Date </span>
-                        </div>
-                        <div class="panel-body">
-                            @comment.Content
-                        </div><!-- /panel-body -->
-                    </div><!-- /panel panel-default -->
-                </div><!-- /col-sm-5 -->
+                    <div class="col-9 col-sm-10 col-md-11">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>@comment.UserName</strong> <span class="text-muted">commented on @comment.CreatedOn.Date </span>
+                            </div>
+                            <div class="panel-body">
+                                @comment.Content
+                            </div><!-- /panel-body -->
+                        </div><!-- /panel panel-default -->
+                    </div><!-- /col-sm-5 -->
+                </div>
+            }
+        </div>
 
-            </div>
-        }
         @if (EnablePostComment)
         {
             <div class="row w-100 pt-3">

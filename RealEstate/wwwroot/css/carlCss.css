@@ -156,3 +156,8 @@
     cursor: pointer;
 }
 
+.comment-section {
+    max-height: 400px;
+    overflow:scroll;
+    overflow-x: hidden;
+}

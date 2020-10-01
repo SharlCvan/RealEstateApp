@@ -29,6 +29,12 @@ namespace RealEstate.Pages
             UserComments = await RealEstateService.GetUserComments(UserName);
         }
 
+        public async void AddNewComments(int count)
+        {
+
+            UserComments.AddRange(await RealEstateService.GetUserComments(UserName));
+        }
+
         public async Task RateUser(int rating)
         {
             postedRating.UserName = UserName;
