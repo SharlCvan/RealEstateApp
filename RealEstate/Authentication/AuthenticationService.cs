@@ -35,7 +35,7 @@ namespace RealEstate.Authentication
         /// <returns></returns>
         public async Task<AuthResponseContainer> Login(UserForAuthenticationDto userForAuthentication)
         {
-            //Serializes the UserForAuthenticationDTO to a dictionary to easily be able to encode it to x-www-form-urlencoded httpmessage body
+            //Serializes the UserForAuthenticationDTO to a dictionary to easily be able to encode it to x-www-form-urlencoded in HttpRequestMessage body
             var content = JsonSerializer.Serialize(userForAuthentication);
             var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(content);
 
@@ -49,7 +49,7 @@ namespace RealEstate.Authentication
 
             if (!authResult.IsSuccessStatusCode)
             {
-                //Adds a error message if there is some undefined error has happened
+                //Adds a error message if some undefined error has happened and no error messsage is recieved from API
                 if (resultContainer.Values == null)
                 {
                     resultContainer.Values = new AuthResponseDto();
@@ -65,6 +65,7 @@ namespace RealEstate.Authentication
             await _localStorage.SetItemAsync("authToken", resultContainer.Values.AcessToken);
             await _localStorage.SetItemAsync("userName", resultContainer.Values.UserName);
             await _localStorage.SetItemAsync("authorizationExpires", resultContainer.Values.Expires);
+
 
             ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userForAuthentication.UserName);
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", resultContainer.Values.AcessToken);

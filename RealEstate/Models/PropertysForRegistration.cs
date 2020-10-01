@@ -26,8 +26,6 @@ namespace RealEstate.Models
         [Required(ErrorMessage = "A description is required.")]
         public string Description { get; set; }
 
-        public int Id { get; set; }
-
         [MaxLength(50, ErrorMessage = "Title can not contain more than 50 characters")]
         [MinLength(5, ErrorMessage = "Title must contain at least 3 characters.")]
         [Required(ErrorMessage = "A title is required.")]
@@ -52,6 +50,5 @@ namespace RealEstate.Models
         [Required(ErrorMessage = "Enter a valid city name.")]
         public string City { get; set; }
 
-        public List<string> Urls { get; set; }
     }
 }

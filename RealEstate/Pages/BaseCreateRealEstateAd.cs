@@ -63,8 +63,8 @@ namespace RealEstate.Pages
             }
             else
             {
-                //TO:DO Redirect to real estate details page?
-                NavigationManager.NavigateTo("/Login");
+                //Redirects to the realEstateDetails page for that newly created RealEstate
+                NavigationManager.NavigateTo($"/RealEstate/{result.Id}");
             }
         }
 

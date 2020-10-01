@@ -23,7 +23,7 @@ namespace RealEstate.Authentication
         }
 
         /// <summary>
-        /// Overides the regular method and bases the authentication on this program.
+        /// Overides the regular method and bases the authentication on this method.
         /// </summary>
         /// <returns></returns>
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -36,7 +36,12 @@ namespace RealEstate.Authentication
                 return _anonymous;
             //Sets the current users authorization token to be the default authorization token of the http client.
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
+
+            //return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
+
+
+            // TODO: Check if return method below can be used to successfully authorize a user. Thus rendering "NotifyUserAuthentication", "NotifyUserLogOut", "JWTParser" useless and removeable. First try 
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity("jwtAuthType")));
         }
 
         /// <summary>
