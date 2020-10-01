@@ -1,6 +1,10 @@
 ﻿@inject NavigationManager Navigation
 
 @code {
+
+    /// <summary>
+    /// Redirects the user back to the page it tried to access, only after successful login.
+    /// </summary>
     protected override void OnInitialized()
     {
         Navigation.NavigateTo($"login?returnUrl=" +

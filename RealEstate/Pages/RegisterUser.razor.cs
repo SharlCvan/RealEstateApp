@@ -47,7 +47,8 @@ namespace RealEstate.Pages
             else
             {
                 var userLoggedIn = await RealEstateService.UserLoggedInAndValid();
-
+                
+                //If the user is logged in a message is created that the new user has sucessfully been created and redirects to Registration page. If user wants to register another user.
                 if(userLoggedIn)
                 {
                     ShowRegistrationMessage = true;
