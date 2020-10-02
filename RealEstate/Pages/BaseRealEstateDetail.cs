@@ -23,6 +23,14 @@ namespace RealEstate.Pages
         [Parameter]
         public string Id { get; set; }
 
+        public List<Comment> RealEstateComments { get; set; } = new List<Comment>();
+
+        public CommentsPaging commentsPaging { get; set; } = new CommentsPaging();
+
+        public int totalpages;
+
+        public int currentPage = 1;
+
         protected async override Task OnInitializedAsync()
         {
             RealEstate.Comments = new List<Comment>();

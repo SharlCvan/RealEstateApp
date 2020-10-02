@@ -25,6 +25,14 @@
                 </div>
             }
         </div>
+        <ul class="pagination justify-content-center">
+            @foreach (var link in Links)
+            {
+                <li @onclick="@(() => SelectedPageInternal(link))" style="cursor: pointer;" class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
+                    <span class="page-link" href="#">@link.Text</span>
+                </li>
+            }
+        </ul>
 
         @if (EnablePostComment)
         {

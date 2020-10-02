@@ -18,21 +18,38 @@ namespace RealEstate.Pages
 
         public List<Comment> UserComments { get; set; } = new List<Comment>();
 
+        public CommentsPaging commentsPaging { get; set; } = new CommentsPaging();
+
         public PostedRating postedRating { get; set; } = new PostedRating();
 
         [Parameter]
         public string UserName { get; set; }
 
+
+        public int totalpages;
+
+        public int currentPage = 1;
+
+
         protected async override Task OnInitializedAsync()
         {
             User = await RealEstateService.GetUser(UserName);
-            UserComments = await RealEstateService.GetUserComments(UserName);
+
+            await LoadComments();
         }
 
-        public async void AddNewComments(int count)
+        public async Task SelectedPage(int page)
         {
+            currentPage = page;
+            await LoadComments(page);
+        }
 
-            UserComments.AddRange(await RealEstateService.GetUserComments(UserName));
+        public async Task LoadComments(int page = 1, int quantityPerPage = 4)
+        {
+            commentsPaging = await RealEstateService.GetUserComments(UserName, page, quantityPerPage);
+
+            UserComments = commentsPaging.Comments;
+            totalpages = commentsPaging.TotalPages;
         }
 
         public async Task RateUser(int rating)

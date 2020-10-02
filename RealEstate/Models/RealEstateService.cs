@@ -133,9 +133,54 @@ namespace RealEstate.Models
             return result;
         }
 
-        public async Task<List<Comment>> GetUserComments(string UserName)
+        public async Task<CommentsPaging> GetUserComments(string UserName, int page, int quantityPerPage)
         {
-            return await http.GetFromJsonAsync<List<Comment>>($"Comments/byuser/{UserName}");
+             int skip = (page - 1) * quantityPerPage;
+             var httpResponse = await http.GetAsync($"Comments/byuser/{UserName}?skip={skip}&take={quantityPerPage}");
+
+            if(httpResponse.IsSuccessStatusCode)
+            {
+                var commentsPaging = new CommentsPaging();
+
+                //commentsPaging.TotalPages = int.Parse(httpResponse.Headers.GetValues("pagesQuantity").FirstOrDefault());
+                commentsPaging.TotalPages = 2;
+
+                var responseString = await httpResponse.Content.ReadAsStringAsync();
+
+                commentsPaging.Comments = JsonSerializer.Deserialize<List<Comment>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true } );
+
+                return commentsPaging;
+            }
+            else
+            {
+                //Error
+                return null;
+            }
+        }
+
+        public async Task<CommentsPaging> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage)
+        {
+            int skip = (page - 1) * quantityPerPage;
+            var httpResponse = await http.GetAsync($"Comments/byuser/{RealEstateId}?skip={skip}&take={quantityPerPage}");
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var commentsPaging = new CommentsPaging();
+
+                //commentsPaging.TotalPages = int.Parse(httpResponse.Headers.GetValues("pagesQuantity").FirstOrDefault());
+                commentsPaging.TotalPages = 2;
+
+                var responseString = await httpResponse.Content.ReadAsStringAsync();
+
+                commentsPaging.Comments = JsonSerializer.Deserialize<List<Comment>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return commentsPaging;
+            }
+            else
+            {
+                //Error
+                return null;
+            }
         }
     }
 }
