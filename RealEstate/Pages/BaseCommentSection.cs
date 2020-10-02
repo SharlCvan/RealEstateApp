@@ -125,5 +125,5 @@ namespace RealEstate.Pages
 
     }
 
-    //Todo: få Next att funka, Highlighta nästa page när du väljer den
+    
 }

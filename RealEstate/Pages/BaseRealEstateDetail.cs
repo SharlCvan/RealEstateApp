@@ -31,13 +31,30 @@ namespace RealEstate.Pages
 
         public int currentPage = 1;
 
+        public async Task SelectedPage(int page)
+        {
+            currentPage = page;
+            await LoadComments(page);
+        }
+
+        public async Task LoadComments(int page = 1, int quantityPerPage = 4)
+        {
+            commentsPaging = await RealEstateService.GetRealEstateComments(Id, page, quantityPerPage);
+
+            RealEstateComments = commentsPaging.Comments;
+            totalpages = commentsPaging.TotalPages;
+        }
+
         protected async override Task OnInitializedAsync()
         {
             RealEstate.Comments = new List<Comment>();
             RealEstate.Urls = new List<string>();
             NewComment.Errors = new List<string>();
+
             RealEstate = await RealEstateService.GetRealEstate(int.Parse(Id));
             RealEstate.Urls.Add(RealEstate.ListingURL);
+
+            await LoadComments();
         }
 
     }

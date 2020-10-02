@@ -161,7 +161,7 @@ namespace RealEstate.Models
         public async Task<CommentsPaging> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage)
         {
             int skip = (page - 1) * quantityPerPage;
-            var httpResponse = await http.GetAsync($"Comments/byuser/{RealEstateId}?skip={skip}&take={quantityPerPage}");
+            var httpResponse = await http.GetAsync($"Comments/{RealEstateId}?skip={skip}&take={quantityPerPage}");
 
             if (httpResponse.IsSuccessStatusCode)
             {

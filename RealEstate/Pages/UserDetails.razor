@@ -34,21 +34,45 @@ else
             }
             <div class="card-body star-rating">
                 <h4>Rate User:</h4>
-                <i @onclick="@(() => RateUser(1))" class="fas fa-star"></i>
+                <i @onclick="@(() => RateUser(1))" data-toggle="modal" data-target="#exampleModalCenter" class="fas fa-star"></i>
                 <i @onclick="@(() => RateUser(2))" class="fas fa-star"></i>
                 <i @onclick="@(() => RateUser(3))" class="fas fa-star"></i>
                 <i @onclick="@(() => RateUser(4))" class="fas fa-star"></i>
-                <i @onclick="@(() => RateUser(5))" class="fas fa-star"></i>
+                <i @onclick="@(() => RateUser(5))" data-toggle="modal" data-target="#exampleModalCenter" class="fas fa-star"></i>
             </div>
-            <a onclick="window.history.back()" class="btn btn-primary UserBackBtn">Back to Real Estate</a>
+            <a onclick="window.history.back()" class="btn btn-primary UserBackBtn active">Back to Real Estate</a>
         </div>
     </div>
 
-    <CommentSection Comments="@UserComments" RealEstateId="@UserName" EnablePostComment="@false" 
+    <CommentSection Comments="@UserComments" RealEstateId="@UserName" EnablePostComment="@false"
                     TotalPages="@totalpages" CurrentPage="@currentPage" Radius="2" SelectedPade="@SelectedPage"></CommentSection>
-}
 
-@*//Todo:
-    Kolla upp Pigination
-    - Få rating PUT att funka utan CORS problem (Eller vänta tills riktiga API funkar)
-*@
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Thank you for your opinion!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if (RatingResult.PostRatingSuccess)
+                    {
+                        <h3 class="alert-success">Your gave a rating of @postedRating.Value</h3>
+                    }
+                    else
+                    {
+                        <h3 class="alert-danger">Sorry! Couldnt post your rating at this time... Please try again later</h3>
+                    }
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    //Todo: Fix rating response to only display succes or failre, not both
+}

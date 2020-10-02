@@ -169,7 +169,8 @@ else
     </div>
 
     @*<AuthorizeView>*@
-      <CommentSection Comments="@RealEstate.Comments" RealEstateId="@Id" EnablePostComment="@true"></CommentSection>
+      <CommentSection Comments="@RealEstateComments" RealEstateId="@Id" EnablePostComment="@true"
+                      TotalPages="@totalpages" CurrentPage="@currentPage" Radius="2" SelectedPade="@SelectedPage"></CommentSection>
     @*</AuthorizeView>*@
 
 

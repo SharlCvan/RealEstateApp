@@ -52,12 +52,13 @@ namespace RealEstate.Pages
             totalpages = commentsPaging.TotalPages;
         }
 
+
+
         public async Task RateUser(int rating)
         {
             postedRating.UserName = UserName;
             postedRating.Value = rating;
             RatingResult = await RealEstateService.RateUser(postedRating);
-            //Todo: Add confirmation on rating succes or failure
         }
     }
 }
