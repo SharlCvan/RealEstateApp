@@ -160,3 +160,30 @@
     max-height: 400px;
     overflow-x: hidden;
 }
+
+
+.image-slider > div {
+    object-fit: cover;    
+    overflow: hidden;
+}
+
+.image-slider > div > img {
+    height: 800px;
+    margin-top: -250px; /* Half the height */
+}
+
+
+
+@media (max-width: 768px) {
+    .image-slider > div > img {
+        height: 600px;
+        margin-top: -150px; /* Half the height */
+    }
+}
+
+@media (max-width: 576px) {
+    .image-slider > div > img {
+        height: 400px;
+        margin-top: -100px; /* Half the height */
+    }
+}

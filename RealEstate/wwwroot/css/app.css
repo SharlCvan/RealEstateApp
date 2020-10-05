@@ -172,9 +172,9 @@ app {
         padding-right: 1.5rem !important;
     }
 
-    .navbar-toggler {
+    /*.navbar-toggler {
         display: none;
-    }
+    }*/
 
     .sidebar .collapse {
         /* Never collapse the sidebar for wide screens */
@@ -201,6 +201,12 @@ app {
         100% {
             transform: rotate(360deg)
         }
+    }
+}
+
+@media(min-width: 999px) {
+    .navbar-toggler {
+        display: none;
     }
 }
 

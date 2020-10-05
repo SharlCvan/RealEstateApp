@@ -28,7 +28,7 @@ else
                                 }
                             }
                         </ol>
-                        <div class="carousel-inner w-auto">
+                        <div class="carousel-inner w-auto image-slider">
                             @for (int i = 0; i < RealEstate.Urls.Count; i++)
                             {
                                 if (i == 0)
@@ -87,11 +87,11 @@ else
                                         </tr>
                                         <tr>
                                             <th scope="row">Rent per month:</th>
-                                            <td>@string.Format("{0:N} kr", @RealEstate.RentingPrice)</td>
+                                            <td>@(RealEstate.CanBeRented ? string.Format("{0:N} kr", @RealEstate.RentingPrice) : "Not for Rent")</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Starting bid:</th>
-                                            <td>@string.Format("{0:N} kr", @RealEstate.SellingPrice)</td>
+                                            <td>@(RealEstate.CanBeSold ? string.Format("{0:N} kr", @RealEstate.SellingPrice) : "Not for Sale")</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Rooms:</th>
