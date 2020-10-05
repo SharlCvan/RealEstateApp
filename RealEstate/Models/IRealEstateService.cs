@@ -13,7 +13,7 @@ namespace RealEstate.Models
 
         public Task<Comment> PostComment(PostedComment comment);
 
-        public Task<Propertys> PostANewRealEstate(Propertys newRealEstate);
+        public Task<PropertysForRegistration> PostANewRealEstate(PropertysForRegistration newRealEstate);
         public Task<bool> UserLoggedInAndValid();
     }
 }

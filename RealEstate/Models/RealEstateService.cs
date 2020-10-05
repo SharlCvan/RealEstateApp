@@ -51,24 +51,27 @@ namespace RealEstate.Models
             return JsonSerializer.Deserialize<List<Propertys>>(jsonString);
         }
 
-        public async Task<Propertys> PostANewRealEstate(Propertys newRealEstate)
+        public async Task<PropertysForRegistration> PostANewRealEstate(PropertysForRegistration newRealEstateToRegister)
         {
 
-            var serializedRealEstate = JsonSerializer.Serialize(newRealEstate);
+            var serializedRealEstate = JsonSerializer.Serialize(newRealEstateToRegister);
             var bodyContent = new StringContent(serializedRealEstate, Encoding.UTF8, "application/json");
 
             var postResult = await http.PostAsync("api/RealEstates", bodyContent);
 
             var authContent = await postResult.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<Propertys>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var result = JsonSerializer.Deserialize<PropertysForRegistration>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             if (!postResult.IsSuccessStatusCode)
             {
                 //Adds a error message if there is some undefined error that has happened
                 if (result.Errors == null)
                 {
-                    result.Errors = new List<string>();
-                    result.Errors.Add("There has been some networking error, please check connection and try again.");
+                    result.Errors = new Dictionary<string, string[]>();
+
+                    string[] errorArray = { "There has been some networking error, please check connection and try again." };
+
+                    result.Errors.Add("Error", errorArray );
                 }
                 result.IsSuccessfulRegistration = false;
             }

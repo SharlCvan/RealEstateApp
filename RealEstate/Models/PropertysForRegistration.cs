@@ -21,10 +21,15 @@ namespace RealEstate.Models
         [Required(ErrorMessage = "A real estate type must be given.")]
         public RealEstateTypes RealEstateType { get; set; }
 
+        //Holds info of which RealEstateType the realestate is. Needs to be a regular int instead of enum to serialize correctly.
+        public int Type { get; set; }
+
         [MaxLength(1000, ErrorMessage = "Description can not contain more than 1000 characters")]
         [MinLength(10, ErrorMessage = "Description must contain at least 10 characters.")]
         [Required(ErrorMessage = "A description is required.")]
         public string Description { get; set; }
+
+        public int Id { get; set; }
 
         [MaxLength(50, ErrorMessage = "Title can not contain more than 50 characters")]
         [MinLength(5, ErrorMessage = "Title must contain at least 3 characters.")]
@@ -38,6 +43,7 @@ namespace RealEstate.Models
 
         public bool CanBeRented { get; set; }
 
+        //Holds which url is the first promotional picture required to post a realestatead with us.
         [Url(ErrorMessage = "Please enter a valid URL.")]
         public string ListingURL { get; set; }
 
@@ -49,6 +55,19 @@ namespace RealEstate.Models
 
         [Required(ErrorMessage = "Enter a valid city name.")]
         public string City { get; set; }
+
+        public int? SellingPrice { get; set; }
+
+        public int? RentingPrice { get; set; }
+
+        //Contains the urls for secondary pictures sent along with the realestatead
+        public List<string> Urls { get; set; }
+
+        
+        public bool IsSuccessfulRegistration { get; set; }
+
+        //Holds error messages if anything with the registration goes wrong
+        public Dictionary<string,string[]> Errors { get; set; }
 
     }
 }

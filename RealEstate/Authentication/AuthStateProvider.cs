@@ -37,10 +37,7 @@ namespace RealEstate.Authentication
             //Sets the current users authorization token to be the default authorization token of the http client.
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
-            //return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
 
-
-            // TODO: Check if return method below can be used to successfully authorize a user. Thus rendering "NotifyUserAuthentication", "NotifyUserLogOut", "JWTParser" useless and removeable. First try 
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity("jwtAuthType")));
         }
 

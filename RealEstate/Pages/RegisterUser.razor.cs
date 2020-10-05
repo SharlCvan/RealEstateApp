@@ -22,7 +22,7 @@ namespace RealEstate.Pages
 
         //Holds any information about a request that has rendered an error
         public bool ShowRegistrationErros { get; set; }
-        public IEnumerable<string> Errors { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
 
         //Holds a registration message which is displayed to a user after sucessfull login. Ex. a logged in user registers another new user.
         public bool ShowRegistrationMessage { get; set; }
@@ -39,9 +39,14 @@ namespace RealEstate.Pages
 
 
             var result = await AuthenticationService.RegisterUser(_userForRegistrationDto);
-            if (!result.succeeded)
+            if (!result.Succeeded)
             {
-                Errors = result.Errors;
+                //Handles the event of a non sucessfull post to the api
+                foreach (var error in result.Errors)
+                {
+                    Errors.Add(error.Value[0]);
+                }
+
                 ShowRegistrationErros = true;
             }
             else
@@ -54,7 +59,7 @@ namespace RealEstate.Pages
                     ShowRegistrationMessage = true;
                     registrationMessage = $"User \"{_userForRegistrationDto.UserName}\"has been sucessfully registered.";
 
-                    NavigationManager.NavigateTo("/Registration");
+                    ClearForm();
                 }
                 else 
                 {
