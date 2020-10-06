@@ -1,15 +1,15 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace RealEstate.Models
 {
@@ -41,7 +41,10 @@ namespace RealEstate.Models
 
         public async Task<Propertys> GetRealEstate(int id)
         {
-            return await http.GetFromJsonAsync<Propertys>($"api/RealEstates/{id}");
+            HttpResponseMessage task = await http.GetAsync($"api/RealEstates/{id}");
+            string jsonString = await task.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<Propertys>(jsonString);
         }
 
         public async Task<IEnumerable<Propertys>> GetRealEstates(int page, int quantityPerPage)
@@ -49,7 +52,8 @@ namespace RealEstate.Models
             HttpResponseMessage task = await http.GetAsync($"api/RealEstates?skip={(page - 1) * quantityPerPage}&take={quantityPerPage}");
             string jsonString = await task.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<List<Propertys>>(jsonString);
+            return JsonConvert.DeserializeObject<List<Propertys>>(jsonString);
+
         }
 
         public async Task<int> GetTotalPages()
@@ -65,13 +69,13 @@ namespace RealEstate.Models
         public async Task<PropertysForRegistration> PostANewRealEstate(PropertysForRegistration newRealEstateToRegister)
         {
 
-            var serializedRealEstate = JsonSerializer.Serialize(newRealEstateToRegister);
+            var serializedRealEstate = System.Text.Json.JsonSerializer.Serialize(newRealEstateToRegister);
             var bodyContent = new StringContent(serializedRealEstate, Encoding.UTF8, "application/json");
 
             var postResult = await http.PostAsync("api/RealEstates", bodyContent);
 
             var authContent = await postResult.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<PropertysForRegistration>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var result = System.Text.Json.JsonSerializer.Deserialize<PropertysForRegistration>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             if (!postResult.IsSuccessStatusCode)
             {
@@ -82,7 +86,7 @@ namespace RealEstate.Models
 
                     string[] errorArray = { "There has been some networking error, please check connection and try again." };
 
-                    result.Errors.Add("Error", errorArray );
+                    result.Errors.Add("Error", errorArray);
                 }
                 result.IsSuccessfulRegistration = false;
             }
@@ -94,13 +98,13 @@ namespace RealEstate.Models
 
         public async Task<Comment> PostComment(PostedComment comment)
         {
-            var serializedComment = JsonSerializer.Serialize(comment);
+            var serializedComment = System.Text.Json.JsonSerializer.Serialize(comment);
             var bodyContent = new StringContent(serializedComment, Encoding.UTF8, "application/json");
 
             var postResult = await http.PostAsync("api/comments", bodyContent);
 
             var authContent = await postResult.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<Comment>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var result = System.Text.Json.JsonSerializer.Deserialize<Comment>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             if (postResult.IsSuccessStatusCode)
             {
@@ -117,13 +121,13 @@ namespace RealEstate.Models
 
         public async Task<PostedRating> RateUser(PostedRating postedRating)
         {
-            var serializedComment = JsonSerializer.Serialize(postedRating);
+            var serializedComment = System.Text.Json.JsonSerializer.Serialize(postedRating);
             var bodyContent = new StringContent(serializedComment, Encoding.UTF8, "application/json");
 
             var putResult = await http.PutAsync("api/Users/rate", bodyContent);
 
             var authContent = await putResult.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<PostedRating>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var result = System.Text.Json.JsonSerializer.Deserialize<PostedRating>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             if (putResult.IsSuccessStatusCode)
             {
@@ -135,10 +139,11 @@ namespace RealEstate.Models
 
         public async Task<CommentsPaging> GetUserComments(string UserName, int page, int quantityPerPage)
         {
-             int skip = (page - 1) * quantityPerPage;
-             var httpResponse = await http.GetAsync($"api/Comments/byuser/{UserName}?skip={skip}&take={quantityPerPage}");
+            int skip = (page - 1) * quantityPerPage;
 
-            if(httpResponse.IsSuccessStatusCode)
+            var httpResponse = await http.GetAsync($"api/Comments/byuser/{UserName}?skip={skip}&take={quantityPerPage}");
+
+            if (httpResponse.IsSuccessStatusCode)
             {
                 var commentsPaging = new CommentsPaging();
 
@@ -147,7 +152,7 @@ namespace RealEstate.Models
 
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
-                commentsPaging.Comments = JsonSerializer.Deserialize<List<Comment>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true } );
+                commentsPaging.Comments = JsonConvert.DeserializeObject<List<Comment>>(responseString);
 
                 return commentsPaging;
             }
@@ -172,7 +177,7 @@ namespace RealEstate.Models
 
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
-                commentsPaging.Comments = JsonSerializer.Deserialize<List<Comment>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                commentsPaging.Comments = JsonConvert.DeserializeObject<List<Comment>>(responseString);
 
                 return commentsPaging;
             }

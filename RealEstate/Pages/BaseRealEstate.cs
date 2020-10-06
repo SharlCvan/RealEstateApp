@@ -15,18 +15,19 @@ namespace RealEstate.Pages
 
         public int TotalPagesQuantity { get; set; }
         public int CurrentPage { get; set; } = 1;
+        public int QuantityPerPage { get; set; } = 5;
         public List<Propertys> RealEstates { get; set; } = new List<Propertys>();
         public List<Propertys> SearchResults { get; set; } = new List<Propertys>();
 
         protected override async Task OnInitializedAsync()
         {
-            TotalPagesQuantity = await RealEstateServices.GetTotalPages();
+            TotalPagesQuantity = (int)Math.Ceiling((decimal)await RealEstateServices.GetTotalPages() / QuantityPerPage);
             await LoadRealEstates();
         }
 
-        private async Task LoadRealEstates(int page = 1, int quantityPerPage = 5)
+        private async Task LoadRealEstates(int page = 1)
         {
-            RealEstates = (await RealEstateServices.GetRealEstates(page, quantityPerPage)).ToList();
+            RealEstates = (await RealEstateServices.GetRealEstates(page, QuantityPerPage)).ToList();
         }
 
         public async Task SelectedPage(int page)
