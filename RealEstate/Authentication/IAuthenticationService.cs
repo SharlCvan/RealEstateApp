@@ -11,5 +11,7 @@ namespace RealEstate.Authentication
         Task<RegisrationResponseDto> RegisterUser(UserForRegistrationDto userForRegistration);
         Task<AuthResponseContainer> Login(UserForAuthenticationDto userForAuthentication);
         Task Logout();
+
+        event EventHandler UpdateNavUI;
     }
 }

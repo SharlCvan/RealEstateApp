@@ -34,6 +34,7 @@ namespace RealEstate.Pages
         /// <returns></returns>
         public async Task Register()
         {
+            Errors = new List<string>();
             ShowRegistrationErros = false;
             ShowRegistrationMessage = false;
 
