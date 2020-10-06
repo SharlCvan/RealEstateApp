@@ -54,7 +54,7 @@ namespace RealEstate.Models
 
         public async Task<int> GetTotalPages()
         {
-            HttpResponseMessage task = await http.GetAsync("TotalPages");
+            HttpResponseMessage task = await http.GetAsync("RealEstates/count");
             string jsonString = await task.Content.ReadAsStringAsync();
 
             int pageCount = int.Parse(jsonString);

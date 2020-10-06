@@ -20,8 +20,7 @@ namespace RealEstate.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            //TotalPagesQuantity = await RealEstateServices.GetTotalPages();
-            TotalPagesQuantity = 2;
+            TotalPagesQuantity = await RealEstateServices.GetTotalPages();
             await LoadRealEstates();
         }
 
