@@ -39,6 +39,7 @@ namespace RealEstate.Pages
 
         public async Task LoadComments(int page = 1, int quantityPerPage = 4)
         {
+            //TODO: HÄR CARL FIXA DETTA FÖFFAN
             commentsPaging = await RealEstateService.GetRealEstateComments(Id, page, quantityPerPage);
 
             RealEstateComments = commentsPaging.Comments;
@@ -51,10 +52,12 @@ namespace RealEstate.Pages
 
             RealEstate.Urls = new List<string>();
 
-            UserName = RealEstate.UserName;
-
+            
             RealEstate = await RealEstateService.GetRealEstate(int.Parse(Id));
+
             RealEstate.Urls.Add(RealEstate.ListingURL);
+
+            UserName = RealEstate.UserName;
 
             await LoadComments();
         }
