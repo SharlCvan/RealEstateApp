@@ -44,12 +44,22 @@ namespace RealEstate.Models
             return await http.GetFromJsonAsync<Propertys>($"RealEstate/{id}");
         }
 
-        public async Task<IEnumerable<Propertys>> GetRealEstates()
+        public async Task<IEnumerable<Propertys>> GetRealEstates(int page, int quantityPerPage)
         {
-            HttpResponseMessage task = await http.GetAsync("RealEstates");
+            HttpResponseMessage task = await http.GetAsync($"RealEstates?skip={(page - 1) * quantityPerPage}&take={quantityPerPage}");
             string jsonString = await task.Content.ReadAsStringAsync();
 
             return JsonSerializer.Deserialize<List<Propertys>>(jsonString);
+        }
+
+        public async Task<int> GetTotalPages()
+        {
+            HttpResponseMessage task = await http.GetAsync("TotalPages");
+            string jsonString = await task.Content.ReadAsStringAsync();
+
+            int pageCount = int.Parse(jsonString);
+
+            return pageCount;
         }
 
         public async Task<PropertysForRegistration> PostANewRealEstate(PropertysForRegistration newRealEstateToRegister)
