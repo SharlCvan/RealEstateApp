@@ -137,12 +137,6 @@
     cursor: pointer;
 }
 
-/*Todo: Få stjärnorna att lägga sig rätt*/
-
-/*.star-rating > i:hover:before,
-.star-rating i:hover ~ i:before {
-    color: yellow;
-}*/
 
 .star-rating > i:hover:before {
     color: #FCCD04;
@@ -156,3 +150,38 @@
     cursor: pointer;
 }
 
+.comment-section {
+    max-height: 400px;
+    overflow-x: hidden;
+}
+
+.comment-section ::-webkit-scrollbar {
+        display: none;
+    }
+
+ 
+.image-slider > div {
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.image-slider > div > img {
+    height: 800px;
+    margin-top: -250px; /* Half the height */
+}
+
+
+
+@media (max-width: 768px) {
+    .image-slider > div > img {
+        height: 600px;
+        margin-top: -150px; /* Half the height */
+    }
+}
+
+@media (max-width: 576px) {
+    .image-slider > div > img {
+        height: 400px;
+        margin-top: -100px; /* Half the height */
+    }
+}

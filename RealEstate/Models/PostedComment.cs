@@ -11,7 +11,7 @@ namespace RealEstate.Models
         public int? RealEstateId { get; set; }
 
         [Required(ErrorMessage = "Input text to comment")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "minimum 5 charracter and Max 50 charracters")]
+        [StringLength(500, MinimumLength = 10, ErrorMessage = "minimum 10 charracter and Max 500 charracters")]
         public string Content { get; set; }
     }
 }

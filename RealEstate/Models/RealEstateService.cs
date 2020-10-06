@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,6 +99,74 @@ namespace RealEstate.Models
         public async Task<User> GetUser(string UserName)
         {
             return await http.GetFromJsonAsync<User>($"Users/{UserName}");
+        }
+
+        public async Task<PostedRating> RateUser(PostedRating postedRating)
+        {
+            var serializedComment = JsonSerializer.Serialize(postedRating);
+            var bodyContent = new StringContent(serializedComment, Encoding.UTF8, "application/json");
+
+            var putResult = await http.PutAsync("Users/rate", bodyContent);
+
+            var authContent = await putResult.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<PostedRating>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (putResult.IsSuccessStatusCode)
+            {
+                result.PostRatingSuccess = true;
+            }
+
+            return result;
+        }
+
+        public async Task<CommentsPaging> GetUserComments(string UserName, int page, int quantityPerPage)
+        {
+             int skip = (page - 1) * quantityPerPage;
+             var httpResponse = await http.GetAsync($"Comments/byuser/{UserName}?skip={skip}&take={quantityPerPage}");
+
+            if(httpResponse.IsSuccessStatusCode)
+            {
+                var commentsPaging = new CommentsPaging();
+
+                //commentsPaging.TotalPages = int.Parse(httpResponse.Headers.GetValues("pagesQuantity").FirstOrDefault());
+                commentsPaging.TotalPages = 2;
+
+                var responseString = await httpResponse.Content.ReadAsStringAsync();
+
+                commentsPaging.Comments = JsonSerializer.Deserialize<List<Comment>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true } );
+
+                return commentsPaging;
+            }
+            else
+            {
+                //Error
+                return null;
+            }
+        }
+
+        public async Task<CommentsPaging> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage)
+        {
+            int skip = (page - 1) * quantityPerPage;
+            var httpResponse = await http.GetAsync($"Comments/{RealEstateId}?skip={skip}&take={quantityPerPage}");
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var commentsPaging = new CommentsPaging();
+
+                //commentsPaging.TotalPages = int.Parse(httpResponse.Headers.GetValues("pagesQuantity").FirstOrDefault());
+                commentsPaging.TotalPages = 2;
+
+                var responseString = await httpResponse.Content.ReadAsStringAsync();
+
+                commentsPaging.Comments = JsonSerializer.Deserialize<List<Comment>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return commentsPaging;
+            }
+            else
+            {
+                //Error
+                return null;
+            }
         }
     }
 }
