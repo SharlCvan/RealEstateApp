@@ -20,11 +20,12 @@ namespace RealEstate.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            TotalPagesQuantity = await RealEstateServices.GetTotalPages();
+            //TotalPagesQuantity = await RealEstateServices.GetTotalPages();
+            TotalPagesQuantity = 2;
             await LoadRealEstates();
         }
 
-        private async Task LoadRealEstates(int page = 1, int quantityPerPage = 3)
+        private async Task LoadRealEstates(int page = 1, int quantityPerPage = 5)
         {
             RealEstates = (await RealEstateServices.GetRealEstates(page, quantityPerPage)).ToList();
         }
