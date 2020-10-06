@@ -137,12 +137,6 @@
     cursor: pointer;
 }
 
-/*Todo: Få stjärnorna att lägga sig rätt*/
-
-/*.star-rating > i:hover:before,
-.star-rating i:hover ~ i:before {
-    color: yellow;
-}*/
 
 .star-rating > i:hover:before {
     color: #FCCD04;
@@ -161,9 +155,13 @@
     overflow-x: hidden;
 }
 
+.comment-section ::-webkit-scrollbar {
+        display: none;
+    }
 
+ 
 .image-slider > div {
-    object-fit: cover;    
+    object-fit: cover;
     overflow: hidden;
 }
 

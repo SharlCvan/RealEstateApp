@@ -7,8 +7,19 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Pages
 {
-    public class BaseCommentSection : ComponentBase
+    public partial class BaseCommentSection : ComponentBase
     {
+        [Parameter]
+        public string Id { get; set; }
+
+        [Parameter]
+        public bool EnablePostComment { get; set; }
+
+        public PostedComment postedComment { get; set; } = new PostedComment();
+
+        [Parameter]
+        public bool PostSuccess { get; set; }
+
         [Parameter]
         public List<Comment> Comments { get; set; } = new List<Comment>();
 
@@ -24,7 +35,11 @@ namespace RealEstate.Pages
         [Parameter]
         public EventCallback<int> SelectedPade { get; set; }
 
+        [Parameter]
+        public EventCallback<PostedComment> SubmittedComment { get; set; }
+
         public List<LinkModel> Links;
+
 
         protected override void OnParametersSet()
         {
@@ -69,58 +84,15 @@ namespace RealEstate.Pages
             Links.Add(new LinkModel(NextPage, isNextPageEnabled, "Next"));
         }
 
-        //For realestateDetails page
-
-        [Parameter]
-        public string RealEstateId { get; set; }
-
-        [Parameter]
-        public bool EnablePostComment { get; set; }
-
-        public Comment NewComment { get; set; } = new Comment();
-        public PostedComment postedComment { get; set; } = new PostedComment();
-
-        //_____________________________
-
-        [Inject]
-        public IRealEstateService RealEstateService { get; set; }
-
-        protected async override Task OnInitializedAsync()
-        {
-            NewComment.Errors = new List<string>();
-        }
-
 
         protected async Task ValidPostComment()
         {
-            //Remove text from form after submit
-            postedComment.RealEstateId = int.Parse(RealEstateId);
-            NewComment = await RealEstateService.PostComment(postedComment);
-        }
+            await SubmittedComment.InvokeAsync(postedComment);
 
-        public class LinkModel
-        {
-            public LinkModel(int page):this(page, true) 
+            if(PostSuccess)
             {
-                
+                postedComment = new PostedComment();
             }
-
-            public LinkModel(int page, bool enabled):this(page, enabled, page.ToString())
-            {
-
-            }
-
-            public LinkModel(int page, bool enabled, string text)
-            {
-                Page = page;
-                Enabled = enabled;
-                Text = text;
-            }
-
-            public string Text { get; set; }
-            public int Page { get; set; }
-            public bool Enabled { get; set; } = true;
-            public bool Active { get; set; } = false;
         }
 
     }

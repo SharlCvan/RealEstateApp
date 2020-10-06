@@ -50,17 +50,6 @@
                 </div>
             </div>
 
-            @if (NewComment.IsSuccesfullCommentPost)
-            {
-                <div class="alert-light"><p>Comment sent succesfully</p></div>
-            }
-            else
-            {
-                @foreach (var error in NewComment.Errors)
-                {
-                    <div class="alert-danger">@error</div>
-                }
-            }
         }
 
     </div>
