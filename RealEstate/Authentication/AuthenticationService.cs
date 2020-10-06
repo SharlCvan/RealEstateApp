@@ -21,6 +21,10 @@ namespace RealEstate.Authentication
         private readonly HttpClient _client;
         private readonly AuthenticationStateProvider _authStateProvider;
         private readonly ILocalStorageService _localStorage;
+
+        //Event to update NavUI
+        public event EventHandler UpdateNavUI;
+
         public AuthenticationService(HttpClient client, AuthenticationStateProvider authStateProvider, ILocalStorageService localStorage)
         {
             _client = client;
@@ -71,12 +75,13 @@ namespace RealEstate.Authentication
             await _localStorage.SetItemAsync("authorizationExpires", resultContainer.Value.Expires);
 
             // TODO: Remove code below if it is not necessary at this time.
-            //((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userForAuthentication.UserName);
+            ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userForAuthentication.UserName);
 
 
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", resultContainer.Value.AcessToken);
 
             resultContainer.Value.IsAuthSuccessful = true;
+            UpdateNavUI.Invoke(true, EventArgs.Empty);
 
             return resultContainer;
         }
@@ -92,9 +97,12 @@ namespace RealEstate.Authentication
             await _localStorage.RemoveItemAsync("authorizationExpires");
 
             // TODO: Remove code below if it is not necessary at this time.
-            //((AuthStateProvider)_authStateProvider).NotifyUserLogout();
+            ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
+            UpdateNavUI.Invoke(false, EventArgs.Empty);
 
             _client.DefaultRequestHeaders.Authorization = null;
+
+
         }
 
         /// <summary>
@@ -135,5 +143,7 @@ namespace RealEstate.Authentication
 
             return result;
         }
+
+        
     }
 }

@@ -20,6 +20,10 @@ namespace RealEstate.Pages
         public NavigationManager NavigationManager { get; set; }
         [Inject]
         public IRealEstateService RealEstateService { get; set; }
+
+        [Parameter]
+        public EventCallback<bool> OnLogin { get; set; }
+
         /// <summary>
         /// Indicates if there are any errors from API when logging in.
         /// </summary>
@@ -44,7 +48,8 @@ namespace RealEstate.Pages
         /// <returns></returns>
         public async Task ExecuteLogin()
         {
-            
+            Errors = new List<string>();
+
             ShowAuthError = false;
             _userForAuthentication.GrantType = "password";
             var result = await AuthenticationService.Login(_userForAuthentication);
@@ -60,6 +65,7 @@ namespace RealEstate.Pages
             }
             else
             {
+                await OnLogin.InvokeAsync(true);
                 NavigationManager.NavigateTo("/");
             }
         }

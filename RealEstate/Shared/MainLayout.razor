@@ -1,96 +1,120 @@
 ﻿@inherits LayoutComponentBase
 @inject Blazored.LocalStorage.ILocalStorageService localstorage
+@inject IAuthenticationService AuthService
+@inject IRealEstateService RealEstateService
 
-    <div class="main">
-        <nav id="layout" class="navbar navbar-expand-lg navbar-light shadow">
-                <a class="navbar-brand page-logo border-primary" href="/home"><i class="fas fa-laptop-house"></i>HEMGET</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+<div class="main">
+    <nav id="layout" class="navbar navbar-expand-lg navbar-light shadow">
+        <a class="navbar-brand page-logo border-primary" href="/home"><i class="fas fa-laptop-house"></i>HEMGET</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li id="nav-link-hover" class="nav-item">
+                    <a href="RealEstates" class="ml-md-auto nav-link active">Real Estates</a>
+                </li>
+                <li id="nav-link-hover" class="nav-item">
+                    <a href="RealEstateAd" class="ml-md-auto nav-link active">Create real estate advert</a>
+                </li>
+
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                @if (!isLoggedIn)
+                {
                     <li id="nav-link-hover" class="nav-item">
-                        <a href="RealEstates" class="ml-md-auto nav-link active">Real Estates</a>
+                        <a href="Login" class="ml-md-auto nav-link active">Login</a>
+                    </li>
+
+                }
+                else
+                {
+                    <li id="nav-link-hover" class="nav-item">
+                        <a href="User/@userName" class="ml-md-auto nav-link active">
+                            @userName
+                        </a>
                     </li>
                     <li id="nav-link-hover" class="nav-item">
-                        <a href="RealEstateAd" class="ml-md-auto nav-link active">Create real estate advert</a>
+                        <a href="Logout" class="ml-md-auto nav-link active">Logout</a>
                     </li>
-
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                    @if (true) //If user is logged in, display log out
-                    {
-                        <li id="nav-link-hover" class="nav-item">
-                            <a href="Login" class="ml-md-auto nav-link active">Login</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li id="nav-link-hover" class="nav-item">
-                            <a href="Logout" class="ml-md-auto nav-link active">
-                                @userName;
-                            </a>
-                        </li>
-                        <li id="nav-link-hover" class="nav-item">
-                            <a href="Logout" class="ml-md-auto nav-link active">Logout</a>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </nav>
-
-        <div class="content px-4 min-vh-100">
-            @Body
+                }
+            </ul>
         </div>
-        <footer id="layout" class="font-small mt-auto">
-            <div class="container">
-                <div class="row pt-4">                    
-                    <div class="col-md-12">
-                        <div class="text-center">
+    </nav>
 
-                            <!-- Facebook -->
-                            <a class="fb-ic btn-hover">
-                                <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-                            </a>
-                            <!-- Twitter -->
-                            <a class="tw-ic btn-hover">
-                                <i class="fab fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-                            </a>
-                            <!-- Google +-->
-                            <a class="gplus-ic btn-hover">
-                                <i class="fab fa-google-plus-g fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-                            </a>
-                            <!--Linkedin -->
-                            <a class="li-ic btn-hover">
-                                <i class="fab fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-                            </a>
-                            <!--Instagram-->
-                            <a class="ins-ic btn-hover">
-                                <i class="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-                            </a>
-                            <!--Pinterest-->
-                            <a class="pin-ic btn-hover">
-                                <i class="fab fa-pinterest fa-lg white-text fa-2x"> </i>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Grid column -->
-                </div>
-            </div>
-            <div class="footer-copyright text-center py-3">
-                © 2020 Copyright:
-            </div>
-        </footer>
+    <div class="content px-4 min-vh-100">
+        @Body
     </div>
+    <footer id="layout" class="font-small mt-auto">
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col-md-12">
+                    <div class="text-center">
 
-@code{      
+                        <!-- Facebook -->
+                        <a class="fb-ic btn-hover">
+                            <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                        </a>
+                        <!-- Twitter -->
+                        <a class="tw-ic btn-hover">
+                            <i class="fab fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                        </a>
+                        <!-- Google +-->
+                        <a class="gplus-ic btn-hover">
+                            <i class="fab fa-google-plus-g fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                        </a>
+                        <!--Linkedin -->
+                        <a class="li-ic btn-hover">
+                            <i class="fab fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                        </a>
+                        <!--Instagram-->
+                        <a class="ins-ic btn-hover">
+                            <i class="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                        </a>
+                        <!--Pinterest-->
+                        <a class="pin-ic btn-hover">
+                            <i class="fab fa-pinterest fa-lg white-text fa-2x"> </i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Grid column -->
+            </div>
+        </div>
+        <div class="footer-copyright text-center py-3">
+            © 2020 Copyright:
+        </div>
+    </footer>
+</div>
+
+@code{
+
+
 
     public string userName { get; set; }
 
+    public bool isLoggedIn { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        userName = await localstorage.GetItemAsync<string>("name");
+        await UpdateUser();
+
+        AuthService.UpdateNavUI += UpdateUI;
 
         base.OnInitialized();
+    }
+
+
+    public void UpdateUI(object o, EventArgs e)
+    {
+        UpdateUser();
+    }
+
+    public async Task UpdateUser()
+    {
+        userName = await localstorage.GetItemAsync<string>("userName");
+
+        isLoggedIn = await RealEstateService.UserLoggedInAndValid();
+
+        StateHasChanged();
     }
 }

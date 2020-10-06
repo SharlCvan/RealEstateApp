@@ -48,6 +48,7 @@ namespace RealEstate.Pages
         /// <returns></returns>
         public async Task Register()
         {
+            Errors = new List<string>();
             ShowRegistrationErros = false;
 
             var PropertyForRegistration = ConvertToValidPropertysForRegistration(this.PropertyForRegistration);
