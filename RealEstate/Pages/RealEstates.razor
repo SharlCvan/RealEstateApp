@@ -13,13 +13,18 @@
 
 else
 {
-    if(SearchResults.Count() == 0)
+    if (RealEstates.Count() == 0)
     {
         <p>No real estates found...</p>
     }
+
     <div class="container">
 
-        <RealEstateList Estates="SearchResults"></RealEstateList>
+        <RealEstateList Estates="RealEstates"></RealEstateList>
 
     </div>
+
+    <Pagination TotalPagesQuantity="TotalPagesQuantity" CurrentPage="CurrentPage" Radius="2" SelectedPage="SelectedPage">
+
+    </Pagination>
 }

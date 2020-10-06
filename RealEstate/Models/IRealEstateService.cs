@@ -7,7 +7,8 @@ namespace RealEstate.Models
 {
     public interface IRealEstateService  
     {
-        public Task<IEnumerable<Propertys>> GetRealEstates();
+        public Task<IEnumerable<Propertys>> GetRealEstates(int page, int quantityPerPage);
+        public Task<int> GetTotalPages();
         public Task<Propertys> GetRealEstate(int id);
         public Task<User> GetUser(string UserName);
 

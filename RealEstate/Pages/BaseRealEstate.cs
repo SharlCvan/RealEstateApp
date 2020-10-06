@@ -13,14 +13,27 @@ namespace RealEstate.Pages
         [Inject]
         public IRealEstateService RealEstateServices { get; set; }
 
+        public int TotalPagesQuantity { get; set; }
+        public int CurrentPage { get; set; } = 1;
         public List<Propertys> RealEstates { get; set; } = new List<Propertys>();
         public List<Propertys> SearchResults { get; set; } = new List<Propertys>();
 
         protected override async Task OnInitializedAsync()
         {
-            RealEstates = (await RealEstateServices.GetRealEstates()).ToList();
-            Console.WriteLine(RealEstates[0].ListingURL);
-            SearchResults = RealEstates;
+            TotalPagesQuantity = await RealEstateServices.GetTotalPages();
+            await LoadRealEstates();
+        }
+
+        private async Task LoadRealEstates(int page = 1, int quantityPerPage = 3)
+        {
+            RealEstates = (await RealEstateServices.GetRealEstates(page, quantityPerPage)).ToList();
+        }
+
+        public async Task SelectedPage(int page)
+        {
+            Console.WriteLine(page);
+            CurrentPage = page;
+            await LoadRealEstates(page);
         }
 
         public void SearchEstates(SearchValues searchValues)
