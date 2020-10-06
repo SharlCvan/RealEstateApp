@@ -22,7 +22,7 @@ namespace RealEstate
             builder.RootComponents.Add<App>("app");
 
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://bluefast.azurewebsites.net") });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://bluefast.azurewebsites.net/") });
 
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddOptions();
