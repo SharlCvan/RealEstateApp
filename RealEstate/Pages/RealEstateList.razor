@@ -17,28 +17,14 @@
 
                 @if (estate.CanBeSold)
                 {
-                    if (estate.SellingPrice is null)
-                    {
-                        <p class="ml-3 mb-3"><strong>Price:</strong> 0</p>
-                    }
-
-                    else
-                    {
                         <p class="ml-3 mb-3"><strong>Price:</strong> @string.Format("{0:N} kr", estate.SellingPrice)</p>
-                    }
+                    
                 }
 
                 else
                 {
-                    if (estate.RentingPrice is null)
-                    {
-                        <p class="ml-3 mb-3"><strong>Rent:</strong> 0/month</p>
-                    }
-
-                    else
-                    {
                         <p class="ml-3 mb-3"><strong>Rent:</strong> @string.Format("{0:N} kr", estate.RentingPrice)/month</p>
-                    }
+                    
                 }
                 <p class="ml-3 mb-3"><strong>Square footage:</strong> @estate.SquareMeters m²</p>
                 <p class="ml-3 mb-3"><strong>Built:</strong> @estate.ConstructionYear</p>
