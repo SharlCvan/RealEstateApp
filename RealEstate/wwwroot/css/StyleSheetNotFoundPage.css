@@ -1,6 +1,5 @@
 ﻿
 #returnToMainMenuButton {
-    position: fixed;
     background: none;
     border: 1px solid white;
     border-radius: 3px;
@@ -9,42 +8,9 @@
     font-size: 2em;
 }
 
-    #returnToMainMenuButton:hover {
-        background: rgb(255,255,255, 0.3);
-        transition: 0.5s;
-    }
-
-@media (max-width: 767px) {
-    #returnToMainMenuButton {
-        top: 30vh;
-    }
-
-    #textMobile {
-        position: relative;
-        top: 5vh;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 1149px) {
-    #returnToMainMenuButton {
-        top: 45vh;
-    }
-
-    #textMobile {
-        position: relative;
-        top: 25vh;
-    }
-}
-
-@media (min-width: 1150px) {
-    #returnToMainMenuButton {
-        top: 55vh;
-    }
-
-    #textMobile {
-        position: relative;
-        top: 35vh;
-    }
+#returnToMainMenuButton:hover {
+    background: rgb(255,255,255, 0.3);
+    transition: 0.5s;
 }
 
 #backgroundNotFound {
@@ -70,7 +36,7 @@
     display: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 990px) {
     #backgroundNotFound {
         background-image: url('.../Img/woman-3478437_1920.jpg');
     }
@@ -81,6 +47,12 @@
         border-radius: 3px;
         position: relative;
         color: white;
+    }
+}
+
+@media (min-width: 990px) {
+    #returnToMainMenuButton {
+        top: 55vh;
     }
 }
 

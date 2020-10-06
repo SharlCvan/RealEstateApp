@@ -40,7 +40,7 @@ namespace RealEstate.Pages
         /// <summary>
         /// Contains the errors recíeved from the API.
         /// </summary>
-        public IEnumerable<string> Errors { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
 
         /// <summary>
         /// Handles the data 
@@ -50,21 +50,25 @@ namespace RealEstate.Pages
         {
             ShowRegistrationErros = false;
 
-            var Property = ConvertToProperty(PropertyForRegistration);
+            var PropertyForRegistration = ConvertToValidPropertysForRegistration(this.PropertyForRegistration);
 
             //Forwards the data to repository to post to the API
-            var result = await RealEstateServices.PostANewRealEstate(Property);
+            var result = await RealEstateServices.PostANewRealEstate(PropertyForRegistration);
 
             if (!result.IsSuccessfulRegistration)
             {
                 //Handles the event of a non sucessfull post to the api
-                Errors = result.Errors;
+                foreach (var error in result.Errors)
+                {
+                    Errors.Add(error.Value[0]);
+                }
+
                 ShowRegistrationErros = true;
             }
             else
             {
-                //TO:DO Redirect to real estate details page?
-                NavigationManager.NavigateTo("/Login");
+                //Redirects to the realEstateDetails page for that newly created RealEstate
+                NavigationManager.NavigateTo($"/RealEstate/{result.Id}");
             }
         }
 
@@ -73,39 +77,28 @@ namespace RealEstate.Pages
         /// </summary>
         /// <param name="propertyForRegistration"></param>
         /// <returns></returns>
-        private Propertys ConvertToProperty(PropertysForRegistration propertyForRegistration)
+        private PropertysForRegistration ConvertToValidPropertysForRegistration(PropertysForRegistration propertyForRegistration)
         {
-            Propertys convertedProperty = new Propertys();
+            propertyForRegistration.Type = (int)propertyForRegistration.RealEstateType;
+            propertyForRegistration.Urls = ImageURL;
 
-            convertedProperty.Title = propertyForRegistration.Title;
-            convertedProperty.Description = propertyForRegistration.Description;
-            convertedProperty.Contact = propertyForRegistration.Contact;
-            convertedProperty.ConstructionYear = propertyForRegistration.ConstructionYear;
-            convertedProperty.RealEstateType = (int)propertyForRegistration.RealEstateType;
-            convertedProperty.Address = propertyForRegistration.Address;
-
-            convertedProperty.Rooms = propertyForRegistration.Rooms;
-            convertedProperty.SquareMeters = propertyForRegistration.SquareMeters;
-            convertedProperty.City = propertyForRegistration.City;
-            convertedProperty.ListingURL = propertyForRegistration.ListingURL;
-            convertedProperty.Urls = ImageURL;
 
             if (propertyForRegistration.CanBeSold)
             {
-                convertedProperty.CanBeSold = true;
-                convertedProperty.CanBeRented = false;
-                convertedProperty.SellingPrice = propertyForRegistration.RentSalePrice;
-                convertedProperty.RentingPrice = 0;
+                propertyForRegistration.CanBeSold = true;
+                propertyForRegistration.CanBeRented = false;
+                propertyForRegistration.SellingPrice = propertyForRegistration.RentSalePrice;
+                propertyForRegistration.RentingPrice = null;
             }
             else
             {
-                convertedProperty.CanBeSold = false;
-                convertedProperty.CanBeRented = true;
-                convertedProperty.RentingPrice = propertyForRegistration.RentSalePrice;
-                convertedProperty.SellingPrice = 0;
+                propertyForRegistration.CanBeSold = false;
+                propertyForRegistration.CanBeRented = true;
+                propertyForRegistration.RentingPrice = propertyForRegistration.RentSalePrice;
+                propertyForRegistration.SellingPrice = null;
             }
 
-            return convertedProperty;
+            return propertyForRegistration;
         }
 
         /// <summary>

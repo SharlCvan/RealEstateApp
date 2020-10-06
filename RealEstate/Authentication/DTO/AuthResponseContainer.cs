@@ -10,8 +10,8 @@ namespace RealEstate.Authentication.DTO
     /// </summary>
     public class AuthResponseContainer
     {
-        public AuthResponseDto Values { get; set; }
+        public AuthResponseDto Value { get; set; }
         public bool Succeeded { get; set; }
-        public List<string> Errors { get; set; }
+        public Dictionary<string, string[]> Errors { get; set; }
     }
 }

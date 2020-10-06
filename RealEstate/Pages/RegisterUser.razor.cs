@@ -20,8 +20,13 @@ namespace RealEstate.Pages
         [Inject]
         public IRealEstateService RealEstateService { get; set; }
 
+        //Holds any information about a request that has rendered an error
         public bool ShowRegistrationErros { get; set; }
-        public IEnumerable<string> Errors { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
+
+        //Holds a registration message which is displayed to a user after sucessfull login. Ex. a logged in user registers another new user.
+        public bool ShowRegistrationMessage { get; set; }
+        public string registrationMessage { get; set; }
 
         /// <summary>
         /// Send  a request to the repository to register a new user. And displays any errors the api sends back.
@@ -30,21 +35,31 @@ namespace RealEstate.Pages
         public async Task Register()
         {
             ShowRegistrationErros = false;
+            ShowRegistrationMessage = false;
+
+
             var result = await AuthenticationService.RegisterUser(_userForRegistrationDto);
-            if (!result.succeeded)
+            if (!result.Succeeded)
             {
-                Errors = result.Errors;
+                //Handles the event of a non sucessfull post to the api
+                foreach (var error in result.Errors)
+                {
+                    Errors.Add(error.Value[0]);
+                }
+
                 ShowRegistrationErros = true;
             }
             else
             {
                 var userLoggedIn = await RealEstateService.UserLoggedInAndValid();
-
+                
+                //If the user is logged in a message is created that the new user has sucessfully been created and redirects to Registration page. If user wants to register another user.
                 if(userLoggedIn)
                 {
-                    NavigationManager.NavigateTo("/Registration");
+                    ShowRegistrationMessage = true;
+                    registrationMessage = $"User \"{_userForRegistrationDto.UserName}\"has been sucessfully registered.";
 
-                    // TODO: Add a window to which a logged in user has sees that he/she has sucessully registered a new user. Should not redirect to another page, since the user might want to register more users.
+                    ClearForm();
                 }
                 else 
                 {

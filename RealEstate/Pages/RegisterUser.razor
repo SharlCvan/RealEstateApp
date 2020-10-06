@@ -18,6 +18,13 @@
             </div>
         }
 
+        @if (ShowRegistrationMessage)
+        {
+            <div class="alert alert-success" role="alert">
+                <p>@registrationMessage</p>
+            </div>
+        }
+
         <div class="form-group">
             <label for="email" class=" col-form-label">Email:</label>
             <div class="">

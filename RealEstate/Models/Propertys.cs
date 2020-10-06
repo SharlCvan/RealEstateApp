@@ -25,9 +25,9 @@ namespace RealEstate.Models
 
         public string Title { get; set; }
 
-        public int SellingPrice { get; set; }
+        public int? SellingPrice { get; set; }
 
-        public int RentingPrice { get; set; }
+        public int? RentingPrice { get; set; }
 
         public bool CanBeSold { get; set; }
 
@@ -40,10 +40,6 @@ namespace RealEstate.Models
 
         public List<string> Urls { get; set; }
 
-        //Hantera felmeddelande som API:et skickar tillbaka vid POST request
-        public bool IsSuccessfulRegistration { get; set; }
-        
-        public List<string> Errors { get; set; }
 
     }
 }

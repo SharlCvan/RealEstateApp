@@ -35,7 +35,7 @@ namespace RealEstate.Authentication
         /// <returns></returns>
         public async Task<AuthResponseContainer> Login(UserForAuthenticationDto userForAuthentication)
         {
-            //Serializes the UserForAuthenticationDTO to a dictionary to easily be able to encode it to x-www-form-urlencoded httpmessage body
+            //Serializes the UserForAuthenticationDTO to a dictionary to easily be able to encode it to x-www-form-urlencoded in HttpRequestMessage body
             var content = JsonSerializer.Serialize(userForAuthentication);
             var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(content);
 
@@ -49,26 +49,34 @@ namespace RealEstate.Authentication
 
             if (!authResult.IsSuccessStatusCode)
             {
-                //Adds a error message if there is some undefined error has happened
-                if (resultContainer.Values == null)
+                //Adds a error message if some undefined error has happened and no error messsage is recieved from API
+                if (resultContainer.Value == null)
                 {
-                    resultContainer.Values = new AuthResponseDto();
-                    resultContainer.Errors = new List<string>();
+                    resultContainer.Value = new AuthResponseDto();
+                    resultContainer.Errors = new Dictionary<string, string[]>();
+
+                    string[] errorArray = { "There has been a network error, please check connection and try again." };
+
+                    resultContainer.Errors.Add("Error", errorArray);
+
+                    resultContainer.Value.IsAuthSuccessful = false;
                 }
-                resultContainer.Values.IsAuthSuccessful = false;
-                resultContainer.Errors.Add("There has been some networking error, please check connection and try again.");
-                
+
                 return resultContainer;
             }
 
-            await _localStorage.SetItemAsync("authToken", resultContainer.Values.AcessToken);
-            await _localStorage.SetItemAsync("userName", resultContainer.Values.UserName);
-            await _localStorage.SetItemAsync("authorizationExpires", resultContainer.Values.Expires);
+            //Sets information about the user and acesstoken to local storage
+            await _localStorage.SetItemAsync("authToken", resultContainer.Value.AcessToken);
+            await _localStorage.SetItemAsync("userName", resultContainer.Value.UserName);
+            await _localStorage.SetItemAsync("authorizationExpires", resultContainer.Value.Expires);
 
-            ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userForAuthentication.UserName);
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", resultContainer.Values.AcessToken);
+            // TODO: Remove code below if it is not necessary at this time.
+            //((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userForAuthentication.UserName);
 
-            resultContainer.Values.IsAuthSuccessful = true;
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", resultContainer.Value.AcessToken);
+
+            resultContainer.Value.IsAuthSuccessful = true;
 
             return resultContainer;
         }
@@ -83,7 +91,9 @@ namespace RealEstate.Authentication
             await _localStorage.RemoveItemAsync("userName");
             await _localStorage.RemoveItemAsync("authorizationExpires");
 
-            ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
+            // TODO: Remove code below if it is not necessary at this time.
+            //((AuthStateProvider)_authStateProvider).NotifyUserLogout();
+
             _client.DefaultRequestHeaders.Authorization = null;
         }
 
@@ -103,17 +113,23 @@ namespace RealEstate.Authentication
             var req = new HttpRequestMessage(HttpMethod.Post, "/Api/Account/Register") { Content = new FormUrlEncodedContent(dictionary) };
 
             var registrationResult = await _client.SendAsync(req);
+
             var registrationContent = await registrationResult.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<RegisrationResponseDto>(registrationContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (!registrationResult.IsSuccessStatusCode)
+            if(!registrationResult.IsSuccessStatusCode)
             {
-                //Adds a error message if there is some undefined error has happened
+                //Adds a error message if there is some undefined error that has happened
                 if (result.Errors == null)
                 {
-                    result.Errors = new List<string>();
-                    result.Errors.Add("There has been some networking error, please check connection and try again.");
-                    result.succeeded = false;
+                    result.Errors = new Dictionary<string, string[]>();
+
+                    string[] errorArray = { "There has been a network error, please check connection and try again." };
+
+                    result.Errors.Add("Error", errorArray);
+
+
+                    result.Succeeded = false;
                 }
             }
 
