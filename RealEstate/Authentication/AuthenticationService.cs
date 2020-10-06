@@ -122,11 +122,12 @@ namespace RealEstate.Authentication
 
             var registrationResult = await _client.SendAsync(req);
 
-            var registrationContent = await registrationResult.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<RegisrationResponseDto>(registrationContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            RegisrationResponseDto result = new RegisrationResponseDto();
 
             if(!registrationResult.IsSuccessStatusCode)
             {
+                var registrationContent = await registrationResult.Content.ReadAsStringAsync();
+                result = JsonSerializer.Deserialize<RegisrationResponseDto>(registrationContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 //Adds a error message if there is some undefined error that has happened
                 if (result.Errors == null)
                 {
@@ -139,6 +140,10 @@ namespace RealEstate.Authentication
 
                     result.Succeeded = false;
                 }
+            }
+            else
+            {
+                result.Succeeded = true;
             }
 
             return result;
