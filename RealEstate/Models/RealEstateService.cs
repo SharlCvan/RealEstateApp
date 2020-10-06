@@ -140,52 +140,40 @@ namespace RealEstate.Models
         public async Task<CommentsPaging> GetUserComments(string UserName, int page, int quantityPerPage)
         {
             int skip = (page - 1) * quantityPerPage;
-
             var httpResponse = await http.GetAsync($"api/Comments/byuser/{UserName}?skip={skip}&take={quantityPerPage}");
+            var commentsPaging = new CommentsPaging();
 
             if (httpResponse.IsSuccessStatusCode)
             {
-                var commentsPaging = new CommentsPaging();
-
-                //commentsPaging.TotalPages = int.Parse(httpResponse.Headers.GetValues("pagesQuantity").FirstOrDefault());
+                //TODO: Sätt total pages med hjälp av User/comments/count
                 commentsPaging.TotalPages = 2;
 
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
                 commentsPaging.Comments = JsonConvert.DeserializeObject<List<Comment>>(responseString);
+            }
 
-                return commentsPaging;
-            }
-            else
-            {
-                //Error
-                return null;
-            }
+            return commentsPaging;
+
         }
 
         public async Task<CommentsPaging> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage)
         {
             int skip = (page - 1) * quantityPerPage;
             var httpResponse = await http.GetAsync($"api/Comments/{RealEstateId}?skip={skip}&take={quantityPerPage}");
+            var commentsPaging = new CommentsPaging();
 
             if (httpResponse.IsSuccessStatusCode)
             {
-                var commentsPaging = new CommentsPaging();
-
-                //commentsPaging.TotalPages = int.Parse(httpResponse.Headers.GetValues("pagesQuantity").FirstOrDefault());
+                //TODO: Sätt total pages med hjälp av RealEstate/comments/count
                 commentsPaging.TotalPages = 2;
 
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
                 commentsPaging.Comments = JsonConvert.DeserializeObject<List<Comment>>(responseString);
+            }
 
-                return commentsPaging;
-            }
-            else
-            {
-                //Error
-                return null;
-            }
+            return commentsPaging;
         }
     }
 }

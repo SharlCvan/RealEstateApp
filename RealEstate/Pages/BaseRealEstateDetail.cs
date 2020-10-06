@@ -39,27 +39,45 @@ namespace RealEstate.Pages
 
         public async Task LoadComments(int page = 1, int quantityPerPage = 4)
         {
-            //TODO: HÄR CARL FIXA DETTA FÖFFAN
+            //TODO: Hantera null värden & ta bort CommentsPaging klass och returnera bara comments och sen pages count i separata metoder
             commentsPaging = await RealEstateService.GetRealEstateComments(Id, page, quantityPerPage);
 
-            RealEstateComments = commentsPaging.Comments;
-            totalpages = commentsPaging.TotalPages;
-        }
+            try
+            {
+                RealEstateComments = commentsPaging.Comments;
+                totalpages = commentsPaging.TotalPages;
+            }
+            catch(NullReferenceException n)
+            {
 
+            }
+            catch(Exception e)
+            {
+
+            }
+        }
+        //TODO: Hantera null värden 2
         protected async override Task OnInitializedAsync()
         {
             NewComment.Errors = new List<string>();
-
             RealEstate.Urls = new List<string>();
-
-            
             RealEstate = await RealEstateService.GetRealEstate(int.Parse(Id));
+            
+            try
+            {
+                RealEstate.Urls.Add(RealEstate.ListingURL);
+                UserName = RealEstate.UserName;
+                await LoadComments();
+            }
+            catch(NullReferenceException n)
+            {
 
-            RealEstate.Urls.Add(RealEstate.ListingURL);
+            }
+            catch(Exception e)
+            {
 
-            UserName = RealEstate.UserName;
-
-            await LoadComments();
+            }
+             
         }
 
         public async Task OnPostComment(PostedComment postedComment)
