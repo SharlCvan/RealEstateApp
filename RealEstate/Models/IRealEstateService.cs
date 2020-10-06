@@ -19,7 +19,7 @@ namespace RealEstate.Models
 
         public Task<CommentsPaging> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage);
 
-        public Task<Propertys> PostANewRealEstate(Propertys newRealEstate);
+        public Task<PropertysForRegistration> PostANewRealEstate(PropertysForRegistration newRealEstate);
         public Task<bool> UserLoggedInAndValid();
     }
 }
