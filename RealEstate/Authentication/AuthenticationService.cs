@@ -119,7 +119,7 @@ namespace RealEstate.Authentication
 
             if(!registrationResult.IsSuccessStatusCode)
             {
-                //Adds a error message if there is some undefined error has happened
+                //Adds a error message if there is some undefined error that has happened
                 if (result.Errors == null)
                 {
                     result.Errors = new Dictionary<string, string[]>();
