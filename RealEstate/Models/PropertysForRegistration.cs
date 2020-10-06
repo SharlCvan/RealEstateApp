@@ -21,6 +21,9 @@ namespace RealEstate.Models
         [Required(ErrorMessage = "A real estate type must be given.")]
         public RealEstateTypes RealEstateType { get; set; }
 
+        //Holds info of which RealEstateType the realestate is. Needs to be a regular int instead of enum to serialize correctly.
+        public int Type { get; set; }
+
         [MaxLength(1000, ErrorMessage = "Description can not contain more than 1000 characters")]
         [MinLength(10, ErrorMessage = "Description must contain at least 10 characters.")]
         [Required(ErrorMessage = "A description is required.")]
@@ -33,49 +36,38 @@ namespace RealEstate.Models
         [Required(ErrorMessage = "A title is required.")]
         public string Title { get; set; }
 
-        [Range(1, Int32.MaxValue, ErrorMessage = "A value must be given")]
-        public int RentSalePrice { get; set; }
+        [Range(1, Int32.MaxValue, ErrorMessage = "A value greater than o must be given.")]
+        public int? RentSalePrice { get; set; }
 
         public bool CanBeSold { get; set; }
 
         public bool CanBeRented { get; set; }
 
-        [Url(ErrorMessage = "Please enter a valid URL")]
+        //Holds which url is the first promotional picture required to post a realestatead with us.
+        [Url(ErrorMessage = "Please enter a valid URL.")]
         public string ListingURL { get; set; }
-        [Required(ErrorMessage = "Enter a ")]
+
+        [Range(5, 5000, ErrorMessage = "Enter a valid number between 5 and 5000.")]
         public int SquareMeters { get; set; }
+
+        [Range(1, 50, ErrorMessage = "Enter a valid number between 1 and 50.")]
         public int Rooms { get; set; }
+
+        [Required(ErrorMessage = "Enter a valid city name.")]
         public string City { get; set; }
 
+        public int? SellingPrice { get; set; }
+
+        public int? RentingPrice { get; set; }
+
+        //Contains the urls for secondary pictures sent along with the realestatead
         public List<string> Urls { get; set; }
 
+        
+        public bool IsSuccessfulRegistration { get; set; }
 
-        //Behövs den verkligen???
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            var errors = new List<ValidationResult>();
+        //Holds error messages if anything with the registration goes wrong
+        public Dictionary<string,string[]> Errors { get; set; }
 
-            if (CanBeRented == true && CanBeSold == true)
-            {
-                errors.Add(new ValidationResult(
-                    "A property can not be for sale and for rent at the same time.", new[] { nameof(CanBeSold) }
-                    ));
-                errors.Add(new ValidationResult(
-                    "A property can not be for sale and for rent at the same time.", new[] { nameof(CanBeRented) }
-                    ));
-            }
-            else if (CanBeSold != true && CanBeRented != true)
-            {
-
-                errors.Add(new ValidationResult(
-                    "A property must be either for sale or for rent. Please enter a amount to enable for rent.", new[] { nameof(CanBeSold) }
-                    ));
-                errors.Add(new ValidationResult(
-                    "A property must be either for sale or for rent. Please enter a amount to enable for sale.", new[] { nameof(CanBeRented) }
-                    ));
-            }
-
-            return errors;
-        }
     }
 }

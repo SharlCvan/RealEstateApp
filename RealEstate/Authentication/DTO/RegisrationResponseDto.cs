@@ -10,7 +10,7 @@ namespace RealEstate.Authentication.DTO
     /// </summary>
     public class RegisrationResponseDto
     {
-        public bool succeeded { get; set; }
-        public IEnumerable<string> Errors { get; set; }
+        public bool Succeeded { get; set; }
+        public Dictionary<string,string[]> Errors { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace RealEstate.Pages
         /// <summary>
         /// Holds information about what errors the API sends back.
         /// </summary>
-        public string Error { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
 
         protected override async Task OnInitializedAsync()
         {
@@ -48,9 +48,14 @@ namespace RealEstate.Pages
             ShowAuthError = false;
             _userForAuthentication.GrantType = "password";
             var result = await AuthenticationService.Login(_userForAuthentication);
-            if (!result.IsAuthSuccessful)
+            if (!result.Value.IsAuthSuccessful)
             {
-                Error = result.Error;
+                //Handles the event of a non sucessfull post to the api
+                foreach (var error in result.Errors)
+                {
+                    Errors.Add(error.Value[0]);
+                }
+
                 ShowAuthError = true;
             }
             else

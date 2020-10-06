@@ -1,0 +1,10 @@
+﻿#removeURLIcon {
+    width: 1.5em;
+    height: 1.5em;
+    background-color: lightcyan;
+    cursor: pointer;
+}
+
+#displayURLInput {
+    width: 20em;
+}

@@ -19,5 +19,6 @@ namespace RealEstate.Models
         //For invalid post request
         public bool IsSuccesfullCommentPost { get; set; }
         public IEnumerable<string> Errors { get; set; }
+
     }
 }

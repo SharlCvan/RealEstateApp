@@ -23,19 +23,22 @@ namespace RealEstate.Authentication
         }
 
         /// <summary>
-        /// Overides the regular method and bases the authentication on this program.
+        /// Overides the regular method and bases the authentication on this method.
         /// </summary>
         /// <returns></returns>
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            //Checks if a token is resent in cookies
+            //Checks if a token is present in cookies
             var token = await _localStorage.GetItemAsync<string>("authToken");
+
             //If token is null or empty returns a null authenticationstate which results in a failed authentication.
             if (string.IsNullOrWhiteSpace(token))
                 return _anonymous;
             //Sets the current users authorization token to be the default authorization token of the http client.
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
+
+
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity("jwtAuthType")));
         }
 
         /// <summary>
