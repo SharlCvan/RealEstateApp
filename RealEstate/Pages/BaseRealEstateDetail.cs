@@ -19,6 +19,8 @@ namespace RealEstate.Pages
         [Parameter]
         public string Id { get; set; }
 
+        public string UserName { get; set; }
+
         public Comment NewComment { get; set; } = new Comment();
 
         public List<Comment> RealEstateComments { get; set; } = new List<Comment>();
@@ -48,6 +50,8 @@ namespace RealEstate.Pages
             NewComment.Errors = new List<string>();
 
             RealEstate.Urls = new List<string>();
+
+            UserName = RealEstate.UserName;
 
             RealEstate = await RealEstateService.GetRealEstate(int.Parse(Id));
             RealEstate.Urls.Add(RealEstate.ListingURL);

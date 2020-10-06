@@ -23,6 +23,8 @@ namespace RealEstate.Models
 
         public int Id { get; set; }
 
+        public string UserName { get; set; }
+
         public string Title { get; set; }
 
         public int? SellingPrice { get; set; }
