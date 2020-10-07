@@ -1,7 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using Newtonsoft.Json.Converters;
 
 namespace RealEstate.Models
 {
@@ -43,8 +43,8 @@ namespace RealEstate.Models
         {
             HttpResponseMessage task = await http.GetAsync($"api/RealEstates/{id}");
             string jsonString = await task.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<Propertys>(jsonString);
+            
+            return JsonSerializer.Deserialize<Propertys>(jsonString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
         public async Task<IEnumerable<Propertys>> GetRealEstates(int page, int quantityPerPage)
@@ -52,14 +52,7 @@ namespace RealEstate.Models
             HttpResponseMessage task = await http.GetAsync($"api/RealEstates?skip={(page - 1) * quantityPerPage}&take={quantityPerPage}");
             string jsonString = await task.Content.ReadAsStringAsync();
 
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
-            return System.Text.Json.JsonSerializer.Deserialize<List<Propertys>>(jsonString);
-            //return JsonConvert.DeserializeObject<List<Propertys>>(jsonString, settings);
+            return JsonSerializer.Deserialize<List<Propertys>>(jsonString);
 
         }
 
@@ -141,15 +134,23 @@ namespace RealEstate.Models
 
             var putResult = await http.PutAsync("api/Users/rate", bodyContent);
 
-            var authContent = await putResult.Content.ReadAsStringAsync();
-            var result = System.Text.Json.JsonSerializer.Deserialize<PostedRating>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            //var authContent = await putResult.Content.ReadAsStringAsync();
+            //var result = System.Text.Json.JsonSerializer.Deserialize<PostedRating>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            var result = new PostedRating();
 
             if (putResult.IsSuccessStatusCode)
             {
                 result.PostRatingSuccess = true;
+                result.Value = postedRating.Value;
+            }
+            else
+            {
+                result.Value = -1;
             }
 
             return result;
+
         }
 
         public async Task<CommentsPaging> GetUserComments(string UserName, int page, int quantityPerPage)
@@ -162,14 +163,14 @@ namespace RealEstate.Models
             {
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
-                commentsPaging.Comments = JsonConvert.DeserializeObject<List<Comment>>(responseString);
+                commentsPaging.Comments = JsonSerializer.Deserialize<List<Comment>>(responseString);
             }
 
             return commentsPaging;
 
         }
 
-        public async Task<int> GetTotalUserCommentsPages(string userName)
+        public async Task<int> GetTotalUserComments(string userName)
         {
             HttpResponseMessage task = await http.GetAsync($"api/comments/byuser/{userName}/count");
             string jsonString = await task.Content.ReadAsStringAsync();
@@ -179,30 +180,32 @@ namespace RealEstate.Models
             return pageCount;
         }
 
-        public async Task<CommentsPaging> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage)
+        public async Task<List<Comment>> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage)
         {
             int skip = (page - 1) * quantityPerPage;
             var httpResponse = await http.GetAsync($"api/Comments/{RealEstateId}?skip={skip}&take={quantityPerPage}");
-            var commentsPaging = new CommentsPaging();
+            var comments = new List<Comment>();
 
             if (httpResponse.IsSuccessStatusCode)
             {
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
-                commentsPaging.Comments = JsonConvert.DeserializeObject<List<Comment>>(responseString);
+                comments = JsonSerializer.Deserialize<List<Comment>>(responseString);
             }
 
-            return commentsPaging;
+            return comments;
         }
 
-        public async Task<int> GetTotalRealEstateCommentsPages(int id)
+        public async Task<int> GetTotalRealEstateComments(int id)
         {
             HttpResponseMessage task = await http.GetAsync($"api/comments/{id}/count");
             string jsonString = await task.Content.ReadAsStringAsync();
 
-            int pageCount = int.Parse(jsonString);
+            int commentCount = int.Parse(jsonString);
 
-            return pageCount;
+            return commentCount;
         }
     }
 }
+
+

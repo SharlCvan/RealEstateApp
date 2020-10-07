@@ -64,7 +64,7 @@ namespace RealEstate.Models
         public string City { get; set; }
 
         [JsonPropertyName("urls")]
-        public List<string> Urls { get; set; }
+        public List<URL> Urls { get; set; }
 
 
     }

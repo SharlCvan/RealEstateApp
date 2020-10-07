@@ -61,3 +61,9 @@ namespace RealEstate.Pages
         }
     }
 }
+
+//TODO: Läsa in kommentarer lik RealEstateDetails
+//TODO: Generelle Error hantering
+
+//TODO: Kolla med MUT hur rating återfås.
+//TODO: Kolla med MUT ifall vi ska ha generell och authentiserad vy

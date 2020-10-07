@@ -27,8 +27,7 @@ else
                         <div id="broker-info" class="col-6 col-sm-6 col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title">Jhon Jones</h5>
-                                <p class="card-text">Email: jogn@fdo.cu</p>
-                                <p class="card-text">Phone: 032 05405 3</p>
+                                <p class="card-text">Conact info: @RealEstate.Contact</p>
                             </div>
                         </div>
                     </div>
@@ -45,7 +44,7 @@ else
                         @*User contact info*@
                         <div id="broker-info" class="col-6 col-sm-6 col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">User Name</h5>
+                                <h5 class="card-title">@UserName</h5>
                                 <p>Seller for this object</p>
                                 <a href="/User/@UserName" class="btn btn-primary mb-0">View</a>
                             </div>
@@ -77,7 +76,7 @@ else
 
     @*<AuthorizeView>*@
     <CommentSection Comments="@RealEstateComments" Id="@Id" EnablePostComment="@true" PostSuccess="@NewComment.IsSuccesfullCommentPost"
-                    TotalPages="@totalpages" CurrentPage="@currentPage" Radius="2" SelectedPade="@SelectedPage" SubmittedComment="@OnPostComment"></CommentSection>
+                    TotalPages="@Totalpages" CurrentPage="@currentPage" Radius="2" SelectedPade="@SelectedPage" SubmittedComment="@OnPostComment"></CommentSection>
     @*</AuthorizeView>*@
 
     @if (NewComment.IsSuccesfullCommentPost)

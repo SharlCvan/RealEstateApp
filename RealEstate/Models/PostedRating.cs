@@ -11,5 +11,7 @@ namespace RealEstate.Models
         public int Value { get; set; }
 
         public bool PostRatingSuccess { get; set; }
+
+        public List<string> Errors { get; set; }
     }
 }

@@ -20,24 +20,17 @@ else
                 <li class="list-group-item">@User.RealEstates Real estates</li>
                 <li class="list-group-item">@User.Comments comments</li>
             </ul>
-            @if (User.Rating > 2)
-            {
-                <div class="card-body alert-success">
-                    <div>Rating: @User.Rating</div>
-                </div>
-            }
-            else
-            {
-                <div class="card-body alert-danger">
-                    <div>Rating: @User.Rating</div>
-                </div>
-            }
+
+            <div class="card-body @(User.Rating > 4 ? "alert-success" : "alert-danger")" >
+                <div>Rating: @User.Rating</div>
+            </div>
+
             <div class="card-body star-rating">
                 <h4>Rate User:</h4>
                 <i @onclick="@(() => RateUser(1))" data-toggle="modal" data-target="#exampleModalCenter" class="fas fa-star"></i>
-                <i @onclick="@(() => RateUser(2))" class="fas fa-star"></i>
-                <i @onclick="@(() => RateUser(3))" class="fas fa-star"></i>
-                <i @onclick="@(() => RateUser(4))" class="fas fa-star"></i>
+                <i @onclick="@(() => RateUser(2))" data-toggle="modal" data-target="#exampleModalCenter" class="fas fa-star"></i>
+                <i @onclick="@(() => RateUser(3))" data-toggle="modal" data-target="#exampleModalCenter" class="fas fa-star"></i>
+                <i @onclick="@(() => RateUser(4))" data-toggle="modal" data-target="#exampleModalCenter" class="fas fa-star"></i>
                 <i @onclick="@(() => RateUser(5))" data-toggle="modal" data-target="#exampleModalCenter" class="fas fa-star"></i>
             </div>
             <a onclick="window.history.back()" class="btn btn-primary UserBackBtn active">Back to Real Estate</a>
@@ -57,32 +50,27 @@ else
                     </button>
                 </div>
                 <div class="modal-body">
-                    
-                     @if (RatingResult.PostRatingSuccess && RatingResult.Value != 0)
-                     {
-                         <h3 class="alert-success p-1">Your gave a rating of @postedRating.Value</h3>
-                     }
-                     else if(!RatingResult.PostRatingSuccess && RatingResult.Value != 0)
-                     {
-                         <h3 class="alert-danger p-1">Sorry! Couldnt post your rating at this time... Please try again later</h3>
-                     }
-                     else
-                     {
-                         <p>Publishing rating...</p>
-                     }
+
+                    @if (RatingResult.PostRatingSuccess && RatingResult.Value > 0)
+                    {
+                        <h3 class="alert-success p-1">Your gave a rating of @postedRating.Value</h3>
+                    }
+                    else if (!RatingResult.PostRatingSuccess && RatingResult.Value == -1)
+                    {
+                        <h3 class="alert-danger p-1">Sorry! Couldnt post your rating at this time... Please try again later</h3>
+                    }
+                    else
+                    {
+                        <p>Publishing rating...</p>
+                    }
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Stay on this user</button>
-                    <a type="button" class="btn btn-primary" data-dismiss="modal">Back to Home page</a>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Dissmiss</button>
                 </div>
             </div>
         </div>
     </div>
-    /*
-     TODO: Själv, error hantering
-     Todo: Lägga in username variabel i realEstateDetails för att routa rill UserDetails
-     Todo: 
-    */
-
 }
+
+

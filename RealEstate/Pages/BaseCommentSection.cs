@@ -27,7 +27,7 @@ namespace RealEstate.Pages
         public int CurrentPage { get; set; } = 1;
 
         [Parameter]
-        public int TotalPages { get; set; }
+        public int TotalPages { get; set; } 
 
         [Parameter]
         public int Radius { get; set; } = 3;
@@ -50,7 +50,6 @@ namespace RealEstate.Pages
         {
             if(link.Page == CurrentPage)
             {
-                StateHasChanged();
                 return;
             }
             if(!link.Enabled)
@@ -80,7 +79,7 @@ namespace RealEstate.Pages
                 }
             }
 
-            var isNextPageEnabled = CurrentPage != TotalPages;
+            var isNextPageEnabled = CurrentPage != TotalPages && TotalPages != 0;
             var NextPage = CurrentPage + 1;
             Links.Add(new LinkModel(NextPage, isNextPageEnabled, "Next"));
         }
