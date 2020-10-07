@@ -23,6 +23,12 @@ namespace RealEstate.Pages
 
         [Parameter]
         public string SaleOrRent { get; set; }
+
+        /// <summary>
+        /// If a post request is in progress or not, which enables loading spinner.
+        /// </summary>
+        public bool isPosting { get; set; }
+
         /// <summary>
         /// Contains the image URL's that a user wants to show together with the ad.
         /// </summary>
@@ -51,7 +57,7 @@ namespace RealEstate.Pages
             Errors = new List<string>();
             ShowRegistrationErros = false;
 
-            var PropertyForRegistration = ConvertToValidPropertysForRegistration(this.PropertyForRegistration);
+            PropertyForRegistration = ConvertToValidPropertysForRegistration(PropertyForRegistration);
 
             //Forwards the data to repository to post to the API
             var result = await RealEstateServices.PostANewRealEstate(PropertyForRegistration);

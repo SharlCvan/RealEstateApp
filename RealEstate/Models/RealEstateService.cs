@@ -76,11 +76,10 @@ namespace RealEstate.Models
         public async Task<PropertysForRegistration> PostANewRealEstate(PropertysForRegistration newRealEstateToRegister)
         {
 
-            var serializedRealEstate = System.Text.Json.JsonSerializer.Serialize(newRealEstateToRegister);
+            var serializedRealEstate = JsonConvert.SerializeObject(newRealEstateToRegister);
             var bodyContent = new StringContent(serializedRealEstate, Encoding.UTF8, "application/json");
 
             var result = new PropertysForRegistration();
-            result.IsSuccessfulRegistration = true;
 
             try 
             {
@@ -92,6 +91,8 @@ namespace RealEstate.Models
                 {
                     result.IsSuccessfulRegistration = false;
                 }
+
+                result.IsSuccessfulRegistration = true;
             }
             catch 
             {
@@ -105,8 +106,6 @@ namespace RealEstate.Models
                 result.IsSuccessfulRegistration = false;
             }
             
-            // TODO: Anton Offline support DONE
-
             
             return result;
         }

@@ -9,6 +9,7 @@ using RealEstate.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Threading;
 
 namespace RealEstate.Pages
 {
@@ -27,6 +28,11 @@ namespace RealEstate.Pages
 
         [Parameter]
         public string Success { get; set; }
+
+        /// <summary>
+        /// If a post request is in progress or not, which enables loading spinner.
+        /// </summary>
+        public bool isPosting { get; set; }
 
         //Holds a registration message which is displayed to a user after sucessfull login. Ex. a logged in user registers another new user.
         public bool ShowRegistrationMessage { get; set; }
@@ -65,6 +71,8 @@ namespace RealEstate.Pages
         /// <returns></returns>
         public async Task ExecuteLogin()
         {
+            isPosting = true;
+
             Errors = new List<string>();
 
             ShowAuthError = false;
@@ -78,6 +86,8 @@ namespace RealEstate.Pages
                     Errors.Add(error.Value[0]);
                 }
 
+                isPosting = false;
+
                 ShowAuthError = true;
             }
             else
@@ -85,6 +95,7 @@ namespace RealEstate.Pages
 
                 var query = new Uri(NavigationManager.Uri).Query;
                 await OnLogin.InvokeAsync(true);
+                isPosting = false;
 
                 if (QueryHelpers.ParseQuery(query).TryGetValue("returnUrl", out var value))
                 {
