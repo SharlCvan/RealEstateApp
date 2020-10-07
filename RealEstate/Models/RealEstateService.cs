@@ -153,20 +153,20 @@ namespace RealEstate.Models
 
         }
 
-        public async Task<CommentsPaging> GetUserComments(string UserName, int page, int quantityPerPage)
+        public async Task<List<Comment>> GetUserComments(string UserName, int page, int quantityPerPage)
         {
             int skip = (page - 1) * quantityPerPage;
             var httpResponse = await http.GetAsync($"api/Comments/byuser/{UserName}?skip={skip}&take={quantityPerPage}");
-            var commentsPaging = new CommentsPaging();
+            var comments = new List<Comment>();
 
             if (httpResponse.IsSuccessStatusCode)
             {
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
-                commentsPaging.Comments = JsonSerializer.Deserialize<List<Comment>>(responseString);
+                comments = JsonSerializer.Deserialize<List<Comment>>(responseString);
             }
 
-            return commentsPaging;
+            return comments;
 
         }
 
