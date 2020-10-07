@@ -10,6 +10,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using Newtonsoft.Json.Converters;
 
 namespace RealEstate.Models
 {
@@ -44,7 +45,14 @@ namespace RealEstate.Models
             HttpResponseMessage task = await http.GetAsync($"api/RealEstates/{id}");
             string jsonString = await task.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<Propertys>(jsonString);
+            Console.WriteLine(jsonString);
+
+            return JsonConvert.DeserializeObject<Propertys>(jsonString, new JsonSerializerSettings
+            {
+                DateFormatString = "d MMMM, yyyy"
+            });
+
+            //return System.Text.Json.JsonSerializer.Deserialize<Propertys>(jsonString);
         }
 
         public async Task<IEnumerable<Propertys>> GetRealEstates(int page, int quantityPerPage)
@@ -170,7 +178,7 @@ namespace RealEstate.Models
 
         }
 
-        public async Task<int> GetTotalUserCommentsPages(string userName)
+        public async Task<int> GetTotalUserComments(string userName)
         {
             HttpResponseMessage task = await http.GetAsync($"api/comments/byuser/{userName}/count");
             string jsonString = await task.Content.ReadAsStringAsync();
@@ -180,30 +188,33 @@ namespace RealEstate.Models
             return pageCount;
         }
 
-        public async Task<CommentsPaging> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage)
+        public async Task<List<Comment>> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage)
         {
             int skip = (page - 1) * quantityPerPage;
             var httpResponse = await http.GetAsync($"api/Comments/{RealEstateId}?skip={skip}&take={quantityPerPage}");
-            var commentsPaging = new CommentsPaging();
+            var comments = new List<Comment>();
 
             if (httpResponse.IsSuccessStatusCode)
             {
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
-                commentsPaging.Comments = JsonConvert.DeserializeObject<List<Comment>>(responseString);
+                comments = JsonConvert.DeserializeObject<List<Comment>>(responseString, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
             }
 
-            return commentsPaging;
+            return comments;
         }
 
-        public async Task<int> GetTotalRealEstateCommentsPages(int id)
+        public async Task<int> GetTotalRealEstateComments(int id)
         {
             HttpResponseMessage task = await http.GetAsync($"api/comments/{id}/count");
             string jsonString = await task.Content.ReadAsStringAsync();
 
-            int pageCount = int.Parse(jsonString);
+            int commentCount = int.Parse(jsonString);
 
-            return pageCount;
+            return commentCount;
         }
     }
 }
+
+//TODO: Parse dateTime string from JSON to DateTime
+//TODO: Ta in isRentable som true/false, just nu alltid false

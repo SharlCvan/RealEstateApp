@@ -27,7 +27,7 @@ namespace RealEstate.Pages
 
         public CommentsPaging commentsPaging { get; set; } = new CommentsPaging();
 
-        public int totalpages;
+        public int Totalpages { get; set; }
 
         public int currentPage = 1;
 
@@ -41,14 +41,10 @@ namespace RealEstate.Pages
 
         public async Task LoadComments(int page = 1, int quantityPerPage = 4)
         {
-            //TODO: Ta bort null hantering & ta bort CommentsPaging klass och returnera bara comments och sen pages count i separata metoder
-            //Kan trycka next även om det inte finns någon kommentar, Ladda kommentarer efter postad kommentar
-            commentsPaging = await RealEstateService.GetRealEstateComments(Id, page, quantityPerPage);
 
             try
             {
-                RealEstateComments = commentsPaging.Comments;
-                totalpages = (int)Math.Ceiling((decimal)RealEstateService.GetTotalRealEstateCommentsPages(int.Parse(Id)).Result / QuantityPerPAge);
+                RealEstateComments = await RealEstateService.GetRealEstateComments(Id, page, quantityPerPage);
             }
             catch(NullReferenceException n)
             {
@@ -59,17 +55,19 @@ namespace RealEstate.Pages
 
             }
         }
-        //TODO: Ta bort null hantering
+
         protected async override Task OnInitializedAsync()
         {
             NewComment.Errors = new List<string>();
-            RealEstate.Urls = new List<string>();
-            RealEstate = await RealEstateService.GetRealEstate(int.Parse(Id));
+            RealEstate.Urls = new List<URL>();
             
             try
             {
-                RealEstate.Urls.Add(RealEstate.ListingURL);
+                RealEstate = await RealEstateService.GetRealEstate(int.Parse(Id));
+                RealEstate.Urls.Add(new URL(RealEstate.ListingURL));
                 UserName = RealEstate.UserName;
+
+                Totalpages = (int)Math.Ceiling((decimal)await RealEstateService.GetTotalRealEstateComments(int.Parse(Id)) / QuantityPerPAge);
                 await LoadComments();
             }
             catch(NullReferenceException n)
@@ -97,3 +95,5 @@ namespace RealEstate.Pages
     }
     
 }
+//TODO: Ladda om kommentarer efter postad kommentar
+//TODO: Fixa CSS på sidan.

@@ -10,9 +10,9 @@ namespace RealEstate.Models
         public Task<IEnumerable<Propertys>> GetRealEstates(int page, int quantityPerPage);
         public Task<int> GetTotalPages();
 
-        public Task<int> GetTotalUserCommentsPages(string UserName);
+        public Task<int> GetTotalUserComments(string UserName);
 
-        public Task<int> GetTotalRealEstateCommentsPages(int id);
+        public Task<int> GetTotalRealEstateComments(int id);
 
         public Task<Propertys> GetRealEstate(int id);
         public Task<User> GetUser(string UserName);
@@ -23,7 +23,7 @@ namespace RealEstate.Models
 
         public Task<CommentsPaging> GetUserComments(string UserName, int page, int quantityPerPage);
 
-        public Task<CommentsPaging> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage);
+        public Task<List<Comment>> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage);
 
         public Task<PropertysForRegistration> PostANewRealEstate(PropertysForRegistration newRealEstate);
         public Task<bool> UserLoggedInAndValid();
