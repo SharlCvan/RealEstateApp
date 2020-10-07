@@ -106,7 +106,6 @@ namespace RealEstate.Authentication
 
             _client.DefaultRequestHeaders.Authorization = null;
 
-
         }
 
         /// <summary>

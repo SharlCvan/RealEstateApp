@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using RealEstate.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace RealEstate.Pages
 {
@@ -81,8 +82,19 @@ namespace RealEstate.Pages
             }
             else
             {
+
+                var query = new Uri(NavigationManager.Uri).Query;
                 await OnLogin.InvokeAsync(true);
-                NavigationManager.NavigateTo("");
+
+                if (QueryHelpers.ParseQuery(query).TryGetValue("returnUrl", out var value))
+                {
+                    NavigationManager.NavigateTo(value);
+                }
+                else
+                {
+                    NavigationManager.NavigateTo("/");
+                }
+                
             }
         }
     }

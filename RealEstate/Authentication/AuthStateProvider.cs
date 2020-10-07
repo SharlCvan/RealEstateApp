@@ -32,7 +32,7 @@ namespace RealEstate.Authentication
             var token = await _localStorage.GetItemAsync<string>("authToken");
 
             //If token is null or empty returns a null authenticationstate which results in a failed authentication.
-            if (string.IsNullOrWhiteSpace(token))
+            if (string.IsNullOrEmpty(token))
                 return _anonymous;
             //Sets the current users authorization token to be the default authorization token of the http client.
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
