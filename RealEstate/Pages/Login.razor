@@ -1,4 +1,5 @@
 ﻿@page "/Login"
+@page "/Login/{Success}"
 @using Microsoft.AspNetCore.Components.Authorization
 
 
@@ -16,6 +17,13 @@
                 {
                     <p>@error</p>
                 }
+            </div>
+        }
+
+        @if (ShowRegistrationMessage)
+        {
+            <div class="alert alert-success" role="alert">
+                <p>@registrationMessage</p>
             </div>
         }
 
@@ -40,10 +48,10 @@
         </div>
         <div class="form-group">
             <div class="text-left">
-                <a href="registration" class="ml-md-auto nav-link active">Create a new user</a>
+                <a href="registration" class="ml-md-auto">Create a new user</a>
             </div>
         </div>
-        
+
     </EditForm>
 </div>
 
