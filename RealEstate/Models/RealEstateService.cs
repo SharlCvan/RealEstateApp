@@ -135,15 +135,23 @@ namespace RealEstate.Models
 
             var putResult = await http.PutAsync("api/Users/rate", bodyContent);
 
-            var authContent = await putResult.Content.ReadAsStringAsync();
-            var result = System.Text.Json.JsonSerializer.Deserialize<PostedRating>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            //var authContent = await putResult.Content.ReadAsStringAsync();
+            //var result = System.Text.Json.JsonSerializer.Deserialize<PostedRating>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            var result = new PostedRating();
 
             if (putResult.IsSuccessStatusCode)
             {
                 result.PostRatingSuccess = true;
+                result.Value = postedRating.Value;
+            }
+            else
+            {
+                result.Value = -1;
             }
 
             return result;
+
         }
 
         public async Task<CommentsPaging> GetUserComments(string UserName, int page, int quantityPerPage)
@@ -201,5 +209,4 @@ namespace RealEstate.Models
     }
 }
 
-//TODO: Parse dateTime string from JSON to DateTime
-//TODO: Ta in isRentable som true/false, just nu alltid false
+

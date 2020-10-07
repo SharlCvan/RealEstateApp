@@ -88,6 +88,8 @@ namespace RealEstate.Pages
 
             if(NewComment.IsSuccesfullCommentPost)
             {
+                Totalpages = (int)Math.Ceiling((decimal)await RealEstateService.GetTotalRealEstateComments(int.Parse(Id)) / QuantityPerPAge);
+                await SelectedPage(1);
                 StateHasChanged();
             }
         }
@@ -95,5 +97,3 @@ namespace RealEstate.Pages
     }
     
 }
-//TODO: Ladda om kommentarer efter postad kommentar
-//TODO: Fixa CSS på sidan.
