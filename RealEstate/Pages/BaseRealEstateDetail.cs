@@ -31,6 +31,8 @@ namespace RealEstate.Pages
 
         public int currentPage = 1;
 
+        public int QuantityPerPAge = 4;
+
         public async Task SelectedPage(int page)
         {
             currentPage = page;
@@ -39,13 +41,14 @@ namespace RealEstate.Pages
 
         public async Task LoadComments(int page = 1, int quantityPerPage = 4)
         {
-            //TODO: Hantera null värden & ta bort CommentsPaging klass och returnera bara comments och sen pages count i separata metoder
+            //TODO: Ta bort null hantering & ta bort CommentsPaging klass och returnera bara comments och sen pages count i separata metoder
+            //Kan trycka next även om det inte finns någon kommentar, Ladda kommentarer efter postad kommentar
             commentsPaging = await RealEstateService.GetRealEstateComments(Id, page, quantityPerPage);
 
             try
             {
                 RealEstateComments = commentsPaging.Comments;
-                totalpages = commentsPaging.TotalPages;
+                totalpages = (int)Math.Ceiling((decimal)RealEstateService.GetTotalRealEstateCommentsPages(int.Parse(Id)).Result / QuantityPerPAge);
             }
             catch(NullReferenceException n)
             {
@@ -56,7 +59,7 @@ namespace RealEstate.Pages
 
             }
         }
-        //TODO: Hantera null värden 2
+        //TODO: Ta bort null hantering
         protected async override Task OnInitializedAsync()
         {
             NewComment.Errors = new List<string>();
@@ -84,6 +87,11 @@ namespace RealEstate.Pages
         {
             postedComment.RealEstateId = int.Parse(Id);
             NewComment = await RealEstateService.PostComment(postedComment);
+
+            if(NewComment.IsSuccesfullCommentPost)
+            {
+                StateHasChanged();
+            }
         }
 
     }

@@ -40,10 +40,10 @@ namespace RealEstate.Models
         public string Title { get; set; }
 
         [JsonPropertyName("sellPrice")]
-        public int? SellingPrice { get; set; }
+        public double? SellingPrice { get; set; }
 
         [JsonPropertyName("rent")]
-        public int? RentingPrice { get; set; }
+        public double? RentingPrice { get; set; }
 
         [JsonPropertyName("isSellable")]
         public bool CanBeSold { get; set; }

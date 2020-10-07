@@ -50,6 +50,7 @@ namespace RealEstate.Pages
         {
             if(link.Page == CurrentPage)
             {
+                StateHasChanged();
                 return;
             }
             if(!link.Enabled)
@@ -92,6 +93,7 @@ namespace RealEstate.Pages
             if(PostSuccess)
             {
                 postedComment = new PostedComment();
+                await SelectedPageInternal(new LinkModel(1));
             }
         }
 

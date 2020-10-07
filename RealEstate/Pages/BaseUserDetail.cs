@@ -30,7 +30,6 @@ namespace RealEstate.Pages
 
         public int currentPage = 1;
 
-        //Try catch för null exception (kommer typ inte hända)
         protected async override Task OnInitializedAsync()
         {
             User = await RealEstateService.GetUser(UserName);
@@ -43,7 +42,7 @@ namespace RealEstate.Pages
             currentPage = page;
             await LoadComments(page);
         }
-        //TODO: GÖr samma som i BaseRealEstateDetails
+
         public async Task LoadComments(int page = 1, int quantityPerPage = 4)
         {
             commentsPaging = await RealEstateService.GetUserComments(UserName, page, quantityPerPage);
