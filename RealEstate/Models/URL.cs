@@ -12,6 +12,11 @@ namespace RealEstate.Models
         [JsonProperty(PropertyName = "url")]
         public string Url { get; set; }
 
+        public URL()
+        {
+
+        }
+
         public URL(string url)
         {
             Url = url;

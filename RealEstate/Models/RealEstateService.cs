@@ -1,7 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,15 +43,8 @@ namespace RealEstate.Models
         {
             HttpResponseMessage task = await http.GetAsync($"api/RealEstates/{id}");
             string jsonString = await task.Content.ReadAsStringAsync();
-
-            Console.WriteLine(jsonString);
-
-            return JsonConvert.DeserializeObject<Propertys>(jsonString, new JsonSerializerSettings
-            {
-                DateFormatString = "d MMMM, yyyy"
-            });
-
-            //return System.Text.Json.JsonSerializer.Deserialize<Propertys>(jsonString);
+            
+            return JsonSerializer.Deserialize<Propertys>(jsonString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
         public async Task<IEnumerable<Propertys>> GetRealEstates(int page, int quantityPerPage)
@@ -60,14 +52,7 @@ namespace RealEstate.Models
             HttpResponseMessage task = await http.GetAsync($"api/RealEstates?skip={(page - 1) * quantityPerPage}&take={quantityPerPage}");
             string jsonString = await task.Content.ReadAsStringAsync();
 
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
-            return System.Text.Json.JsonSerializer.Deserialize<List<Propertys>>(jsonString);
-            //return JsonConvert.DeserializeObject<List<Propertys>>(jsonString, settings);
+            return JsonSerializer.Deserialize<List<Propertys>>(jsonString);
 
         }
 
@@ -171,7 +156,7 @@ namespace RealEstate.Models
             {
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
-                commentsPaging.Comments = JsonConvert.DeserializeObject<List<Comment>>(responseString);
+                commentsPaging.Comments = JsonSerializer.Deserialize<List<Comment>>(responseString);
             }
 
             return commentsPaging;
@@ -198,7 +183,7 @@ namespace RealEstate.Models
             {
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
-                comments = JsonConvert.DeserializeObject<List<Comment>>(responseString, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                comments = JsonSerializer.Deserialize<List<Comment>>(responseString);
             }
 
             return comments;

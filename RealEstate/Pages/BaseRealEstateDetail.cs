@@ -60,10 +60,10 @@ namespace RealEstate.Pages
         {
             NewComment.Errors = new List<string>();
             RealEstate.Urls = new List<URL>();
+                RealEstate = (await RealEstateService.GetRealEstate(int.Parse(Id)));
             
             try
             {
-                RealEstate = await RealEstateService.GetRealEstate(int.Parse(Id));
                 RealEstate.Urls.Add(new URL(RealEstate.ListingURL));
                 UserName = RealEstate.UserName;
 
