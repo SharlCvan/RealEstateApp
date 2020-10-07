@@ -24,6 +24,13 @@ namespace RealEstate.Pages
         [Parameter]
         public EventCallback<bool> OnLogin { get; set; }
 
+        [Parameter]
+        public string Success { get; set; }
+
+        //Holds a registration message which is displayed to a user after sucessfull login. Ex. a logged in user registers another new user.
+        public bool ShowRegistrationMessage { get; set; }
+        public string registrationMessage { get; set; }
+
         /// <summary>
         /// Indicates if there are any errors from API when logging in.
         /// </summary>
@@ -36,9 +43,17 @@ namespace RealEstate.Pages
         protected override async Task OnInitializedAsync()
         {
             //If the user is already logged in and has a valid user session
+            ShowRegistrationMessage = false;
+
             if (await RealEstateService.UserLoggedInAndValid())
             {
                 NavigationManager.NavigateTo("/");
+            }
+
+            if (!String.IsNullOrEmpty(Success))
+            {
+                registrationMessage = Success;
+                ShowRegistrationMessage = true;
             }
         }
 

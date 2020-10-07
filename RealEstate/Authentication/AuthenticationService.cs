@@ -28,6 +28,7 @@ namespace RealEstate.Authentication
         public AuthenticationService(HttpClient client, AuthenticationStateProvider authStateProvider, ILocalStorageService localStorage)
         {
             _client = client;
+            _client.Timeout = TimeSpan.FromSeconds(3);
             _authStateProvider = authStateProvider;
             _localStorage = localStorage;
         }
@@ -50,6 +51,8 @@ namespace RealEstate.Authentication
             var authContent = await authResult.Content.ReadAsStringAsync();
 
             var resultContainer = JsonSerializer.Deserialize<AuthResponseContainer>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            // TODO: Anton Offline support 
 
             if (!authResult.IsSuccessStatusCode)
             {
@@ -120,30 +123,31 @@ namespace RealEstate.Authentication
 
             var req = new HttpRequestMessage(HttpMethod.Post, "/Api/Account/Register") { Content = new FormUrlEncodedContent(dictionary) };
 
-            var registrationResult = await _client.SendAsync(req);
+            var result = new RegisrationResponseDto();
+            result.Succeeded = true;
 
-            RegisrationResponseDto result = new RegisrationResponseDto();
-
-            if(!registrationResult.IsSuccessStatusCode)
+            try 
             {
-                var registrationContent = await registrationResult.Content.ReadAsStringAsync();
-                result = JsonSerializer.Deserialize<RegisrationResponseDto>(registrationContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                //Adds a error message if there is some undefined error that has happened
-                if (result.Errors == null)
+                var registrationResult = await _client.SendAsync(req);
+
+                if (!registrationResult.IsSuccessStatusCode)
                 {
-                    result.Errors = new Dictionary<string, string[]>();
-
-                    string[] errorArray = { "There has been a network error, please check connection and try again." };
-
-                    result.Errors.Add("Error", errorArray);
-
-
+                    var registrationContent = await registrationResult.Content.ReadAsStringAsync();
+                    result = JsonSerializer.Deserialize<RegisrationResponseDto>(registrationContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    //Adds a error message if there is some undefined error that has happened
                     result.Succeeded = false;
                 }
             }
-            else
+            catch 
             {
-                result.Succeeded = true;
+                result.Errors = new Dictionary<string, string[]>();
+
+                string[] errorArray = { "There has been a network error, please check connection and try again." };
+
+                result.Errors.Add("Error", errorArray);
+
+
+                result.Succeeded = false;
             }
 
             return result;

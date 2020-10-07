@@ -64,7 +64,7 @@ namespace RealEstate.Pages
                 }
                 else 
                 {
-                    NavigationManager.NavigateTo("/Login");
+                    NavigationManager.NavigateTo($"/Login/User \"{_userForRegistrationDto.UserName}\"has been sucessfully registered.");
                 }
 
                 
