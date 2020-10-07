@@ -45,6 +45,7 @@ namespace RealEstate.Models
 
         //Holds which url is the first promotional picture required to post a realestatead with us.
         [Url(ErrorMessage = "Please enter a valid URL.")]
+        [Required(ErrorMessage = "A URL to a promotional picture is required")]
         public string ListingURL { get; set; }
 
         [Range(5, 5000, ErrorMessage = "Enter a valid number between 5 and 5000.")]
