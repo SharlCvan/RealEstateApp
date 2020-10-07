@@ -9,6 +9,11 @@ namespace RealEstate.Models
     {
         public Task<IEnumerable<Propertys>> GetRealEstates(int page, int quantityPerPage);
         public Task<int> GetTotalPages();
+
+        public Task<int> GetTotalUserCommentsPages(string UserName);
+
+        public Task<int> GetTotalRealEstateCommentsPages(int id);
+
         public Task<Propertys> GetRealEstate(int id);
         public Task<User> GetUser(string UserName);
 

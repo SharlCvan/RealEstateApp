@@ -145,9 +145,6 @@ namespace RealEstate.Models
 
             if (httpResponse.IsSuccessStatusCode)
             {
-                //TODO: Sätt total pages med hjälp av User/comments/count
-                commentsPaging.TotalPages = 2;
-
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
                 commentsPaging.Comments = JsonConvert.DeserializeObject<List<Comment>>(responseString);
@@ -155,6 +152,16 @@ namespace RealEstate.Models
 
             return commentsPaging;
 
+        }
+
+        public async Task<int> GetTotalUserCommentsPages(string userName)
+        {
+            HttpResponseMessage task = await http.GetAsync($"api/comments/byuser/{userName}/count");
+            string jsonString = await task.Content.ReadAsStringAsync();
+
+            int pageCount = int.Parse(jsonString);
+
+            return pageCount;
         }
 
         public async Task<CommentsPaging> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage)
@@ -165,15 +172,22 @@ namespace RealEstate.Models
 
             if (httpResponse.IsSuccessStatusCode)
             {
-                //TODO: Sätt total pages med hjälp av RealEstate/comments/count
-                commentsPaging.TotalPages = 2;
-
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
 
                 commentsPaging.Comments = JsonConvert.DeserializeObject<List<Comment>>(responseString);
             }
 
             return commentsPaging;
+        }
+
+        public async Task<int> GetTotalRealEstateCommentsPages(int id)
+        {
+            HttpResponseMessage task = await http.GetAsync($"api/comments/{id}/count");
+            string jsonString = await task.Content.ReadAsStringAsync();
+
+            int pageCount = int.Parse(jsonString);
+
+            return pageCount;
         }
     }
 }
