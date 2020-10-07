@@ -28,6 +28,11 @@ namespace RealEstate.Pages
         private async Task LoadRealEstates(int page = 1)
         {
             RealEstates = (await RealEstateServices.GetRealEstates(page, QuantityPerPage)).ToList();
+            Console.WriteLine(RealEstates.FirstOrDefault().RentingPrice);
+            Console.WriteLine(RealEstates.FirstOrDefault().SellingPrice);
+            Console.WriteLine(RealEstates.FirstOrDefault().Address);
+            Console.WriteLine(RealEstates.FirstOrDefault().Description);
+            Console.WriteLine(RealEstates.FirstOrDefault().Title);
         }
 
         public async Task SelectedPage(int page)

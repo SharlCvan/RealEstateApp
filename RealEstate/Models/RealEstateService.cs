@@ -52,7 +52,14 @@ namespace RealEstate.Models
             HttpResponseMessage task = await http.GetAsync($"api/RealEstates?skip={(page - 1) * quantityPerPage}&take={quantityPerPage}");
             string jsonString = await task.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<List<Propertys>>(jsonString);
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            return System.Text.Json.JsonSerializer.Deserialize<List<Propertys>>(jsonString);
+            //return JsonConvert.DeserializeObject<List<Propertys>>(jsonString, settings);
 
         }
 
@@ -72,26 +79,35 @@ namespace RealEstate.Models
             var serializedRealEstate = System.Text.Json.JsonSerializer.Serialize(newRealEstateToRegister);
             var bodyContent = new StringContent(serializedRealEstate, Encoding.UTF8, "application/json");
 
-            var postResult = await http.PostAsync("api/RealEstates", bodyContent);
+            var result = new PropertysForRegistration();
+            result.IsSuccessfulRegistration = true;
 
-            var authContent = await postResult.Content.ReadAsStringAsync();
-            var result = System.Text.Json.JsonSerializer.Deserialize<PropertysForRegistration>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            try 
+            {
+                var postResult = await http.PostAsync("api/RealEstates", bodyContent);
+                var authContent = await postResult.Content.ReadAsStringAsync();
+                result = System.Text.Json.JsonSerializer.Deserialize<PropertysForRegistration>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (!postResult.IsSuccessStatusCode)
+                if (!postResult.IsSuccessStatusCode)
+                {
+                    result.IsSuccessfulRegistration = false;
+                }
+            }
+            catch 
             {
                 //Adds a error message if there is some undefined error that has happened
-                if (result.Errors == null)
-                {
-                    result.Errors = new Dictionary<string, string[]>();
+                result.Errors = new Dictionary<string, string[]>();
 
-                    string[] errorArray = { "There has been some networking error, please check connection and try again." };
+                string[] errorArray = { "There has been some networking error, please check connection and try again." };
 
-                    result.Errors.Add("Error", errorArray);
-                }
+                result.Errors.Add("Error", errorArray);
+
                 result.IsSuccessfulRegistration = false;
             }
+            
+            // TODO: Anton Offline support DONE
 
-            result.IsSuccessfulRegistration = true;
+            
             return result;
         }
 
