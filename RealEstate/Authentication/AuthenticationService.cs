@@ -46,28 +46,29 @@ namespace RealEstate.Authentication
 
             var req = new HttpRequestMessage(HttpMethod.Post, "/Token") { Content = new FormUrlEncodedContent(dictionary) };
 
-            var authResult = await _client.SendAsync(req);
+            var resultContainer = new AuthResponseContainer();
 
-            var authContent = await authResult.Content.ReadAsStringAsync();
-
-            var resultContainer = JsonSerializer.Deserialize<AuthResponseContainer>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            // TODO: Anton Offline support 
-
-            if (!authResult.IsSuccessStatusCode)
+            try
             {
-                //Adds a error message if some undefined error has happened and no error messsage is recieved from API
-                if (resultContainer.Value == null)
+                var authResult = await _client.SendAsync(req);
+
+                var authContent = await authResult.Content.ReadAsStringAsync();
+
+                resultContainer = JsonSerializer.Deserialize<AuthResponseContainer>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (!authResult.IsSuccessStatusCode)
                 {
-                    resultContainer.Value = new AuthResponseDto();
-                    resultContainer.Errors = new Dictionary<string, string[]>();
-
-                    string[] errorArray = { "There has been a network error, please check connection and try again." };
-
-                    resultContainer.Errors.Add("Error", errorArray);
-
-                    resultContainer.Value.IsAuthSuccessful = false;
+                    return resultContainer;
                 }
+            }
+            catch
+            {
+                resultContainer.Errors = new Dictionary<string, string[]>();
+
+                string[] errorArray = { "There has been a network error, please check connection and try again." };
+
+                resultContainer.Errors.Add("Error", errorArray);
+                resultContainer.Succeeded = false;
 
                 return resultContainer;
             }
@@ -83,7 +84,7 @@ namespace RealEstate.Authentication
 
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", resultContainer.Value.AcessToken);
 
-            resultContainer.Value.IsAuthSuccessful = true;
+            resultContainer.Succeeded = true;
             UpdateNavUI.Invoke(true, EventArgs.Empty);
 
             return resultContainer;

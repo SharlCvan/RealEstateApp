@@ -44,8 +44,9 @@ namespace RealEstate.Pages
         {
             //If the user is already logged in and has a valid user session
             ShowRegistrationMessage = false;
+            bool userLoggedIn = await RealEstateService.UserLoggedInAndValid();
 
-            if (await RealEstateService.UserLoggedInAndValid())
+            if (userLoggedIn)
             {
                 NavigationManager.NavigateTo("/");
             }
@@ -68,7 +69,7 @@ namespace RealEstate.Pages
             ShowAuthError = false;
             _userForAuthentication.GrantType = "password";
             var result = await AuthenticationService.Login(_userForAuthentication);
-            if (!result.Value.IsAuthSuccessful)
+            if (!result.Succeeded)
             {
                 //Handles the event of a non sucessfull post to the api
                 foreach (var error in result.Errors)
@@ -81,7 +82,7 @@ namespace RealEstate.Pages
             else
             {
                 await OnLogin.InvokeAsync(true);
-                NavigationManager.NavigateTo("/");
+                NavigationManager.NavigateTo("");
             }
         }
     }
