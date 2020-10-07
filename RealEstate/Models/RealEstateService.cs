@@ -52,7 +52,14 @@ namespace RealEstate.Models
             HttpResponseMessage task = await http.GetAsync($"api/RealEstates?skip={(page - 1) * quantityPerPage}&take={quantityPerPage}");
             string jsonString = await task.Content.ReadAsStringAsync();
 
-            return System.Text.Json.JsonSerializer.Deserialize<List<Propertys>>(jsonString, new JsonSerializerOptions { IgnoreNullValues = true });
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            return System.Text.Json.JsonSerializer.Deserialize<List<Propertys>>(jsonString);
+            //return JsonConvert.DeserializeObject<List<Propertys>>(jsonString, settings);
 
         }
 
