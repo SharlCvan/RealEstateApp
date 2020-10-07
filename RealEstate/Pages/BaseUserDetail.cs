@@ -25,6 +25,7 @@ namespace RealEstate.Pages
         [Parameter]
         public string UserName { get; set; }
 
+        public int QuantityPerPage { get; set; } = 4;
 
         public int totalpages;
 
@@ -33,7 +34,7 @@ namespace RealEstate.Pages
         protected async override Task OnInitializedAsync()
         {
             User = await RealEstateService.GetUser(UserName);
-
+            totalpages = (int)Math.Ceiling((decimal)await RealEstateService.GetTotalUserComments(UserName) / QuantityPerPage);
             await LoadComments();
         }
 
@@ -45,10 +46,7 @@ namespace RealEstate.Pages
 
         public async Task LoadComments(int page = 1, int quantityPerPage = 4)
         {
-            commentsPaging = await RealEstateService.GetUserComments(UserName, page, quantityPerPage);
-
-            UserComments = commentsPaging.Comments;
-            totalpages = commentsPaging.TotalPages;
+            UserComments = await RealEstateService.GetUserComments(UserName, page, quantityPerPage); 
         }
 
 
@@ -62,7 +60,7 @@ namespace RealEstate.Pages
     }
 }
 
-//TODO: Läsa in kommentarer lik RealEstateDetails
+
 //TODO: Generelle Error hantering
 
 //TODO: Kolla med MUT hur rating återfås.
