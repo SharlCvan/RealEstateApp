@@ -69,7 +69,7 @@ namespace RealEstate.Models
         public async Task<PropertysForRegistration> PostANewRealEstate(PropertysForRegistration newRealEstateToRegister)
         {
 
-            var serializedRealEstate = JsonConvert.SerializeObject(newRealEstateToRegister);
+            var serializedRealEstate = JsonSerializer.Serialize(newRealEstateToRegister);
             var bodyContent = new StringContent(serializedRealEstate, Encoding.UTF8, "application/json");
 
             var result = new PropertysForRegistration();
