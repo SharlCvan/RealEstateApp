@@ -5,15 +5,25 @@
 
         <div class="shadow row mb-5 real-estate-card">
 
-            <div class="col-lg-8 col-md-12 p-0" style="height: 100%;">
-                <img src="@estate.ListingURL" class="brightness" style="height: 100%; width:100%;" alt="Picture of house for sale and or rent">
+            <div class="col-lg-8 col-md-12 col-12 p-0 img-container" style="background-image: url(@estate.ListingURL);">
             </div>
 
 
-            <div class="col-lg-4 col-md-12 p-0">
+            <div class="col-lg-4 col-md-12 col-12 p-0">
                 <h5 class="ml-3 mt-3 city">@estate.City, @BuyersOptions(estate)</h5>
-                <h4 class="mt-2 ml-3" style="font-family: 'Baloo Tammudu 2', cursive; font-size: 35px">@estate.Address</h4>
-                <p class="ml-3 mb-4 description">@estate.Description</p>
+                <h4 class="mt-2 ml-3 adress">@estate.Address</h4>
+                <p class="ml-3 mb-4 description">
+                    @if (estate.Description.Length > 200)
+                    {
+                        PartOfDescription = estate.Description.Substring(0, 200);
+                        @PartOfDescription;
+                    }
+                    else
+                    {
+                        @estate.Description
+                    }
+
+                </p>
 
                 @if (estate.CanBeSold)
                 {
@@ -33,4 +43,9 @@
             </div>
         </div>
     </a>
+}
+
+@code
+{
+    public string PartOfDescription { get; set; }
 }

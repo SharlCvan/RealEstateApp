@@ -17,7 +17,6 @@ namespace RealEstate.Pages
         public int CurrentPage { get; set; } = 1;
         public int QuantityPerPage { get; set; } = 5;
         public List<Propertys> RealEstates { get; set; } = new List<Propertys>();
-        public List<Propertys> SearchResults { get; set; } = new List<Propertys>();
 
         protected override async Task OnInitializedAsync()
         {
@@ -28,56 +27,21 @@ namespace RealEstate.Pages
         private async Task LoadRealEstates(int page = 1)
         {
             RealEstates = (await RealEstateServices.GetRealEstates(page, QuantityPerPage)).ToList();
+            foreach(var estate in RealEstates)
+            {
+                Console.WriteLine(estate.Description.Length);
+            }
         }
 
         public async Task SelectedPage(int page)
         {
-            Console.WriteLine(page);
             CurrentPage = page;
             await LoadRealEstates(page);
         }
 
-        public void SearchEstates(SearchValues searchValues)
+        public void SearchEstates(string searchTerm)
         {
-            if (!String.IsNullOrEmpty(searchValues.SearchTerm))
-            {
-                SearchResults = RealEstates.Where(x =>
-                                                  x.Address.Contains(searchValues.SearchTerm))
-                                                  .ToList();
-
-                SearchBySellAndRent(searchValues.ShowSale, searchValues.ShowRent);
-            }
-
-            else
-            {
-                SearchBySellAndRent(searchValues.ShowSale, searchValues.ShowRent);
-            }
-
-            SearchResults = SearchResults.Where(x =>
-                                                    x.RealEstateType == (int)searchValues.ShowHouse ||
-                                                    x.RealEstateType == (int)searchValues.ShowApartment ||
-                                                    x.RealEstateType == (int)searchValues.ShowStorageUnit ||
-                                                    x.RealEstateType == (int)searchValues.ShowOffice)
-                                                    .ToList();
-        }
-
-        private void SearchBySellAndRent(bool showSale, bool showRent)
-        {
-            if (showSale && showRent)
-            {
-                SearchResults = RealEstates.Where(x =>
-                                                  x.CanBeSold == showSale ||
-                                                  x.CanBeRented == showRent)
-                                                  .ToList();
-            }
-
-            else
-            {
-                SearchResults = RealEstates.Where(x =>
-                                                  x.CanBeSold == showSale &&
-                                                  x.CanBeRented == showRent)
-                                                  .ToList();
-            }
+            
         }
     }
 }

@@ -1,39 +1,14 @@
-﻿<div class="search d-flex justify-content-center align-items-center mb-5">
-    <div class="row col-md-7 col-sm-10 inputscontainer p-2" style="background-color: rgba(255, 255, 255, 0.80);">
-        <input class="form-control col-12 mt-3" type="text" placeholder="Search adress" @bind="SearchValues.SearchTerm" />
+﻿<div class="search mb-5">
+    <div class="overlay d-flex justify-content-center align-items-center">
+        <div class="row col-lg-7 col-md-10 col-sm-11 inputscontainer p-2">
 
-        <div class="col-12 p-2 mb-5">
-            <input type="checkbox" @bind="SearchValues.ShowSale" id="forSale">
-            <label for="forSale">For sale</label>
-            <input class="ml-3" type="checkbox" @bind="SearchValues.ShowRent" id="forRent">
-            <label for="forRent">For rent</label>
-        </div>
-
-        <div class="col-12 p-0 checkboxes row m-0">
-            <div class="col-md-3 col-sm-6 p">
-                <input type="checkbox" checked @onchange="(e) => House(e)" id="houses">
-                <label class="label col-12" for="houses">Houses</label>
-
+            <div class="col-12 text-center">
+                <h3 class="fas fa-laptop-house">HEMGET accommodations</h3>
             </div>
 
-            <div class="col-md-3 col-sm-6 p">
-                <input type="checkbox" checked @onchange="(e) => Apartment(e)" id="apartments">
-                <label class="label col-12" for="apartments">Apartments</label>
-            </div>
+            <input class="form-control col-8 mt-3 mb-3" type="text" placeholder="Search city..." @bind="SearchTerm" />
+            <button class="col-4 btn mt-3 mb-3" style="background-color: rgb(101, 157, 189); color:white;" @onclick="HandleSearch">Search</button>
 
-            <div class="col-md-3 col-sm-6 p">
-                <input type="checkbox" checked @onchange="(e) => WareHouse(e)" id="storageUnits">
-                <label class="label col-12" for="storageUnits">Warehouses</label>
-            </div>
-
-            <div class="col-md-3 col-sm-6 p">
-                <input type="checkbox" checked @onchange="(e) => Office(e)" id="offices">
-                <label class="label col-12" for="offices">Offices</label>
-            </div>
-        </div>
-
-        <div class="col-12 p-0">
-            <button class="col-12 btn btn-primary mb-1" @onclick="HandleSearch">Search real estates</button>
         </div>
     </div>
 </div>
