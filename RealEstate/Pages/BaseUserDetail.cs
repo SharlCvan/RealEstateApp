@@ -41,6 +41,7 @@ namespace RealEstate.Pages
 
         public async Task LoadUser()
         {
+            User.Errors = new Dictionary<string, string[]>();
             User = await RealEstateService.GetUser(UserName);
             totalpages = (int)Math.Ceiling((decimal)await RealEstateService.GetTotalUserComments(UserName) / QuantityPerPage);
             await LoadComments();
@@ -68,6 +69,8 @@ namespace RealEstate.Pages
     }
 }
 
-//TODO: Ta bort länk pilar ifall kommentarerna är tomma
-//TODO: Generelle Errorhantering
-//TODO: Meddelande vid realestate
+
+//____Gjort___
+//Visar ej comment section om den är tom
+//Fyller error dictionary vid offline läget samt andra errors
+//Visar upp error fel på userdetail och RealEstate detail och postComment 

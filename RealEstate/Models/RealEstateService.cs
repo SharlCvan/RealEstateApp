@@ -41,10 +41,23 @@ namespace RealEstate.Models
 
         public async Task<Propertys> GetRealEstate(int id)
         {
-            HttpResponseMessage task = await http.GetAsync($"api/RealEstates/{id}");
-            string jsonString = await task.Content.ReadAsStringAsync();
-            
-            return JsonSerializer.Deserialize<Propertys>(jsonString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            var property = new Propertys();
+
+            try
+            {
+                string jsonString;
+
+                var task = await http.GetAsync($"api/RealEstates/{id}");
+                jsonString = await task.Content.ReadAsStringAsync();
+                property = JsonSerializer.Deserialize<Propertys>(jsonString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch(Exception)
+            {
+                property.Errors.Add("Offine", new string[1] { "Not conneted to network" });
+            }
+
+            return property;
         }
 
         public async Task<IEnumerable<Propertys>> GetRealEstates(int page, int quantityPerPage)
@@ -58,10 +71,19 @@ namespace RealEstate.Models
 
         public async Task<int> GetTotalPages()
         {
-            HttpResponseMessage task = await http.GetAsync("api/RealEstates/count");
-            string jsonString = await task.Content.ReadAsStringAsync();
+            int pageCount;
 
-            int pageCount = int.Parse(jsonString);
+            try
+            {
+                HttpResponseMessage task = await http.GetAsync("api/RealEstates/count");
+                string jsonString = await task.Content.ReadAsStringAsync();
+
+                pageCount = int.Parse(jsonString);
+            }
+            catch(Exception)
+            {
+                pageCount = -1;
+            }
 
             return pageCount;
         }
@@ -108,15 +130,22 @@ namespace RealEstate.Models
         {
             var serializedComment = System.Text.Json.JsonSerializer.Serialize(comment);
             var bodyContent = new StringContent(serializedComment, Encoding.UTF8, "application/json");
+            var result = new Comment();
 
-            var postResult = await http.PostAsync("api/comments", bodyContent);
-
-            var authContent = await postResult.Content.ReadAsStringAsync();
-            var result = System.Text.Json.JsonSerializer.Deserialize<Comment>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            if (postResult.IsSuccessStatusCode)
+            try
             {
-                result.IsSuccesfullCommentPost = true;
+                var postResult = await http.PostAsync("api/comments", bodyContent);
+                var authContent = await postResult.Content.ReadAsStringAsync();
+                result = System.Text.Json.JsonSerializer.Deserialize<Comment>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (postResult.IsSuccessStatusCode)
+                {
+                    result.IsSuccesfullCommentPost = true;
+                }
+            }
+            catch(Exception)
+            {
+                result.errors = new Dictionary<string, string[]>();
+                result.errors.Add("Offline", new string[1] { "Your are offline"});
             }
 
             return result;
@@ -124,25 +153,34 @@ namespace RealEstate.Models
 
         public async Task<User> GetUser(string UserName)
         {
-            return await http.GetFromJsonAsync<User>($"api/Users/{UserName}");
+            var user = new User();
+            try
+            {
+                user = await http.GetFromJsonAsync<User>($"api/Users/{UserName}");
+            }
+            catch(Exception)
+            {
+                user.Errors.Add("Offline", new string[1] { "You are offline "});
+            }
+
+            return user;
         }
 
         public async Task<PostedRating> RateUser(PostedRating postedRating)
         {
             var serializedComment = System.Text.Json.JsonSerializer.Serialize(postedRating);
             var bodyContent = new StringContent(serializedComment, Encoding.UTF8, "application/json");
-
-            var putResult = await http.PutAsync("api/Users/rate", bodyContent);
-
             var result = new PostedRating();
 
-            if (putResult.IsSuccessStatusCode)
+            try
             {
+                var putResult = await http.PutAsync("api/Users/rate", bodyContent);
                 result.PostRatingSuccess = true;
                 result.Value = postedRating.Value;
             }
-            else
+            catch
             {
+                result.PostRatingSuccess = false;
                 result.Value = -1;
             }
 
@@ -153,14 +191,18 @@ namespace RealEstate.Models
         public async Task<List<Comment>> GetUserComments(string UserName, int page, int quantityPerPage)
         {
             int skip = (page - 1) * quantityPerPage;
-            var httpResponse = await http.GetAsync($"api/Comments/byuser/{UserName}?skip={skip}&take={quantityPerPage}");
             var comments = new List<Comment>();
 
-            if (httpResponse.IsSuccessStatusCode)
+            try
             {
-                var responseString = await httpResponse.Content.ReadAsStringAsync();
+                var httpResponse = await http.GetAsync($"api/Comments/byuser/{UserName}?skip={skip}&take={quantityPerPage}");
 
+                var responseString = await httpResponse.Content.ReadAsStringAsync();
                 comments = JsonSerializer.Deserialize<List<Comment>>(responseString);
+            }
+            catch(Exception)
+            {                
+                
             }
 
             return comments;
@@ -169,10 +211,17 @@ namespace RealEstate.Models
 
         public async Task<int> GetTotalUserComments(string userName)
         {
-            HttpResponseMessage task = await http.GetAsync($"api/comments/byuser/{userName}/count");
-            string jsonString = await task.Content.ReadAsStringAsync();
-
-            int pageCount = int.Parse(jsonString);
+            int pageCount;
+            try
+            {
+                HttpResponseMessage task = await http.GetAsync($"api/comments/byuser/{userName}/count");
+                string jsonString = await task.Content.ReadAsStringAsync();
+                pageCount = int.Parse(jsonString);
+            }
+            catch
+            {
+                pageCount = 0;
+            }
 
             return pageCount;
         }
@@ -180,14 +229,17 @@ namespace RealEstate.Models
         public async Task<List<Comment>> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage)
         {
             int skip = (page - 1) * quantityPerPage;
-            var httpResponse = await http.GetAsync($"api/Comments/{RealEstateId}?skip={skip}&take={quantityPerPage}");
             var comments = new List<Comment>();
 
-            if (httpResponse.IsSuccessStatusCode)
+            try
             {
+                var httpResponse = await http.GetAsync($"api/Comments/{RealEstateId}?skip={skip}&take={quantityPerPage}");
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
-
                 comments = JsonSerializer.Deserialize<List<Comment>>(responseString);
+            }
+            catch
+            {
+
             }
 
             return comments;
@@ -195,10 +247,18 @@ namespace RealEstate.Models
 
         public async Task<int> GetTotalRealEstateComments(int id)
         {
-            HttpResponseMessage task = await http.GetAsync($"api/comments/{id}/count");
-            string jsonString = await task.Content.ReadAsStringAsync();
+            int commentCount;
 
-            int commentCount = int.Parse(jsonString);
+            try
+            {
+                HttpResponseMessage task = await http.GetAsync($"api/comments/{id}/count");
+                string jsonString = await task.Content.ReadAsStringAsync();
+                commentCount = int.Parse(jsonString);
+            }
+            catch
+            {
+                commentCount = 0;
+            }
 
             return commentCount;
         }

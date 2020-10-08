@@ -5,7 +5,14 @@
 
 
 
-@if (string.IsNullOrEmpty(RealEstate.Title))
+@if (Errors.Count() > 0)
+{
+    foreach (var error in RealEstate.Errors)
+    {
+        <p>@error.Value[0]</p>
+    }
+}
+else if (string.IsNullOrEmpty(RealEstate.Title))
 {
     <div class="spinner"></div>
 }
@@ -85,11 +92,11 @@ else
     {
         <p>Succesfully posted comment</p>
     }
-    else if (NewComment.Errors.Count() > 0)
+    else if (NewComment.errors.Count() > 0)
     {
-        foreach (var error in NewComment.Errors)
+        foreach (var error in NewComment.errors)
         {
-            <p>error</p>
+            <p>@error.Value[0]</p>
         }
     }
 
