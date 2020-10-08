@@ -1,6 +1,6 @@
 ﻿@page "/User/{UserName}"
-
 @inherits BaseUserDetail
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
 
 @if (User.UserName == null)
 {
@@ -21,7 +21,7 @@ else
                 <li class="list-group-item">@User.Comments comments</li>
             </ul>
 
-            <div class="card-body @(User.Rating >= 3 ? "alert-success" : "alert-danger")" >
+            <div class="card-body @(User.Rating >= 3 ? "alert-success" : "alert-danger")">
                 <div>Rating: @User.Rating</div>
             </div>
 
