@@ -60,13 +60,42 @@ namespace RealEstate.Models
             return property;
         }
 
-        public async Task<IEnumerable<Propertys>> GetRealEstates(int page, int quantityPerPage)
+        public async Task<(IEnumerable<Propertys> realEstates, bool error)> GetRealEstates(int page, int quantityPerPage, string searchTerm)
         {
-            HttpResponseMessage task = await http.GetAsync($"api/RealEstates?skip={(page - 1) * quantityPerPage}&take={quantityPerPage}");
-            string jsonString = await task.Content.ReadAsStringAsync();
+            HttpResponseMessage task;
+            List<Propertys> realEstates = new List<Propertys>();
 
-            return JsonSerializer.Deserialize<List<Propertys>>(jsonString);
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                try
+                {
+                    task = await http.GetAsync($"api/RealEstates?skip={(page - 1) * quantityPerPage}&take={quantityPerPage}");
+                    string jsonString = await task.Content.ReadAsStringAsync();
+                    realEstates = JsonSerializer.Deserialize<List<Propertys>>(jsonString);
 
+                    return (realEstates, false);
+                }
+                catch
+                {
+                    return (realEstates, true);
+                }
+            }
+
+            else
+            {
+                try
+                {
+                    task = await http.GetAsync($"api/RealEstates?skip={(page - 1) * quantityPerPage}&take={quantityPerPage}&city={searchTerm}");
+                    string jsonString = await task.Content.ReadAsStringAsync();
+                    realEstates = JsonSerializer.Deserialize<List<Propertys>>(jsonString);
+
+                    return (realEstates, false);
+                }
+                catch
+                {
+                    return (realEstates, true);
+                }
+            }
         }
 
         public async Task<int> GetTotalPages()
@@ -80,7 +109,26 @@ namespace RealEstate.Models
 
                 pageCount = int.Parse(jsonString);
             }
-            catch(Exception)
+            catch (Exception)
+            {
+                pageCount = -1;
+            }
+
+            return pageCount;
+        }
+
+        public async Task<int> GetTotalPagesSearch(string searchTerm)
+        {
+            int pageCount;
+
+            try
+            {
+                HttpResponseMessage task = await http.GetAsync($"api/RealEstates/count?city={searchTerm}");
+                string jsonString = await task.Content.ReadAsStringAsync();
+
+                pageCount = int.Parse(jsonString);
+            }
+            catch (Exception)
             {
                 pageCount = -1;
             }

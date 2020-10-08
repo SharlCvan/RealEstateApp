@@ -6,26 +6,55 @@
 
 <Search OnSearch="SearchEstates"></Search>
 
-@if (RealEstates.Count() == 0)
+@if (Error)
 {
-    <div class="spinner"></div>
-    <p class="pos">Loading...</p>
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-7 alert alert-danger">
+            <h3>Something went wrong...</h3>
+        </div>
+
+        <div class="col-7 d-flex justify-content-center align-items-center">
+            <button class="col-4 btn btn-info" @onclick="TryAgain">Try again</button>
+        </div>
+    </div>
 }
 
 else
 {
-    if (RealEstates.Count() == 0)
+    @if (!EstatesFound)
     {
-        <p>No real estates found...</p>
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-7 alert alert-info">
+                <h3>No estates found</h3>
+            </div>
+        </div>
     }
 
-    <div class="container">
+    else
+    {
+        @if (RealEstates.Count() == 0)
+        {
+            <div class="spinner"></div>
+            <p class="pos">Loading...</p>
+        }
 
-        <RealEstateList Estates="RealEstates"></RealEstateList>
+        else
+        {
+            if (RealEstates.Count() == 0)
+            {
+                <p>No real estates found...</p>
+            }
 
-    </div>
+            <div class="container">
 
-    <Pagination TotalPagesQuantity="TotalPagesQuantity" CurrentPage="CurrentPage" Radius="2" SelectedPage="SelectedPage">
+                <RealEstateList Estates="RealEstates"></RealEstateList>
 
-    </Pagination>
+            </div>
+
+            <Pagination TotalPagesQuantity="TotalPagesQuantity" CurrentPage="CurrentPage" Radius="2" SelectedPage="SelectedPage">
+
+            </Pagination>
+        }
+    }
+
 }
