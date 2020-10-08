@@ -223,13 +223,21 @@ namespace RealEstate.Models
             try
             {
                 var putResult = await http.PutAsync("api/Users/rate", bodyContent);
-                result.PostRatingSuccess = true;
-                result.Value = postedRating.Value;
+
+                if (!putResult.IsSuccessStatusCode)
+                {
+                    var responseString = await putResult.Content.ReadAsStringAsync();
+                    result = JsonSerializer.Deserialize<PostedRating>(responseString);
+                }
+                else
+                {
+                    result.PostRatingSuccess = true;
+                    result.Value = postedRating.Value;
+                }
             }
             catch
             {
-                result.PostRatingSuccess = false;
-                result.Value = -1;
+                result.errors.Add("Offline", new string[1] { "You are offline " });
             }
 
             return result;

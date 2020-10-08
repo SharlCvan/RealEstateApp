@@ -12,6 +12,6 @@ namespace RealEstate.Models
 
         public bool PostRatingSuccess { get; set; }
 
-        public List<string> Errors { get; set; }
+        public Dictionary<string, string[]> errors { get; set; } = new Dictionary<string, string[]>();
     }
 }

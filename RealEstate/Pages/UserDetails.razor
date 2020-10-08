@@ -61,13 +61,17 @@ else
             </div>
             <div class="modal-body">
 
-                @if (RatingResult.PostRatingSuccess && RatingResult.Value > 0)
+                @if (RatingResult.PostRatingSuccess)
                 {
                     <h3 class="alert-success p-1">Your gave a rating of @postedRating.Value</h3>
                 }
-                else if (!RatingResult.PostRatingSuccess && RatingResult.Value == -1)
+                else if (RatingResult.errors.Count() > 0)
                 {
                     <h3 class="alert-danger p-1">Sorry! Couldnt post your rating at this time... Please try again later</h3>
+                    foreach (var error in RatingResult.errors)
+                    {
+                        @error.Value[0]
+                    }
                 }
                 else
                 {
