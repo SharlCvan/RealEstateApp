@@ -1,6 +1,9 @@
 ﻿@page "/RealEstate/{id}"
 @inherits BaseRealEstateDetail
 @inject IJSRuntime JsRuntime
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+
+
 
 @if (string.IsNullOrEmpty(RealEstate.Title))
 {
@@ -74,10 +77,9 @@ else
         </div>
     </div>
 
-    @*<AuthorizeView>*@
     <CommentSection Comments="@RealEstateComments" Id="@Id" EnablePostComment="@true" PostSuccess="@NewComment.IsSuccesfullCommentPost"
                     TotalPages="@Totalpages" CurrentPage="@currentPage" Radius="2" SelectedPade="@SelectedPage" SubmittedComment="@OnPostComment"></CommentSection>
-    @*</AuthorizeView>*@
+
 
     @if (NewComment.IsSuccesfullCommentPost)
     {
@@ -90,6 +92,7 @@ else
             <p>error</p>
         }
     }
+
 
 
     @code {

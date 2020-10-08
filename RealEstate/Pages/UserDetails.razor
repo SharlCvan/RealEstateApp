@@ -21,7 +21,7 @@ else
                 <li class="list-group-item">@User.Comments comments</li>
             </ul>
 
-            <div class="card-body @(User.Rating > 4 ? "alert-success" : "alert-danger")" >
+            <div class="card-body @(User.Rating >= 3 ? "alert-success" : "alert-danger")" >
                 <div>Rating: @User.Rating</div>
             </div>
 
@@ -66,7 +66,7 @@ else
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Dissmiss</button>
+                    <button @onclick="LoadUser" type="button" class="btn btn-primary" data-dismiss="modal">Dissmiss</button>
                 </div>
             </div>
         </div>

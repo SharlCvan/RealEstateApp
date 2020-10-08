@@ -33,6 +33,14 @@ namespace RealEstate.Pages
 
         protected async override Task OnInitializedAsync()
         {
+            //User = await RealEstateService.GetUser(UserName);
+            //totalpages = (int)Math.Ceiling((decimal)await RealEstateService.GetTotalUserComments(UserName) / QuantityPerPage);
+            //await LoadComments();
+            await LoadUser();
+        }
+
+        public async Task LoadUser()
+        {
             User = await RealEstateService.GetUser(UserName);
             totalpages = (int)Math.Ceiling((decimal)await RealEstateService.GetTotalUserComments(UserName) / QuantityPerPage);
             await LoadComments();
@@ -60,8 +68,6 @@ namespace RealEstate.Pages
     }
 }
 
-
-//TODO: Generelle Error hantering
-
-//TODO: Kolla med MUT hur rating återfås.
-//TODO: Kolla med MUT ifall vi ska ha generell och authentiserad vy
+//TODO: Ta bort länk pilar ifall kommentarerna är tomma
+//TODO: Generelle Errorhantering
+//TODO: Meddelande vid realestate

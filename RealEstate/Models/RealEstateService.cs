@@ -134,9 +134,6 @@ namespace RealEstate.Models
 
             var putResult = await http.PutAsync("api/Users/rate", bodyContent);
 
-            //var authContent = await putResult.Content.ReadAsStringAsync();
-            //var result = System.Text.Json.JsonSerializer.Deserialize<PostedRating>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
             var result = new PostedRating();
 
             if (putResult.IsSuccessStatusCode)
