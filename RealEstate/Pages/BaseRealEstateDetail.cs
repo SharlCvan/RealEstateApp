@@ -25,6 +25,8 @@ namespace RealEstate.Pages
 
         public List<Comment> RealEstateComments { get; set; } = new List<Comment>();
 
+        public List<string> Errors { get; set; } = new List<string>();
+
         public CommentsPaging commentsPaging { get; set; } = new CommentsPaging();
 
         public int Totalpages { get; set; }
@@ -58,9 +60,15 @@ namespace RealEstate.Pages
 
         protected async override Task OnInitializedAsync()
         {
-            NewComment.Errors = new List<string>();
+            NewComment.errors = new Dictionary<string, string[]>();
             RealEstate.Urls = new List<URL>();
-                RealEstate = (await RealEstateService.GetRealEstate(int.Parse(Id)));
+
+            RealEstate = await RealEstateService.GetRealEstate(int.Parse(Id));
+
+            foreach (var error in RealEstate.Errors)
+            {
+                Errors.Add(error.Value[0]);
+            }
             
             try
             {
@@ -70,11 +78,7 @@ namespace RealEstate.Pages
                 Totalpages = (int)Math.Ceiling((decimal)await RealEstateService.GetTotalRealEstateComments(int.Parse(Id)) / QuantityPerPAge);
                 await LoadComments();
             }
-            catch(NullReferenceException n)
-            {
-
-            }
-            catch(Exception e)
+            catch
             {
 
             }

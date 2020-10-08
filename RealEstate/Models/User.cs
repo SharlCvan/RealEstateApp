@@ -18,5 +18,7 @@ namespace RealEstate.Models
 
         [JsonPropertyName("ratingAvrage")]
         public double Rating { get; set; }
+
+        public Dictionary<string, string[]> Errors { get; set; } = new Dictionary<string, string[]>();
     }
 }
