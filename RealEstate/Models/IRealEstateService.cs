@@ -21,7 +21,7 @@ namespace RealEstate.Models
 
         public Task<PostedRating> RateUser(PostedRating postedRating);
 
-        public Task<CommentsPaging> GetUserComments(string UserName, int page, int quantityPerPage);
+        public Task<List<Comment>> GetUserComments(string UserName, int page, int quantityPerPage);
 
         public Task<List<Comment>> GetRealEstateComments(string RealEstateId, int page, int quantityPerPage);
 

@@ -2,10 +2,6 @@
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 @inherits BaseCreateRealEstateAd
 
-<link href="/css/StyleSheetCreateARealEstateAd.css" rel="stylesheet" />
-
-
-
 <div class="col-12 card card-body bg-light mt-5 col-md-5 mx-auto mb-5 shadow-lg">
     <EditForm Model="PropertyForRegistration" OnValidSubmit="Register" class="">
         <DataAnnotationsValidator />
@@ -37,7 +33,11 @@
                 <InputSelect id="realEstateType" class="form-control" @bind-Value="PropertyForRegistration.RealEstateType" aria-describedby="realEstateTypeHelp">
                     @foreach (var TypeOfRealEstate in Enum.GetValues(typeof(RealEstate.Models.RealEstateTypes)))
                     {
-                        <option value="@TypeOfRealEstate">@TypeOfRealEstate</option>
+                        <!-- Removes the "nothing" enum choice  -->
+                        @if ((int)TypeOfRealEstate > -1)
+                        {
+                            <option value="@TypeOfRealEstate">@TypeOfRealEstate</option>
+                        }
                     }
                 </InputSelect>
                 <ValidationMessage For="@(() => PropertyForRegistration.RealEstateType)" />
@@ -154,8 +154,17 @@
         <div class="form-row">
             <div class="form-group">
                 <div class=" mt-3">
-                    <button type="submit" class="btn btn-success">Register</button>
-                    <button @onclick="ClearForm" class="btn btn-danger ml-2">Clear</button>
+                    @if (isPosting)
+                    {
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-success">Register</button>
+                        <button @onclick="ClearForm" class="btn btn-danger ml-2">Clear</button>
+                    }
                 </div>
             </div>
         </div>

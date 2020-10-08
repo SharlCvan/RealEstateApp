@@ -1,8 +1,18 @@
 ﻿@page "/RealEstate/{id}"
 @inherits BaseRealEstateDetail
 @inject IJSRuntime JsRuntime
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
 
-@if (string.IsNullOrEmpty(RealEstate.Title))
+
+
+@if (Errors.Count() > 0)
+{
+    foreach (var error in RealEstate.Errors)
+    {
+        <p>@error.Value[0]</p>
+    }
+}
+else if (string.IsNullOrEmpty(RealEstate.Title))
 {
     <div class="spinner"></div>
 }
@@ -27,8 +37,7 @@ else
                         <div id="broker-info" class="col-6 col-sm-6 col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title">Jhon Jones</h5>
-                                <p class="card-text">Email: jogn@fdo.cu</p>
-                                <p class="card-text">Phone: 032 05405 3</p>
+                                <p class="card-text">Conact info: @RealEstate.Contact</p>
                             </div>
                         </div>
                     </div>
@@ -45,7 +54,7 @@ else
                         @*User contact info*@
                         <div id="broker-info" class="col-6 col-sm-6 col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">User Name</h5>
+                                <h5 class="card-title">@UserName</h5>
                                 <p>Seller for this object</p>
                                 <a href="/User/@UserName" class="btn btn-primary mb-0">View</a>
                             </div>
@@ -75,22 +84,22 @@ else
         </div>
     </div>
 
-    @*<AuthorizeView>*@
     <CommentSection Comments="@RealEstateComments" Id="@Id" EnablePostComment="@true" PostSuccess="@NewComment.IsSuccesfullCommentPost"
                     TotalPages="@Totalpages" CurrentPage="@currentPage" Radius="2" SelectedPade="@SelectedPage" SubmittedComment="@OnPostComment"></CommentSection>
-    @*</AuthorizeView>*@
+
 
     @if (NewComment.IsSuccesfullCommentPost)
     {
         <p>Succesfully posted comment</p>
     }
-    else if (NewComment.Errors.Count() > 0)
+    else if (NewComment.errors.Count() > 0)
     {
-        foreach (var error in NewComment.Errors)
+        foreach (var error in NewComment.errors)
         {
-            <p>error</p>
+            <p>@error.Value[0]</p>
         }
     }
+
 
 
     @code {

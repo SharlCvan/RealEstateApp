@@ -24,6 +24,11 @@ namespace RealEstate.Pages
         public bool ShowRegistrationErros { get; set; }
         public List<string> Errors { get; set; } = new List<string>();
 
+        /// <summary>
+        /// If a post request is in progress or not, which enables loading spinner.
+        /// </summary>
+        public bool isPosting { get; set; }
+
         //Holds a registration message which is displayed to a user after sucessfull login. Ex. a logged in user registers another new user.
         public bool ShowRegistrationMessage { get; set; }
         public string registrationMessage { get; set; }

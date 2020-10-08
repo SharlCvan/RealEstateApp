@@ -24,7 +24,8 @@ namespace RealEstate.Models
 
         //For invalid post request
         public bool IsSuccesfullCommentPost { get; set; }
-        public IEnumerable<string> Errors { get; set; }
+
+        public Dictionary<string, string[]> errors { get; set; } = new Dictionary<string, string[]>();
 
     }
 }

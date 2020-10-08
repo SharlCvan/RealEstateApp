@@ -3,6 +3,7 @@ using RealEstate.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace RealEstate.Pages
@@ -25,6 +26,7 @@ namespace RealEstate.Pages
         [Parameter]
         public string UserName { get; set; }
 
+        public int QuantityPerPage { get; set; } = 4;
 
         public int totalpages;
 
@@ -32,8 +34,22 @@ namespace RealEstate.Pages
 
         protected async override Task OnInitializedAsync()
         {
-            User = await RealEstateService.GetUser(UserName);
+            //User = await RealEstateService.GetUser(UserName);
+            //totalpages = (int)Math.Ceiling((decimal)await RealEstateService.GetTotalUserComments(UserName) / QuantityPerPage);
+            //await LoadComments();
+            await LoadUser();
+        }
 
+        protected override async Task OnParametersSetAsync()
+        {
+            await LoadUser();
+        }
+
+        public async Task LoadUser()
+        {
+            User.Errors = new Dictionary<string, string[]>();
+            User = await RealEstateService.GetUser(UserName);
+            totalpages = (int)Math.Ceiling((decimal)await RealEstateService.GetTotalUserComments(UserName) / QuantityPerPage);
             await LoadComments();
         }
 
@@ -45,10 +61,7 @@ namespace RealEstate.Pages
 
         public async Task LoadComments(int page = 1, int quantityPerPage = 4)
         {
-            commentsPaging = await RealEstateService.GetUserComments(UserName, page, quantityPerPage);
-
-            UserComments = commentsPaging.Comments;
-            totalpages = commentsPaging.TotalPages;
+            UserComments = await RealEstateService.GetUserComments(UserName, page, quantityPerPage); 
         }
 
 
@@ -62,4 +75,8 @@ namespace RealEstate.Pages
     }
 }
 
-//TODO: Buggtesta
+
+//____Gjort___
+//Visar ej comment section om den är tom
+//Fyller error dictionary vid offline läget samt andra errors
+//Visar upp error fel på userdetail och RealEstate detail och postComment 
