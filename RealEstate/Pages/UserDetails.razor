@@ -6,12 +6,16 @@
 {
     foreach (var error in User.Errors)
     {
-        <p>@error.Value[0]</p>
+    <div class="d-flex align-content-center justify-content-center">
+        <div class="alert-danger p-3 rounded h4">
+            @error.Value[0]
+        </div>
+    </div>
     }
 }
 else if (User.UserName == null)
 {
-    <div class="spinner"></div>
+    <div class="spinner" style="margin-top: 20%"></div>
 }
 else
 {

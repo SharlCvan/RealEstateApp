@@ -29,6 +29,8 @@ namespace RealEstate.Pages
 
         public CommentsPaging commentsPaging { get; set; } = new CommentsPaging();
 
+        public int countOnAfterRender { get; set; }
+
         public int Totalpages { get; set; }
 
         public int currentPage = 1;
