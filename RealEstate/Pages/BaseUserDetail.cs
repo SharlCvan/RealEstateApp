@@ -3,6 +3,7 @@ using RealEstate.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace RealEstate.Pages
@@ -36,6 +37,11 @@ namespace RealEstate.Pages
             //User = await RealEstateService.GetUser(UserName);
             //totalpages = (int)Math.Ceiling((decimal)await RealEstateService.GetTotalUserComments(UserName) / QuantityPerPage);
             //await LoadComments();
+            await LoadUser();
+        }
+
+        protected override async Task OnParametersSetAsync()
+        {
             await LoadUser();
         }
 

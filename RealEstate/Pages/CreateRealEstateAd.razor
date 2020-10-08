@@ -33,7 +33,11 @@
                 <InputSelect id="realEstateType" class="form-control" @bind-Value="PropertyForRegistration.RealEstateType" aria-describedby="realEstateTypeHelp">
                     @foreach (var TypeOfRealEstate in Enum.GetValues(typeof(RealEstate.Models.RealEstateTypes)))
                     {
-                        <option value="@TypeOfRealEstate">@TypeOfRealEstate</option>
+                        <!-- Removes the "nothing" enum choice  -->
+                        @if ((int)TypeOfRealEstate > -1)
+                        {
+                            <option value="@TypeOfRealEstate">@TypeOfRealEstate</option>
+                        }
                     }
                 </InputSelect>
                 <ValidationMessage For="@(() => PropertyForRegistration.RealEstateType)" />
